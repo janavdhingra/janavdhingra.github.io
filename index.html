@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Janav Dhingra</title>
+<meta name="description" content="Janav Dhingra: software developer and data scientist. Master of Applied Data Science at UVic, formerly Infosys (Walmart, Apple)." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" />
+<style>
+/* Layout: a quiet personal page. Text-led hero with a small ridgeline plot, a fact line, first-person work
+   stories, projects, the tech stack as a requirements.txt file, a short "off the clock", then contact. */
+:root {
+  --bg: #f2f3f1;
+  --surface: #e7eae6;
+  --ink: #1d2224;
+  --muted: #61686a;
+  --line: #d2d6d2;
+  --plot: #a3aba8;
+  --accent: #2e5e5a;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141716; --surface: #1c201f; --ink: #e6e8e5; --muted: #9aa29f;
+    --line: #2c312f; --plot: #4d5552; --accent: #8cbcb3; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141716; --surface: #1c201f; --ink: #e6e8e5; --muted: #9aa29f;
+  --line: #2c312f; --plot: #4d5552; --accent: #8cbcb3; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1120px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(34px, 4.6vw, 54px); line-height: 1.05; letter-spacing: -.015em; }
+h2 em, h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+.lead-in { color: var(--muted); font-size: 19px; max-width: 54ch; margin: 14px 0 0; }
+
+/* ---------- top bar ---------- */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; }
+.mark { font: 500 21px/1 var(--serif); text-decoration: none; }
+.bar nav { display: flex; gap: 26px; align-items: center; font-size: 15px; }
+.bar nav a { text-decoration: none; color: var(--muted); }
+.bar nav a:hover { color: var(--ink); }
+.bar nav a.mail { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+#theme { font: inherit; font-size: 13px; background: none; color: var(--muted); cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px 56px; align-items: center; padding-block: clamp(48px, 8vw, 96px) 40px; }
+h1 { font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; letter-spacing: -.025em; }
+.hero .sub { font-size: clamp(18px, 1.7vw, 21px); color: var(--muted); max-width: 44ch; margin: 24px 0 0; }
+.hero-role { color: var(--accent); margin-bottom: 18px; }
+.traits { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.traits li { font-size: 14px; font-weight: 500; padding: 6px 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+.traits li:nth-child(n+3) { background: transparent; }
+.hero .sub b { color: var(--ink); font-weight: 500; }
+.hero .roles { margin: 18px 0 0; font-size: 15px; color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
+.hero .roles::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); flex: none; }
+figure.plot { margin: 0; }
+#ridge { display: block; width: 100%; height: clamp(220px, 28vw, 340px); }
+figure.plot figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; font-style: italic; font-family: var(--serif); }
+
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 32px; margin: 0; padding-block: 22px 8px; border-top: 1px solid var(--line); }
+.facts dt { font-size: 13px; color: var(--muted); }
+.facts dd { margin: 2px 0 0; font-weight: 500; }
+
+/* ---------- sections ---------- */
+section.block { padding-block: 88px 24px; }
+.block-head { margin-bottom: 40px; }
+
+/* ---------- work stories ---------- */
+.story { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 12px 56px; padding-block: 40px; border-top: 1px solid var(--line); }
+.meta { display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--muted); }
+.meta .n { font: 500 13px/1 var(--mono); color: var(--accent); margin-bottom: 12px; }
+.meta .org { color: var(--ink); font-weight: 600; font-size: 15px; }
+.story h3 { font-size: clamp(26px, 2.8vw, 34px); line-height: 1.12; letter-spacing: -.01em; margin-bottom: 14px; }
+.story p { margin: 0 0 14px; max-width: 64ch; }
+.stack-line { font: 400 13px/1.6 var(--mono); color: var(--muted); margin-top: 8px; }
+
+.note { margin: 6px 0 18px; padding: 22px 26px; background: var(--surface); border-radius: 4px; max-width: 62ch; }
+.story .note p { font: 400 21px/1.45 var(--serif); margin: 0 0 10px; }
+.story .note p:last-child { margin: 0; }
+.story .note .kicker { font-style: italic; color: var(--accent); }
+
+.figs { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 22px 0; }
+.figs div { min-width: 110px; }
+.figs b { display: block; font: 400 clamp(34px, 3.6vw, 44px)/1 var(--serif); font-variant-numeric: tabular-nums lining-nums; }
+.figs span { font-size: 14px; color: var(--muted); display: block; margin-top: 6px; max-width: 20ch; line-height: 1.35; }
+
+.meter { max-width: 520px; margin: 4px 0 18px; }
+.meter > p { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+.mrow { display: grid; grid-template-columns: 52px minmax(0, 1fr) 76px; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+.mrow + .mrow { margin-top: 8px; }
+.mrow b { font: 500 14px/1 var(--mono); color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+.track { height: 8px; background: var(--surface); border-radius: 4px; overflow: hidden; }
+.track i { display: block; height: 100%; width: var(--w); background: var(--c); border-radius: 4px; transform-origin: left; animation: fill 1.2s cubic-bezier(.2,.8,.2,1) .3s both; }
+@keyframes fill { from { transform: scaleX(0); } }
+.story p.award { font-size: 14px; color: var(--muted); margin-top: 4px; }
+.award b { color: var(--ink); font-weight: 600; }
+
+/* ---------- projects ---------- */
+.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; }
+.project { border: 1px solid var(--line); border-radius: 4px; padding: 26px; display: flex; flex-direction: column; gap: 10px; transition: border-color .2s, transform .2s; }
+.project:hover { border-color: var(--accent); transform: translateY(-2px); }
+.project h3 { font-size: 26px; line-height: 1.15; }
+.project p { margin: 0; color: var(--muted); }
+.project .aside { font: italic 400 19px/1.4 var(--serif); color: var(--accent); }
+.project .stack-line { margin-top: auto; padding-top: 8px; }
+.project a { font-size: 15px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.project a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.feature-project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px 56px; align-items: center; padding: clamp(24px, 4vw, 44px); background: var(--surface); border-radius: 4px; margin-bottom: 20px; }
+.fp-kicker { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+.feature-project h3 { font-size: clamp(32px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -.015em; }
+.fp-tagline { font: italic 400 21px/1.4 var(--serif); color: var(--muted); margin: 10px 0 18px; }
+.fp-text > p { margin: 0 0 14px; max-width: 60ch; }
+.fp-facts { list-style: none; padding: 0; margin: 18px 0 6px; display: grid; gap: 8px; font-size: 15px; color: var(--muted); }
+.fp-facts li { padding-left: 18px; position: relative; }
+.fp-facts li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.fp-facts b { color: var(--ink); font-weight: 600; }
+.phones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.phone { margin: 0; }
+.phone:nth-child(2) { margin-top: 36px; }
+.phone:nth-child(3) { margin-top: 12px; }
+.phone img, .phone .ph {
+  display: block; width: 100%; max-width: 100%; aspect-ratio: 9 / 19.5; object-fit: cover;
+  border-radius: 22px; border: 5px solid var(--ink); background: var(--bg);
+}
+.phone .ph { display: grid; place-items: center; }
+.phone .ph span { font: italic 400 15px/1 var(--serif); color: var(--muted); }
+.phone figcaption { margin-top: 10px; text-align: center; font: italic 400 15px/1.3 var(--serif); color: var(--muted); }
+
+.fp-wide { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; }
+.fp-wide code { font: 400 .88em var(--mono); background: var(--bg); padding: 1px 6px; border-radius: 3px; }
+.fp-link { font-size: 15px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.fp-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.fp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px; margin: 8px 0 0; }
+.fp-stats div { border-top: 1px solid var(--line); padding-top: 12px; }
+.fp-stats dt { font: 400 clamp(40px, 4.4vw, 56px)/1 var(--serif); font-variant-numeric: lining-nums; }
+.fp-stats dd { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
+
+.fp-side { display: grid; gap: 28px; align-content: start; }
+.rul-fig { margin: 0; padding: 18px 18px 14px; background: var(--bg); border-radius: 6px; }
+.rul-chart { display: block; width: 100%; height: auto; overflow: visible; }
+.rul-chart .lbl { font: 500 15px var(--sans); fill: var(--ink); }
+.rul-chart .tick { font: 400 13px var(--mono); fill: var(--muted); }
+.rul-chart .axis { stroke: var(--line); stroke-width: 2; }
+.rul-chart .dot { fill: var(--ink); }
+.rul-chart .band { fill: var(--accent); opacity: .85; }
+.rul-fig figcaption { margin-top: 8px; font: italic 400 15px/1.35 var(--serif); color: var(--muted); }
+.fp-research .fp-stats dt { font-size: clamp(34px, 3.4vw, 44px); }
+
+/* ---------- stack as requirements.txt ---------- */
+.reqs { background: var(--surface); border-radius: 6px; overflow: hidden; font-family: var(--mono); }
+.reqs-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 12px 20px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); }
+.reqs-bar .file { color: var(--ink); font-weight: 500; }
+.reqs-body { list-style: none; margin: 0; padding: 18px 20px 18px 0; columns: 2 420px; column-gap: 24px; font-size: 14px; line-height: 1.5; }
+.reqs-body li { display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); align-items: start; column-gap: 10px; padding: 3px 0; break-inside: avoid; border-radius: 3px; }
+.reqs-body .ln { text-align: right; color: var(--plot); font-variant-numeric: tabular-nums; user-select: none; }
+.reqs-body svg { width: 16px; height: 16px; margin-top: 2px; fill: var(--muted); transition: fill .15s; }
+.reqs-body .cmt .code, .reqs-body .blank .code { grid-column: 2 / 4; }
+.reqs-body .cmt .code { color: var(--accent); font-weight: 500; }
+.reqs-body .blank { min-height: 1.5em; }
+.reqs-body .code { min-width: 0; }
+.reqs-body .code b { font-weight: 500; color: var(--ink); }
+.reqs-body .code i { font-style: normal; color: var(--muted); }
+.reqs-body .dep:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.reqs-body .dep:hover svg { fill: var(--accent); }
+.reqs-term { padding: 14px 20px 16px; font-size: 14px; line-height: 1.6; color: var(--ink); border-top: 1px solid var(--line); background: color-mix(in srgb, var(--ink) 4%, var(--surface)); }
+.reqs-term .prompt { color: var(--accent); margin-right: 6px; }
+.reqs-term .ok { color: var(--muted); }
+
+/* ---------- off the clock ---------- */
+.off { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 24px 64px; align-items: start; }
+.off p:not(.eyebrow) { margin: 0 0 16px; max-width: 58ch; font: 400 21px/1.5 var(--serif); }
+
+.prints { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 20px; margin-top: 48px; align-items: start; }
+.print { margin: 0; }
+.print:nth-child(2) { margin-top: 48px; }
+.print:nth-child(3) { margin-top: 16px; }
+.print img, .print .ph { display: block; width: 100%; max-width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; background: var(--surface); }
+.print:first-child img, .print:first-child .ph { aspect-ratio: 4 / 4.6; }
+.print .ph { display: grid; place-items: center; border: 1px dashed var(--line); }
+.print .ph span { font: italic 400 16px/1 var(--serif); color: var(--muted); }
+.print figcaption { margin-top: 10px; font: italic 400 15px/1.4 var(--serif); color: var(--muted); }
+
+/* ---------- lessons ---------- */
+.lessons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 56px; }
+.lesson { padding-block: 28px; border-top: 1px solid var(--line); }
+.lesson .from { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+.lesson h3 { font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; letter-spacing: -.01em; margin-bottom: 12px; }
+.lesson p:not(.from) { margin: 0; color: var(--muted); max-width: 52ch; }
+.lesson a { color: var(--ink); text-decoration-color: var(--accent); text-underline-offset: 3px; }
+
+/* ---------- contact ---------- */
+.contact { padding-block: 104px 72px; }
+.contact h2 { font-size: clamp(48px, 8vw, 104px); line-height: 1; }
+.contact .lede { font-size: 19px; color: var(--muted); max-width: 46ch; margin: 18px 0 30px; }
+.email { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.email code { font: 400 clamp(16px, 2.2vw, 22px)/1.2 var(--mono); padding: 13px 16px; background: var(--surface); border-radius: 4px; user-select: all; overflow-wrap: anywhere; min-width: 0; }
+.btn { font: 600 15px/1 var(--sans); padding: 14px 18px; border-radius: 4px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); cursor: pointer; text-decoration: none; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-block: 26px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); }
+
+/* ---------- small screens ---------- */
+@media (max-width: 800px) {
+  .bar nav a:not(.mail) { display: none; }
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story, .off { grid-template-columns: minmax(0, 1fr); }
+  .reqs-body { font-size: 13px; padding-right: 14px; }
+  .reqs-body li { grid-template-columns: 30px 16px minmax(0, 1fr); column-gap: 8px; }
+  .meta { flex-direction: row; flex-wrap: wrap; gap: 2px 12px; align-items: baseline; }
+  .meta .n { margin: 0; }
+  .projects, .lessons { grid-template-columns: minmax(0, 1fr); }
+  .feature-project { grid-template-columns: minmax(0, 1fr); }
+  .phone .ph, .phone img { border-radius: 16px; border-width: 4px; }
+  .prints { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .print:first-child { grid-column: 1 / -1; }
+  .print:nth-child(n) { margin-top: 0; }
+  section.block { padding-block: 64px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track i { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">Janav Dhingra</a>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#stack">Stack</a>
+      <a href="#off">Life</a>
+      <a class="mail" href="#contact">Email me</a>
+      <button id="theme" type="button" aria-label="Switch light or dark">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ================= INTRO ================= -->
+  <section class="wrap">
+    <div class="hero">
+      <div>
+        <p class="eyebrow hero-role">Software developer &amp; data scientist</p>
+        <h1>I used to move the data. <em>Now I ask it questions.</em></h1>
+        <ul class="traits" aria-label="About me">
+          <li>Developer</li><li>Tinkerer</li><li>Traveller</li>
+        </ul>
+        <p class="sub">Hi, I'm Janav. I spent three years as a software engineer. Somewhere along the way I noticed I knew exactly where the data went, but not what it was saying. So now I'm doing a <b>Master of Applied Data Science</b> at the University of Victoria to close that gap.</p>
+        <p class="roles">Open to data scientist, machine learning engineer, AI engineer and software developer roles.</p>
+      </div>
+      <figure class="plot">
+        <canvas id="ridge" aria-label="A slowly moving ridgeline plot"></canvas>
+        <figcaption>A ridgeline plot. Also roughly the view from Mount Doug.</figcaption>
+      </figure>
+    </div>
+    <dl class="facts">
+      <div><dt>Based in</dt><dd>Victoria, BC</dd></div>
+      <div><dt>Studying</dt><dd>Applied Data Science, UVic</dd></div>
+      <div><dt>Previously</dt><dd>Infosys, for Walmart &amp; Apple</dd></div>
+      <div><dt>Looking for</dt><dd>Data, ML &amp; software roles</dd></div>
+    </dl>
+  </section>
+
+  <!-- ================= WORK ================= -->
+  <section id="work" class="block wrap">
+    <div class="block-head">
+      <p class="eyebrow">Work</p>
+      <h2>What I've been doing, <em>newest first.</em></h2>
+    </div>
+
+    <article class="story">
+      <div class="meta">
+        <span class="n">01</span>
+        <span class="org">University of Victoria</span>
+        <span>Master of Applied Data Science</span>
+        <span>Jan 2026 – now</span>
+      </div>
+      <div>
+        <h3>The switch.</h3>
+        <div class="note">
+          <p>For three years my job was making data move faster. I got one request from 228 milliseconds down to 45 and felt great about it.</p>
+          <p>Then I noticed the forecasts I was shipping around were more interesting than the shipping. So I went back to school to work on the part that thinks.</p>
+          <p class="kicker">Same data. Better questions.</p>
+        </div>
+        <p>Coursework in statistical learning, machine learning, optimization, data warehousing and data visualization, plus a research project on how far you can trust a model's predictions (it's in Projects). I'm also in the UVic Data Science and Entrepreneur clubs.</p>
+      </div>
+    </article>
+
+    <article class="story">
+      <div class="meta">
+        <span class="n">02</span>
+        <span class="org">Infosys, for Walmart</span>
+        <span>Software Engineer</span>
+        <span>Oct 2024 – Dec 2025</span>
+      </div>
+      <div>
+        <h3>Turning demand forecasts into what goes on the shelf.</h3>
+        <p>I led development of an internal stock and demand system for Walmart North America. The Data Science team sent forecasts in, and the system worked out what each store needed and where it should go: shelf, hanger or warehouse. Stores in coastal and dry climates got different advice, depending on how fast items were selling.</p>
+        <div class="figs">
+          <div><b>60%</b><span>less time to generate vendor plans</span></div>
+          <div><b>80%</b><span>lower average response time</span></div>
+          <div><b>3×</b><span>the throughput</span></div>
+        </div>
+        <div class="meter" role="img" aria-label="Average response time fell from 228.4 milliseconds to 45.6 milliseconds">
+          <p>Average response time, before and after moving storage from S3 to Redis</p>
+          <div class="mrow"><span>Before</span><div class="track"><i style="--w:100%; --c:var(--plot)"></i></div><b>228.4 ms</b></div>
+          <div class="mrow"><span>After</span><div class="track"><i style="--w:20%; --c:var(--accent)"></i></div><b>45.6 ms</b></div>
+        </div>
+        <p class="stack-line">Java · Spring Boot · PostgreSQL · Kafka · Redis · AWS</p>
+        <p class="award"><b>Infosys Insta Award, 2025</b> for this system.</p>
+      </div>
+    </article>
+
+    <article class="story">
+      <div class="meta">
+        <span class="n">03</span>
+        <span class="org">Infosys, for Apple</span>
+        <span>Software Engineer</span>
+        <span>Aug 2023 – Sep 2024</span>
+      </div>
+      <div>
+        <h3>Making the vendor numbers agree with each other.</h3>
+        <p>My first project after university. Apple's vendor tracking reports didn't always add up, so I designed a multi-step SQL workflow that fixed the inconsistencies, and a pipeline of scheduled batch jobs and event-driven processing to feed it. I also pulled reports and one-off extracts from large transactional datasets for the business side.</p>
+        <p class="stack-line">SQL · PostgreSQL · Spring Boot · 85%+ test coverage</p>
+      </div>
+    </article>
+
+    <article class="story">
+      <div class="meta">
+        <span class="n">04</span>
+        <span class="org">Oneistox</span>
+        <span>Software Development Intern</span>
+        <span>Dec 2021 – May 2022</span>
+      </div>
+      <div>
+        <h3>Where it started.</h3>
+        <p>My first engineering job, during my B.Tech in New Delhi. I reworked MongoDB schemas and queries so data loaded 30% faster, and built the REST APIs and backend for onboarding, course tracking and mentoring.</p>
+        <p class="stack-line">Node.js · Express · MongoDB</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <section id="projects" class="block wrap">
+    <div class="block-head">
+      <p class="eyebrow">Projects</p>
+      <h2>Things I built <em>because I wanted to.</em></h2>
+    </div>
+    <article class="feature-project">
+      <div class="fp-text">
+        <p class="fp-kicker">Featured · Mobile web app</p>
+        <h3>EDIT: Daily Style</h3>
+        <p class="fp-tagline">One outfit a day, picked from your own closet. Nobody needs an infinite scroll at 7:40 in the morning.</p>
+        <p>EDIT checks the live weather where you are and what's on your calendar, then gives you one main look, two backups, and a short reason why it works. A presentation gets something sharper. A lecture gets something easier.</p>
+        <p>The picks come from a scoring system I wrote by hand. It rates each combination on colour harmony, fit balance, formality and warmth, and it learns from what you like, save and actually wear.</p>
+        <ul class="fp-facts">
+          <li><b>No accounts, no server database.</b> Everything stays on your phone.</li>
+          <li><b>Installs like an app.</b> It's a PWA, so it lives on your home screen.</li>
+          <li><b>Calendar sync</b> through a small serverless relay on Netlify.</li>
+        </ul>
+        <p class="stack-line">React · JavaScript · Open-Meteo API · iCal parsing · Netlify Functions · browser storage</p>
+      </div>
+      <!-- To add a screenshot, replace a <div class="ph">…</div> with <img src="edit-1.png" alt="Describe the screen"> -->
+      <div class="phones">
+        <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Today's pick</figcaption></figure>
+        <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Why it works</figcaption></figure>
+        <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Your closet</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="feature-project fp-wide">
+      <div class="fp-text">
+        <p class="fp-kicker">Full-stack · Microservices</p>
+        <h3>Pixagram</h3>
+        <p class="fp-tagline">I built this before AI was writing everyone's code. I kinda like it.</p>
+        <p>An Instagram-style app where you can post photos, like, comment, follow people and see what's trending. Six Spring Boot services sit behind one gateway that checks your login token on every request, and each service keeps its own MySQL database. One <code>docker-compose up</code> starts all seven containers.</p>
+        <p>Trending hashtags get pulled out of captions as you post. The Caption Studio writes captions in four tones and tags every post with one of seven vibes, all from hand-written keyword lists and templates, because that's what AI meant back then.</p>
+        <p class="stack-line">Angular 17 · TypeScript · Spring Boot · Spring Cloud Gateway · MySQL 8 · JWT · Docker Compose</p>
+        <a class="fp-link" href="https://github.com/janavdhingra/pixagram" target="_blank" rel="noopener">See it on GitHub →</a>
+      </div>
+      <dl class="fp-stats">
+        <div><dt>6</dt><dd>microservices</dd></div>
+        <div><dt>4</dt><dd>database schemas</dd></div>
+        <div><dt>17+</dt><dd>REST APIs</dd></div>
+        <div><dt>7</dt><dd>containers, one command</dd></div>
+      </dl>
+    </article>
+
+    <article class="feature-project fp-wide fp-research">
+      <div class="fp-text">
+        <p class="fp-kicker">Master's research · Machine learning</p>
+        <h3>How sure is the model? Prediction intervals for jet engines</h3>
+        <p class="fp-tagline">A model that says "74 more flights" sounds confident. One that says "58 to 85, guaranteed 90% of the time" is actually useful.</p>
+        <p>With three classmates at UVic, I worked on predicting how many flights a turbofan engine has left before it's unsafe, using NASA's C-MAPSS data. We wrapped LSTM and gradient-boosting models in seven conformal prediction methods, which turn a single guess into a range with a coverage guarantee, and tested that guarantee across 112 combinations of data, model and method.</p>
+        <p>It held almost everywhere. Where it broke, on the hardest dataset and only for mid-life engines, we used Kolmogorov–Smirnov tests to trace it to calibration and test engines not looking alike, then repaired it with weighted CQR. Then we broke it on purpose with a frozen-pipeline stress test, just to see how it fails.</p>
+        <p class="stack-line">Python · LSTM &amp; quantile LSTM · gradient boosting · conformal prediction (MAPIE) · KS tests · 63 unit tests</p>
+      </div>
+      <div class="fp-side">
+        <figure class="rul-fig">
+          <svg class="rul-chart" viewBox="0 0 400 150" role="img" aria-label="A point prediction of 74 flights versus a conformal interval from 58 to 85 flights, on an axis from 40 to 100 flights">
+            <text x="20" y="18" class="lbl">Point model: "74 more flights"</text>
+            <line x1="20" y1="34" x2="380" y2="34" class="axis" />
+            <circle cx="224.0" cy="34" r="6" class="dot" />
+            <text x="20" y="74" class="lbl">Conformal: "58 to 85 flights, 90% guaranteed"</text>
+            <line x1="20" y1="90" x2="380" y2="90" class="axis" />
+            <rect x="128.0" y="84" width="162.0" height="12" rx="6" class="band" />
+            <circle cx="224.0" cy="90" r="4" class="dot" />
+            <text x="128.0" y="114" class="tick" text-anchor="middle">58</text>
+            <text x="290.0" y="114" class="tick" text-anchor="middle">85</text>
+            <text x="20" y="140" class="tick">40</text>
+            <text x="380" y="140" class="tick" text-anchor="end">100 flights</text>
+          </svg>
+          <figcaption>Same model underneath. The range is what an engineer can safely act on.</figcaption>
+        </figure>
+        <dl class="fp-stats">
+          <div><dt>15.30</dt><dd>LSTM error (RMSE) on FD001, under the 16 target</dd></div>
+          <div><dt>30%</dt><dd>narrower intervals with CQR, same guarantee</dd></div>
+          <div><dt>89.5%</dt><dd>coverage restored on the one dataset that broke</dd></div>
+          <div><dt>1</dt><dd>command to reproduce every table and figure</dd></div>
+        </dl>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= STACK ================= -->
+  <section id="stack" class="block wrap">
+    <div class="block-head">
+      <p class="eyebrow">Tools</p>
+      <h2>What's in my <em>requirements.txt</em></h2>
+      <p class="lead-in">Everything you'd need to reproduce me, minus the coffee.</p>
+    </div>
+
+    <div class="reqs">
+      <div class="reqs-bar"><span class="file">requirements.txt</span><span>42 dependencies · 0 conflicts</span></div>
+      <ol class="reqs-body">
+        <li class="cmt"><span class="ln">1</span><span class="code"># machine learning &amp; ai</span></li>
+        <li class="dep"><span class="ln">2</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.005 0L4.952 7.053a9.865 9.865 0 000 14.022 9.866 9.866 0 0014.022 0c3.984-3.9 3.986-10.205.085-14.023l-1.744 1.743c2.904 2.905 2.904 7.634 0 10.538s-7.634 2.904-10.538 0-2.904-7.634 0-10.538l4.647-4.646.582-.665zm3.568 3.899a1.327 1.327 0 00-1.327 1.327 1.327 1.327 0 001.327 1.328A1.327 1.327 0 0016.9 5.226 1.327 1.327 0 0015.573 3.9z" /></svg><span class="code"><b>PyTorch</b> <i># Neural networks for the master&#x27;s.</i></span></li>
+        <li class="dep"><span class="ln">3</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.292 5.856L11.54 0v24l-4.095-2.378V7.603l-6.168 3.564.015-5.31zm21.43 5.311l-.014-5.31L12.46 0v24l4.095-2.378V14.87l3.092 1.788-.018-4.618-3.074-1.756V7.603l6.168 3.564z" /></svg><span class="code"><b>TensorFlow</b> <i># The other half of the deep learning coursework.</i></span></li>
+        <li class="dep"><span class="ln">4</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.601 5.53c-1.91.035-3.981.91-5.63 2.56-2.93 2.93-2.083 8.53-1.088 9.525.805.804 6.595 1.843 9.526-1.088a9.74 9.74 0 0 0 .584-.643c.043-.292.205-.66.489-1.106a1.848 1.848 0 0 1-.537.176c-.144.265-.37.55-.676.855-.354.335-.607.554-.76.656a.795.795 0 0 1-.437.152c-.35 0-.514-.308-.494-.924-.22.316-.425.549-.612.7a.914.914 0 0 1-.578.224c-.194 0-.36-.09-.496-.273a1.03 1.03 0 0 1-.193-.507 4.016 4.016 0 0 1-.726.583c-.224.132-.47.197-.74.197-.3 0-.543-.096-.727-.288a.978.978 0 0 1-.257-.524v.004c-.3.276-.564.48-.79.611a1.295 1.295 0 0 1-.649.197.693.693 0 0 1-.571-.275c-.145-.183-.218-.43-.218-.739 0-.464.101-1.02.302-1.67.201-.65.445-1.25.733-1.797l.842-.312a.21.21 0 0 1 .06-.013c.063 0 .116.047.157.14.04.095.061.221.061.38 0 .451-.104.888-.312 1.31-.207.422-.532.873-.974 1.352-.018.23-.027.388-.027.474 0 .193.036.345.106.458.071.113.165.169.282.169a.71.71 0 0 0 .382-.13c.132-.084.333-.26.602-.523.028-.418.187-.798.482-1.142.324-.38.685-.569 1.08-.569.206 0 .37.054.494.16a.524.524 0 0 1 .186.417c0 .458-.486.829-1.459 1.114.088.43.32.646.693.646a.807.807 0 0 0 .417-.117c.129-.076.321-.243.575-.497.032-.252.118-.495.259-.728.182-.3.416-.544.701-.73.285-.185.537-.278.756-.278.276 0 .47.127.58.381l.677-.374h.186l-.292.971c-.15.488-.226.823-.226 1.004 0 .19.067.285.202.285.086 0 .181-.045.285-.137.104-.092.25-.232.437-.42v.001c.143-.155.274-.32.392-.494-.19-.084-.285-.21-.285-.375 0-.17.058-.352.174-.545.116-.194.275-.29.479-.29.172 0 .258.088.258.265 0 .139-.05.338-.149.596.367-.04.687-.32.961-.842l.228-.01c1.059-2.438.828-5.075-.83-6.732-1.019-1.02-2.408-1.5-3.895-1.471zm4.725 8.203a8.938 8.938 0 0 1-1.333 2.151 1.09 1.09 0 0 0-.012.147c0 .168.047.309.14.423.092.113.206.17.34.17.296 0 .714-.264 1.254-.787-.001.04-.003.08-.003.121 0 .146.012.368.036.666l.733-.172c0-.2.003-.357.01-.474.01-.157.033-.33.066-.517.02-.11.07-.216.152-.315l.186-.216a5.276 5.276 0 0 1 .378-.397c.062-.055.116-.099.162-.13a.26.26 0 0 1 .123-.046c.055 0 .083.035.083.106 0 .07-.052.236-.156.497-.194.486-.292.848-.292 1.084 0 .175.046.314.136.418a.45.45 0 0 0 .358.155c.365 0 .803-.269 1.313-.808v-.381c-.361.426-.623.64-.784.64-.109 0-.163-.067-.163-.2 0-.1.065-.316.195-.65.19-.486.285-.836.285-1.048a.464.464 0 0 0-.112-.319.36.36 0 0 0-.282-.127c-.165 0-.354.077-.567.233-.213.156-.5.436-.863.84.053-.262.165-.622.335-1.08l-.809.156a6.54 6.54 0 0 0-.399 1.074c-.04.156-.07.316-.092.48a7.447 7.447 0 0 1-.49.45.38.38 0 0 1-.229.08.208.208 0 0 1-.174-.082.352.352 0 0 1-.064-.222c0-.1.019-.214.056-.343.038-.13.12-.373.249-.731l.308-.849zm-17.21-2.927c-.863-.016-1.67.263-2.261.854-1.352 1.352-1.07 3.827.631 5.527 1.7 1.701 4.95 1.21 5.527.632.467-.466 1.07-3.827-.631-5.527-.957-.957-2.158-1.465-3.267-1.486zm12.285.358h.166v.21H15.4zm.427 0h.166v.865l.46-.455h.195l-.364.362.428.684h-.198l-.357-.575-.164.166v.41h-.166zm1.016 0h.166v.21h-.166zm.481.122h.166v.288h.172v.135h-.172v.717c0 .037.006.062.02.075.012.013.037.02.074.02a.23.23 0 0 0 .078-.01v.141a.802.802 0 0 1-.136.014.23.23 0 0 1-.15-.043.15.15 0 0 1-.052-.123v-.79h-.141v-.136h.141zm-3.562.258c.081 0 .15.012.207.038.057.024.1.061.13.11s.045.106.045.173h-.176c-.006-.111-.075-.167-.208-.167a.285.285 0 0 0-.164.041.134.134 0 0 0-.06.117c0 .035.015.065.045.088.03.024.08.044.15.06l.16.039a.47.47 0 0 1 .224.105c.047.046.07.108.07.186a.3.3 0 0 1-.052.175.327.327 0 0 1-.152.116.585.585 0 0 1-.226.041c-.136 0-.24-.03-.309-.088-.069-.059-.105-.149-.109-.269h.176c.004.037.01.065.017.084a.166.166 0 0 0 .034.054c.044.043.112.065.204.065a.31.31 0 0 0 .177-.045.139.139 0 0 0 .067-.119.116.116 0 0 0-.038-.09.287.287 0 0 0-.124-.055l-.156-.038a1.248 1.248 0 0 1-.159-.05.359.359 0 0 1-.098-.061.22.22 0 0 1-.058-.083.32.32 0 0 1-.016-.108c0-.096.036-.174.109-.232a.45.45 0 0 1 .29-.087zm1.035 0a.46.46 0 0 1 .202.043.351.351 0 0 1 .187.212.577.577 0 0 1 .023.126h-.168a.256.256 0 0 0-.078-.168.242.242 0 0 0-.17-.06.248.248 0 0 0-.155.05.306.306 0 0 0-.1.144.662.662 0 0 0-.034.224.58.58 0 0 0 .035.214.299.299 0 0 0 .101.135.261.261 0 0 0 .157.048c.142 0 .227-.084.256-.252h.167a.519.519 0 0 1-.065.22.35.35 0 0 1-.146.138.464.464 0 0 1-.216.048.448.448 0 0 1-.246-.066.441.441 0 0 1-.161-.192.703.703 0 0 1-.057-.293c0-.085.01-.163.032-.233a.522.522 0 0 1 .095-.182.403.403 0 0 1 .15-.117.453.453 0 0 1 .191-.04zm.603.03h.166v1.046H15.4zm1.443 0h.166v1.046h-.166zm-5.05.618c-.08 0-.2.204-.356.611-.155.407-.308.977-.459 1.71.281-.312.509-.662.683-1.05.175-.387.262-.72.262-.999a.455.455 0 0 0-.036-.197c-.025-.05-.056-.075-.093-.075zm4.662 1.797c-.221 0-.431.188-.629.563-.197.376-.296.722-.296 1.038 0 .12.029.216.088.29a.273.273 0 0 0 .223.111c.221 0 .43-.188.625-.565.196-.377.294-.725.294-1.043a.457.457 0 0 0-.083-.29.269.269 0 0 0-.222-.104zm-2.848.007c-.146 0-.285.11-.417.333-.133.222-.2.51-.2.866.566-.159.849-.452.849-.881 0-.212-.077-.318-.232-.318Z" /></svg><span class="code"><b>scikit-learn</b> <i># Statistical learning and machine learning, from the coursework at UVic.</i></span></li>
+        <li class="dep"><span class="ln">5</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 11h20v2H2zM5 7h2v10H5zM17 7h2v10h-2zM12 9.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5z" /></svg><span class="code"><b>MAPIE</b> <i># Conformal prediction intervals for the jet engine research.</i></span></li>
+        <li class="dep"><span class="ln">6</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378 0 1.112.178 2.181.503 3.185.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284.278.173.48.408.71.694.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542.01.026.653 1.552 1.657 2.54.616.605 1.01 1.223 1.082 1.912.055.537-.096 1.059-.38 1.572.637.121 1.294.187 1.967.187.657 0 1.298-.063 1.921-.178-.287-.517-.44-1.041-.384-1.581.07-.69.465-1.307 1.081-1.913 1.004-.987 1.647-2.513 1.657-2.539.021-.074.083-.285.233-.542.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952.23-.286.432-.52.71-.694.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174 1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013 1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164 1.607-.007 2.984-1.155 3.572-1.164.196-.003.305.12.305.454 0 .886-.424 2.328-1.563 3.202-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026-.01.008-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116 1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243 1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444-.034-.016-.104-.008-.2.022q-.094.03-.216.087-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096 3 3 0 0 0-.26.219 2 2 0 0 0-.12.121 2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203 0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647 2.822 2.813 2.562 3.244-1.176-.506-1.176-.506-2.866-2.567-3.49-1.898.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405-.238.839-2.71-1.587-3.216-.642-.506.946 3.49 2.056 3.522 2.064 1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194 1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647-2.822 2.813-2.562 3.244 1.176-.506 1.176-.506 2.866-2.567 3.49-1.898-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405.238.839 2.71-1.587 3.216-.642.506.946-3.49 2.056-3.522 2.064-1.29.33-4.568 1.028-5.713-.624" /></svg><span class="code"><b>Hugging Face</b> <i># Transformers, mostly. Pretrained models are a gift.</i></span></li>
+        <li class="dep"><span class="ln">7</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.796 0a6.93 6.93 0 0 0-4.91 2.019L5.451 5.455l3.273 3.27 3.432-3.432a2.284 2.284 0 0 1 3.277 0 2.28 2.28 0 0 1 0 3.275L12 12.001l3.273 3.273 3.433-3.435c2.692-2.692 2.692-7.127 0-9.82A6.92 6.92 0 0 0 13.796 0m-5.07 8.728-3.433 3.434c-2.692 2.693-2.692 7.126 0 9.819A6.92 6.92 0 0 0 10.203 24a6.93 6.93 0 0 0 4.911-2.02l3.432-3.432-3.271-3.272-3.433 3.433a2.284 2.284 0 0 1-3.277 0 2.28 2.28 0 0 1 0-3.276L12 12z" /></svg><span class="code"><b>LangChain</b> <i># Wiring language models up to tools and documents.</i></span></li>
+        <li class="dep"><span class="ln">8</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z" /></svg><span class="code"><b>Claude</b> <i># My go-to AI pair for thinking things through and writing code.</i></span></li>
+        <li class="dep"><span class="ln">9</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" /></svg><span class="code"><b>Codex</b> <i># OpenAI&#x27;s coding agent, for when I want a second pair of hands.</i></span></li>
+        <li class="dep"><span class="ln">10</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.85 0a4.16 4.16 0 0 0-2.95 1.217L1.456 10.66a.835.835 0 0 0 0 1.18.835.835 0 0 0 1.18 0l9.442-9.442a2.49 2.49 0 0 1 3.541 0 2.49 2.49 0 0 1 0 3.541L8.59 12.97l-.1.1a.835.835 0 0 0 0 1.18.835.835 0 0 0 1.18 0l.1-.098 7.03-7.034a2.49 2.49 0 0 1 3.542 0l.049.05a2.49 2.49 0 0 1 0 3.54l-8.54 8.54a1.96 1.96 0 0 0 0 2.755l1.753 1.753a.835.835 0 0 0 1.18 0 .835.835 0 0 0 0-1.18l-1.753-1.753a.266.266 0 0 1 0-.394l8.54-8.54a4.185 4.185 0 0 0 0-5.9l-.05-.05a4.16 4.16 0 0 0-2.95-1.218c-.2 0-.401.02-.6.048a4.17 4.17 0 0 0-1.17-3.552A4.16 4.16 0 0 0 13.85 0m0 3.333a.84.84 0 0 0-.59.245L6.275 10.56a4.186 4.186 0 0 0 0 5.902 4.186 4.186 0 0 0 5.902 0L19.16 9.48a.835.835 0 0 0 0-1.18.835.835 0 0 0-1.18 0l-6.985 6.984a2.49 2.49 0 0 1-3.54 0 2.49 2.49 0 0 1 0-3.54l6.983-6.985a.835.835 0 0 0 0-1.18.84.84 0 0 0-.59-.245" /></svg><span class="code"><b>MCP</b> <i># Model Context Protocol: lets AI assistants plug into real tools and data.</i></span></li>
+        <li class="blank"><span class="ln">11</span></li>
+        <li class="cmt"><span class="ln">12</span><span class="code"># data &amp; analysis</span></li>
+        <li class="dep"><span class="ln">13</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z" /></svg><span class="code"><b>Python</b> <i># Most of the master&#x27;s happens here.</i></span></li>
+        <li class="dep"><span class="ln">14</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.922 0h2.623v18.104h-2.623zm-4.126 12.94h2.623v2.57h-2.623zm0-7.037h2.623v5.446h-2.623zm0 11.197h2.623v5.446h-2.623zM4.456 5.896h2.622V24H4.455zm4.213 2.559h2.623v2.57H8.67zm0 4.151h2.623v5.447H8.67zm0-11.187h2.623v5.446H8.67Z" /></svg><span class="code"><b>pandas</b> <i># The first import in every notebook I open.</i></span></li>
+        <li class="dep"><span class="ln">15</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.315 4.876L6.3048 2.8517l-4.401 2.1965 4.1186 2.0683zm1.8381.9277l4.2045 2.1223-4.3622 2.1906-4.125-2.0718zm5.6153-2.9213l4.3193 2.1658-3.863 1.9402-4.2131-2.1252zm-1.859-.9329L12.021 0 8.1742 1.9193l4.0068 2.0208zm-3.0401 16.7443V24l4.7107-2.3507-.0053-5.3085zm4.7037-4.2057l-.0052-5.2528-4.6985 2.3356v5.2546zm5.6553-.9845v5.327l-4.0178 2.0052-.0029-5.3028zm0-1.8626V6.4214l-4.0253 2.001.0034 5.2633zM11.2062 11.571L8.0333 9.9756v6.895s-3.8804-8.2564-4.2399-8.998c-.0463-.0957-.2371-.2007-.2858-.2262C2.8118 7.2812.773 6.2485.773 6.2485V18.43l2.8204 1.5076v-6.3674s3.8392 7.3775 3.878 7.458c.0389.0807.4245.8582.8362 1.1314.5485.363 2.8992 1.7766 2.8992 1.7766z" /></svg><span class="code"><b>NumPy</b> <i># The second import in every notebook I open.</i></span></li>
+        <li class="dep"><span class="ln">16</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.157 22.201A1.784 1.799 0 0 1 5.374 24a1.784 1.799 0 0 1-1.784-1.799 1.784 1.799 0 0 1 1.784-1.799 1.784 1.799 0 0 1 1.783 1.799zM20.582 1.427a1.415 1.427 0 0 1-1.415 1.428 1.415 1.427 0 0 1-1.416-1.428A1.415 1.427 0 0 1 19.167 0a1.415 1.427 0 0 1 1.415 1.427zM4.992 3.336A1.047 1.056 0 0 1 3.946 4.39a1.047 1.056 0 0 1-1.047-1.055A1.047 1.056 0 0 1 3.946 2.28a1.047 1.056 0 0 1 1.046 1.056zm7.336 1.517c3.769 0 7.06 1.38 8.768 3.424a9.363 9.363 0 0 0-3.393-4.547 9.238 9.238 0 0 0-5.377-1.728A9.238 9.238 0 0 0 6.95 3.73a9.363 9.363 0 0 0-3.394 4.547c1.713-2.04 5.004-3.424 8.772-3.424zm.001 13.295c-3.768 0-7.06-1.381-8.768-3.425a9.363 9.363 0 0 0 3.394 4.547A9.238 9.238 0 0 0 12.33 21a9.238 9.238 0 0 0 5.377-1.729 9.363 9.363 0 0 0 3.393-4.547c-1.712 2.044-5.003 3.425-8.772 3.425Z" /></svg><span class="code"><b>Jupyter</b> <i># Where most experiments start, and some of them end.</i></span></li>
+        <li class="dep"><span class="ln">17</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.323 16.25C3.13 15.354 1.64 14.31 0 13.12l5.814-2.237 2.386 1.79c-1.79 2.086-2.982 2.831-3.877 3.577zm15.952-6.261c-.447-1.193-.745-2.385-1.193-3.578-.447-1.343-.894-2.535-1.64-3.579-.299-.447-.895-1.49-1.64-1.49-.15 0-.299.148-.448.148-.447.15-1.043 1.043-1.193 1.64-.447.745-1.342 1.938-1.938 2.683-.149.299-.447.597-.596.746-.447.298-.894.745-1.491 1.043-.15 0-.298.149-.447.149-.447 0-.745.298-1.043.447-.447.447-.894 1.043-1.342 1.49 0 .15-.15.299-.298.448l2.236 1.64c1.64-1.938 3.578-3.876 4.92-7.603 0 0-.448 4.026-4.026 8.349-2.236 2.534-4.025 3.876-4.324 4.174 0 0 .597-.149 1.194.15 1.193.446 1.789 2.087 2.236 3.279.298.894.745 1.64 1.043 2.534 1.193-.298 1.938-.745 2.683-1.491.745-.746 1.491-1.64 2.236-2.385 1.342-1.64 2.982-3.728 5.069-2.684.298.15.745.447.894.596.447.298.745.596 1.193 1.043.745.597 1.043 1.044 1.64 1.343-1.491-2.982-2.534-5.964-3.727-9.094z" /></svg><span class="code"><b>MATLAB</b> <i># Matrices first, questions later.</i></span></li>
+        <li class="dep"><span class="ln">18</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.654.174V2.377H9.682v.58h1.972V5.16h.696V2.957h1.97v-.58h-1.97V.174h-.348zm6.03 2.262l-.002 1.623v1.623h-2.957v.927h2.957v3.188H18.725l.011-1.582.02-1.576 1.465-.02 1.46-.01v-.927H18.728V2.436h-.522zm-12.407.06V5.686H2.291v.925H5.277V9.801h.985V6.61h3.013v-.925H6.262V2.496H5.77zm6.086 5.27v3.593H8.06v1.188h3.304v3.596h1.28v-3.596H15.953v-1.188H12.643V7.766h-.637zm9.721 1.55v2.221h-2.012v.811h2.012v2.261h.887v-2.261H24v-.811h-2.029V9.317h-.422zm-19.111.131V11.621H0v.621H1.973v2.194H2.64v-2.194h2v-.62H2.609V9.446h-.318zm15.709 4.516v3.254h-3.016v.927h3.016v3.217h1.072v-3.216H21.74v-.928H18.754v-3.254h-.533zm-12.463.008v3.246H2.262v.928h2.957v3.189H6.32v-3.189h2.955v-.928H6.32V13.97h-.55zm6.316 4.578l.002 1.103v1.1H9.566v.812h1.971v2.262h.928l.012-1.119.017-1.143H14.463v-.812h-2V18.549h-.465z" /></svg><span class="code"><b>Tableau</b> <i># Dashboards for people who don&#x27;t want to read SQL.</i></span></li>
+        <li class="dep"><span class="ln">19</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 12a1 1 0 0 1 1 1v11H4a1 1 0 0 1-1-1V13a1 1 0 0 1 1-1h6Zm-2-.5V7a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v17h-4.5V13a1.5 1.5 0 0 0-1.5-1.5H8Zm5-6V1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v22a1 1 0 0 1-1 1h-3.5V7A1.5 1.5 0 0 0 15 5.5h-2Z" /></svg><span class="code"><b>Power BI</b> <i># Same idea, Microsoft flavour.</i></span></li>
+        <li class="dep"><span class="ln">20</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z" /></svg><span class="code"><b>Excel</b> <i># Still the world&#x27;s most popular database. I&#x27;ve made peace with it.</i></span></li>
+        <li class="dep"><span class="ln">21</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.176 2.814c.233.42.476.78.73 1.09.247-.013 1.132.456 1.312.523.508.282 1.063.63 1.567.966.505.337.96.662 1.272.9.156.12.278.218.352.286a.483.483 0 01.078.082.08.08 0 01.01.021.06.06 0 01-.004.047.057.057 0 01-.04.03.077.077 0 01-.028 0c-.057 0-.203-.163-.497-.415a23.474 23.474 0 00-2.759-1.827c-.504-.28-.956-.542-1.264-.613a2.322 2.322 0 00-.36-.025 2.706 2.706 0 00-.788.133c.494.414.91.716 1.28.949-.57-.182-1.182-.21-1.902.133.526.329.967.567 1.354.745 1.103.156 2.258.696 3.224 1.309.483.307.904.615 1.219.867.157.125.29.237.39.328.098.091.174.154.197.21.03.073-.019.104-.084.058-.032-.022-.088-.102-.184-.191a7.35 7.35 0 00-.384-.327c-.312-.25-.729-.552-1.209-.857-.893-.562-2.232-1.013-3.173-1.397-.602-.11-1.225-.06-1.906.39.449.2.837.349 1.182.463.812 0 1.892.365 2.935.922 1.042.556 2.04 1.214 2.523 1.774.066.077-.016.126-.074.07-.52-.495-1.463-1.204-2.498-1.756-.639-.337-2.153-1.01-2.886-1.01l.004.002c-.567.02-1.13.195-1.679.716.477.118.885.196 1.244.249-.44.088-.87.3-1.289.722.324.07.616.122.882.162-.328.159-.639.404-.923.78.373.03.703.042 1 .044-.36.166-.696.43-.996.85.533.027.98.025 1.364.003-.422.172-.812.464-1.145.968.662.01 1.188-.022 1.628-.076l-.006.002c.99-.073 2.297.127 2.962.847.052.057-.024.118-.072.074-.648-.58-1.493-.827-2.89-.921h-.002c-.543.149-1.046.446-1.46 1.074.536.008.982-.013 1.366-.05-.469.257-.873.644-1.139 1.306.483-.092.888-.19 1.237-.292-.363.265-.668.636-.873 1.194.324-.072.612-.146.871-.221a2.519 2.519 0 00-.513 1.095c.352-.13.655-.254.926-.377-.257.3-.453.681-.55 1.19.495-.199.899-.388 1.238-.568-.31.333-.543.76-.635 1.356a11.816 11.816 0 001.442-.744c-.433.362-.764.843-.879 1.587.788-.348 1.339-.663 1.767-.955-.184.372-.282.806-.235 1.348.762-.584 1.243-1.056 1.602-1.473-.024.269-.003.56.077.884.546-.939 1.089-1.212 1.65-1.526-.895.451-.762.79-.762 1.184.683-.72 1.635-1.482 1.927-1.96-.39.585-.547 1.14-.65 1.63-1.993 1.054-3.207 1.329-4.568 1.75.528.194 1.093.383.859.652l-.624.622c.399-.124.805-.3 1.158-.059-.035.327-.447.492-.8.683.621-.224.756-.172.92-.12.081.393-.203.603-.388.862 1.565-1.19 3.606-2.13 5.044-2.522 2.022-.681 4.63-1.389 5.339-3.115l.712-2.847-.004.004c-.111-.034-.246-.063-.35-.133a.651.651 0 01-.235-.297c-.252.065-.44.03-.56-.088-.117-.117-.167-.296-.203-.491-.203.041-.362.016-.467-.077-.116-.101-.17-.26-.198-.444l-.008-.039.037-.015a.842.842 0 00.302-.194.257.257 0 00.07-.225l-.006-.037.03-.016c.163-.093.345-.169.428-.28a.274.274 0 00.053-.21.88.88 0 00-.155-.357l-.027-.04.04-.027c.118-.09.244-.179.308-.26.032-.04.048-.076.047-.11 0-.033-.015-.07-.064-.117l-.098-.094.135.006c.213.01.395-.007.538-.053a.504.504 0 00.274-.197c-.007-.033-.02-.063-.02-.098a.484.484 0 01.967 0c0 .044-.015.084-.026.125.177.014.347.01.507-.06l.002.001.035-.013c.236-.085.334.045.72-.456-1.69-2.19-4.157-.635-4.977 1.622-.21.576-1.405.578-1.751 0-1.37-2.95-5.53-6.068-9.07-7.218zm.86 2.145c.906.293 1.913.782 2.77 1.328.43.273.813.543 1.114.779.301.236.566.473.62.575.054.102 0 .14-.082.06-.081-.078-.303-.32-.6-.553-.298-.234-.68-.505-1.106-.777-.775-.49-1.982-.958-2.716-1.412zm-1.7 2.7c1.116.014 2.35.447 3.434.997.541.275 1.023.567 1.395.83.372.263.672.524.734.657.061.134-.02.13-.087.055a4.401 4.401 0 00-.704-.626 11.47 11.47 0 00-1.385-.826C3.76 8.264 2.439 7.82 1.336 7.66zm14.916.772a.381.381 0 100 .762.381.381 0 000-.762zM1.7 8.478c.822.072 1.72.368 2.534.75 1.086.509 2.035 1.158 2.434 1.667.035.045-.014.131-.08.062-.428-.44-1.322-1.131-2.397-1.635-.913-.421-2.282-.87-3.262-.78.251-.03.497-.088.771-.064zm16.339.01c-.366.475-.53.423-.703.464.094.43.35.586.585.77l-.06.012c2.315-.447 4.186-.286 6.139-.236l-5.961-1.01zm-.178 1.246h-.002l-.004.016.006-.016zm-.625-.757c-.183.074-.373.076-.563.059a.477.477 0 01-.42.26.483.483 0 01-.435-.278.609.609 0 01-.274.188c-.139.045-.308.057-.493.055.02.035.054.068.055.104a.273.273 0 01-.069.174c-.073.092-.189.17-.295.248.087.141.137.26.149.362a.39.39 0 01-.07.284c-.106.14-.288.21-.439.293a.374.374 0 01-.09.268.89.89 0 01-.297.198c.027.156.074.283.154.354.086.076.211.103.425.047l.055-.014.01.055c.033.207.088.385.187.483.1.099.244.135.503.055l.049-.015.016.048c.05.142.12.223.209.282.087.06.247.112.358.147.798-.869 1.525-1.772 1.884-2.86-.225-.177-.506-.338-.609-.797zm-16.23.386c1.165-.08 2.283.196 3.202.626.92.43 1.658.939 1.974 1.307.075.087-.019.12-.072.072a8.187 8.187 0 00-1.947-1.29c-.904-.414-2.193-.644-3.157-.715zm.864.802c.61.02 1.24.155 1.806.352.756.262 1.421.614 1.747.98.045.05-.007.127-.074.069-.349-.304-.961-.693-1.706-.951-.574-.195-1.613-.369-2.268-.397.197-.022.292-.06.495-.053zm1.05 1.788c.423.034.886.133 1.341.407.043.026.049.136-.049.09-.856-.402-1.326-.49-2.457-.31.386-.128.74-.221 1.164-.187zm-.04.788c.4-.035.784-.002 1.297.204.044.018.08.126-.033.094-.857-.243-1.167-.328-2.287.104.28-.229.622-.366 1.023-.402zm1.285.687c.317-.023.635-.026.934.006.052.006.055.105-.006.102a7.87 7.87 0 00-1.837.115c-.243.046-.423.043-1.405.458.287-.233.794-.452 1.385-.56a8.91 8.91 0 01.93-.12zm1.28.49c.099.003.062.104.006.103-.728-.01-1.304.132-1.875.295a9.78 9.78 0 00-1.318.525c.283-.23.713-.457 1.291-.622.579-.166 1.248-.326 1.896-.302zm.528.398c.036-.005.105.084.018.1-.73.137-1.244.267-1.794.454-.216.074-.58.207-1.243.587.26-.269.656-.492 1.213-.68.558-.19 1.196-.37 1.806-.46zm.311.507c.075-.012.097.087.02.102-1.217.241-1.76.556-2.54 1.144.504-.523 1.297-1.051 2.52-1.246zm.595.448c.087-.013.11.087.021.1-.872.13-1.477.553-2.255 1.33.295-.493 1.004-1.24 2.234-1.43zm.372.39c.046-.006.114.073.023.1a2.634 2.634 0 00-.669.3c-.182.118-.3.2-.597.507.111-.245.296-.434.542-.59.247-.157.509-.293.7-.317z" /></svg><span class="code"><b>LaTeX</b> <i># The jet engine paper was written in it. Looks better, takes longer.</i></span></li>
+        <li class="blank"><span class="ln">22</span></li>
+        <li class="cmt"><span class="ln">23</span><span class="code"># databases, backend &amp; cloud</span></li>
+        <li class="dep"><span class="ln">24</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5594 14.7228a.5269.5269 0 0 0-.0563-.1191c-.139-.2632-.4768-.3418-1.0074-.2321-1.6533.3411-2.2935.1312-2.5256-.0191 1.342-2.0482 2.445-4.522 3.0411-6.8297.2714-1.0507.7982-3.5237.1222-4.7316a1.5641 1.5641 0 0 0-.1509-.235C21.6931.9086 19.8007.0248 17.5099.0005c-1.4947-.0158-2.7705.3461-3.1161.4794a9.449 9.449 0 0 0-.5159-.0816 8.044 8.044 0 0 0-1.3114-.1278c-1.1822-.0184-2.2038.2642-3.0498.8406-.8573-.3211-4.7888-1.645-7.2219.0788C.9359 2.1526.3086 3.8733.4302 6.3043c.0409.818.5069 3.334 1.2423 5.7436.4598 1.5065.9387 2.7019 1.4334 3.582.553.9942 1.1259 1.5933 1.7143 1.7895.4474.1491 1.1327.1441 1.8581-.7279.8012-.9635 1.5903-1.8258 1.9446-2.2069.4351.2355.9064.3625 1.39.3772a.0569.0569 0 0 0 .0004.0041 11.0312 11.0312 0 0 0-.2472.3054c-.3389.4302-.4094.5197-1.5002.7443-.3102.064-1.1344.2339-1.1464.8115-.0025.1224.0329.2309.0919.3268.2269.4231.9216.6097 1.015.6331 1.3345.3335 2.5044.092 3.3714-.6787-.017 2.231.0775 4.4174.3454 5.0874.2212.5529.7618 1.9045 2.4692 1.9043.2505 0 .5263-.0291.8296-.0941 1.7819-.3821 2.5557-1.1696 2.855-2.9059.1503-.8707.4016-2.8753.5388-4.1012.0169-.0703.0357-.1207.057-.1362.0007-.0005.0697-.0471.4272.0307a.3673.3673 0 0 0 .0443.0068l.2539.0223.0149.001c.8468.0384 1.9114-.1426 2.5312-.4308.6438-.2988 1.8057-1.0323 1.5951-1.6698zM2.371 11.8765c-.7435-2.4358-1.1779-4.8851-1.2123-5.5719-.1086-2.1714.4171-3.6829 1.5623-4.4927 1.8367-1.2986 4.8398-.5408 6.108-.13-.0032.0032-.0066.0061-.0098.0094-2.0238 2.044-1.9758 5.536-1.9708 5.7495-.0002.0823.0066.1989.0162.3593.0348.5873.0996 1.6804-.0735 2.9184-.1609 1.1504.1937 2.2764.9728 3.0892.0806.0841.1648.1631.2518.2374-.3468.3714-1.1004 1.1926-1.9025 2.1576-.5677.6825-.9597.5517-1.0886.5087-.3919-.1307-.813-.5871-1.2381-1.3223-.4796-.839-.9635-2.0317-1.4155-3.5126zm6.0072 5.0871c-.1711-.0428-.3271-.1132-.4322-.1772.0889-.0394.2374-.0902.4833-.1409 1.2833-.2641 1.4815-.4506 1.9143-1.0002.0992-.126.2116-.2687.3673-.4426a.3549.3549 0 0 0 .0737-.1298c.1708-.1513.2724-.1099.4369-.0417.156.0646.3078.26.3695.4752.0291.1016.0619.2945-.0452.4444-.9043 1.2658-2.2216 1.2494-3.1676 1.0128zm2.094-3.988-.0525.141c-.133.3566-.2567.6881-.3334 1.003-.6674-.0021-1.3168-.2872-1.8105-.8024-.6279-.6551-.9131-1.5664-.7825-2.5004.1828-1.3079.1153-2.4468.079-3.0586-.005-.0857-.0095-.1607-.0122-.2199.2957-.2621 1.6659-.9962 2.6429-.7724.4459.1022.7176.4057.8305.928.5846 2.7038.0774 3.8307-.3302 4.7363-.084.1866-.1633.3629-.2311.5454zm7.3637 4.5725c-.0169.1768-.0358.376-.0618.5959l-.146.4383a.3547.3547 0 0 0-.0182.1077c-.0059.4747-.054.6489-.115.8693-.0634.2292-.1353.4891-.1794 1.0575-.11 1.4143-.8782 2.2267-2.4172 2.5565-1.5155.3251-1.7843-.4968-2.0212-1.2217a6.5824 6.5824 0 0 0-.0769-.2266c-.2154-.5858-.1911-1.4119-.1574-2.5551.0165-.5612-.0249-1.9013-.3302-2.6462.0044-.2932.0106-.5909.019-.8918a.3529.3529 0 0 0-.0153-.1126 1.4927 1.4927 0 0 0-.0439-.208c-.1226-.4283-.4213-.7866-.7797-.9351-.1424-.059-.4038-.1672-.7178-.0869.067-.276.1831-.5875.309-.9249l.0529-.142c.0595-.16.134-.3257.213-.5012.4265-.9476 1.0106-2.2453.3766-5.1772-.2374-1.0981-1.0304-1.6343-2.2324-1.5098-.7207.0746-1.3799.3654-1.7088.5321a5.6716 5.6716 0 0 0-.1958.1041c.0918-1.1064.4386-3.1741 1.7357-4.4823a4.0306 4.0306 0 0 1 .3033-.276.3532.3532 0 0 0 .1447-.0644c.7524-.5706 1.6945-.8506 2.802-.8325.4091.0067.8017.0339 1.1742.081 1.939.3544 3.2439 1.4468 4.0359 2.3827.8143.9623 1.2552 1.9315 1.4312 2.4543-1.3232-.1346-2.2234.1268-2.6797.779-.9926 1.4189.543 4.1729 1.2811 5.4964.1353.2426.2522.4522.2889.5413.2403.5825.5515.9713.7787 1.2552.0696.087.1372.1714.1885.245-.4008.1155-1.1208.3825-1.0552 1.717-.0123.1563-.0423.4469-.0834.8148-.0461.2077-.0702.4603-.0994.7662zm.8905-1.6211c-.0405-.8316.2691-.9185.5967-1.0105a2.8566 2.8566 0 0 0 .135-.0406 1.202 1.202 0 0 0 .1342.103c.5703.3765 1.5823.4213 3.0068.1344-.2016.1769-.5189.3994-.9533.6011-.4098.1903-1.0957.333-1.7473.3636-.7197.0336-1.0859-.0807-1.1721-.151zm.5695-9.2712c-.0059.3508-.0542.6692-.1054 1.0017-.055.3576-.112.7274-.1264 1.1762-.0142.4368.0404.8909.0932 1.3301.1066.887.216 1.8003-.2075 2.7014a3.5272 3.5272 0 0 1-.1876-.3856c-.0527-.1276-.1669-.3326-.3251-.6162-.6156-1.1041-2.0574-3.6896-1.3193-4.7446.3795-.5427 1.3408-.5661 2.1781-.463zm.2284 7.0137a12.3762 12.3762 0 0 0-.0853-.1074l-.0355-.0444c.7262-1.1995.5842-2.3862.4578-3.4385-.0519-.4318-.1009-.8396-.0885-1.2226.0129-.4061.0666-.7543.1185-1.0911.0639-.415.1288-.8443.1109-1.3505.0134-.0531.0188-.1158.0118-.1902-.0457-.4855-.5999-1.938-1.7294-3.253-.6076-.7073-1.4896-1.4972-2.6889-2.0395.5251-.1066 1.2328-.2035 2.0244-.1859 2.0515.0456 3.6746.8135 4.8242 2.2824a.908.908 0 0 1 .0667.1002c.7231 1.3556-.2762 6.2751-2.9867 10.5405zm-8.8166-6.1162c-.025.1794-.3089.4225-.6211.4225a.5821.5821 0 0 1-.0809-.0056c-.1873-.026-.3765-.144-.5059-.3156-.0458-.0605-.1203-.178-.1055-.2844.0055-.0401.0261-.0985.0925-.1488.1182-.0894.3518-.1226.6096-.0867.3163.0441.6426.1938.6113.4186zm7.9305-.4114c.0111.0792-.049.201-.1531.3102-.0683.0717-.212.1961-.4079.2232a.5456.5456 0 0 1-.075.0052c-.2935 0-.5414-.2344-.5607-.3717-.024-.1765.2641-.3106.5611-.352.297-.0414.6111.0088.6356.1851z" /></svg><span class="code"><b>PostgreSQL</b> <i># Fixed Apple&#x27;s vendor reporting with a multi-step SQL workflow.</i></span></li>
+        <li class="dep"><span class="ln">25</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.405 5.501c-.115 0-.193.014-.274.033v.013h.014c.054.104.146.18.214.273.054.107.1.214.154.32l.014-.015c.094-.066.14-.172.14-.333-.04-.047-.046-.094-.08-.14-.04-.067-.126-.1-.18-.153zM5.77 18.695h-.927a50.854 50.854 0 00-.27-4.41h-.008l-1.41 4.41H2.45l-1.4-4.41h-.01a72.892 72.892 0 00-.195 4.41H0c.055-1.966.192-3.81.41-5.53h1.15l1.335 4.064h.008l1.347-4.064h1.095c.242 2.015.384 3.86.428 5.53zm4.017-4.08c-.378 2.045-.876 3.533-1.492 4.46-.482.716-1.01 1.073-1.583 1.073-.153 0-.34-.046-.566-.138v-.494c.11.017.24.026.386.026.268 0 .483-.075.647-.222.197-.18.295-.382.295-.605 0-.155-.077-.47-.23-.944L6.23 14.615h.91l.727 2.36c.164.536.233.91.205 1.123.4-1.064.678-2.227.835-3.483zm12.325 4.08h-2.63v-5.53h.885v4.85h1.745zm-3.32.135l-1.016-.5c.09-.076.177-.158.255-.25.433-.506.648-1.258.648-2.253 0-1.83-.718-2.746-2.155-2.746-.704 0-1.254.232-1.65.697-.43.508-.646 1.256-.646 2.245 0 .972.19 1.686.574 2.14.35.41.877.615 1.583.615.264 0 .506-.033.725-.098l1.325.772.36-.622zM15.5 17.588c-.225-.36-.337-.94-.337-1.736 0-1.393.424-2.09 1.27-2.09.443 0 .77.167.977.5.224.362.336.936.336 1.723 0 1.404-.424 2.108-1.27 2.108-.445 0-.77-.167-.978-.5zm-1.658-.425c0 .47-.172.856-.516 1.156-.344.3-.803.45-1.384.45-.543 0-1.064-.172-1.573-.515l.237-.476c.438.22.833.328 1.19.328.332 0 .593-.073.783-.22a.754.754 0 00.3-.615c0-.33-.23-.61-.648-.845-.388-.213-1.163-.657-1.163-.657-.422-.307-.632-.636-.632-1.177 0-.45.157-.81.47-1.085.315-.278.72-.415 1.22-.415.512 0 .98.136 1.4.41l-.213.476a2.726 2.726 0 00-1.064-.23c-.283 0-.502.068-.654.206a.685.685 0 00-.248.524c0 .328.234.61.666.85.393.215 1.187.67 1.187.67.433.305.648.63.648 1.168zm9.382-5.852c-.535-.014-.95.04-1.297.188-.1.04-.26.04-.274.167.055.053.063.14.11.214.08.134.218.313.346.407.14.11.28.216.427.31.26.16.555.255.81.416.145.094.293.213.44.313.073.05.12.14.214.172v-.02c-.046-.06-.06-.147-.105-.214-.067-.067-.134-.127-.2-.193a3.223 3.223 0 00-.695-.675c-.214-.146-.682-.35-.77-.595l-.013-.014c.146-.013.32-.066.46-.106.227-.06.435-.047.67-.106.106-.027.213-.06.32-.094v-.06c-.12-.12-.21-.283-.334-.395a8.867 8.867 0 00-1.104-.823c-.21-.134-.476-.22-.697-.334-.08-.04-.214-.06-.26-.127-.12-.146-.19-.34-.275-.514a17.69 17.69 0 01-.547-1.163c-.12-.262-.193-.523-.34-.763-.69-1.137-1.437-1.826-2.586-2.5-.247-.14-.543-.2-.856-.274-.167-.008-.334-.02-.5-.027-.11-.047-.216-.174-.31-.235-.38-.24-1.364-.76-1.644-.072-.18.434.267.862.422 1.082.115.153.26.328.34.5.047.116.06.235.107.356.106.294.207.622.347.897.073.14.153.287.247.413.054.073.146.107.167.227-.094.136-.1.334-.154.5-.24.757-.146 1.693.194 2.25.107.166.362.534.703.393.3-.12.234-.5.32-.835.02-.08.007-.133.048-.187v.015c.094.188.188.367.274.555.206.328.566.668.867.895.16.12.287.328.487.402v-.02h-.015c-.043-.058-.1-.086-.154-.133a3.445 3.445 0 01-.35-.4 8.76 8.76 0 01-.747-1.218c-.11-.21-.202-.436-.29-.643-.04-.08-.04-.2-.107-.24-.1.146-.247.273-.32.453-.127.288-.14.642-.188 1.01-.027.007-.014 0-.027.014-.214-.052-.287-.274-.367-.46-.2-.475-.233-1.238-.06-1.785.047-.14.247-.582.167-.716-.042-.127-.174-.2-.247-.303a2.478 2.478 0 01-.24-.427c-.16-.374-.24-.788-.414-1.162-.08-.173-.22-.354-.334-.513-.127-.18-.267-.307-.368-.52-.033-.073-.08-.194-.027-.274.014-.054.042-.075.094-.09.088-.072.335.022.422.062.247.1.455.194.662.334.094.066.195.193.315.226h.14c.214.047.455.014.655.073.355.114.675.28.962.46a5.953 5.953 0 012.085 2.286c.08.154.115.295.188.455.14.33.313.663.455.982.14.315.275.636.476.897.1.14.502.213.682.286.133.06.34.115.46.188.23.14.454.3.67.454.11.076.443.243.463.378z" /></svg><span class="code"><b>MySQL</b> <i># Behind Pixagram, one database per microservice.</i></span></li>
+        <li class="dep"><span class="ln">26</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.678.521c-1.032-.92-2.28-.55-3.513.544a8.71 8.71 0 0 0-.547.535c-2.109 2.237-4.066 6.38-4.674 9.544.237.48.422 1.093.544 1.561a13.044 13.044 0 0 1 .164.703s-.019-.071-.096-.296l-.05-.146a1.689 1.689 0 0 0-.033-.08c-.138-.32-.518-.995-.686-1.289-.143.423-.27.818-.376 1.176.484.884.778 2.4.778 2.4s-.025-.099-.147-.442c-.107-.303-.644-1.244-.772-1.464-.217.804-.304 1.346-.226 1.478.152.256.296.698.422 1.186.286 1.1.485 2.44.485 2.44l.017.224a22.41 22.41 0 0 0 .056 2.748c.095 1.146.273 2.13.5 2.657l.155-.084c-.334-1.038-.47-2.399-.41-3.967.09-2.398.642-5.29 1.661-8.304 1.723-4.55 4.113-8.201 6.3-9.945-1.993 1.8-4.692 7.63-5.5 9.788-.904 2.416-1.545 4.684-1.931 6.857.666-2.037 2.821-2.912 2.821-2.912s1.057-1.304 2.292-3.166c-.74.169-1.955.458-2.362.629-.6.251-.762.337-.762.337s1.945-1.184 3.613-1.72C21.695 7.9 24.195 2.767 21.678.521m-18.573.543A1.842 1.842 0 0 0 1.27 2.9v16.608a1.84 1.84 0 0 0 1.835 1.834h9.418a22.953 22.953 0 0 1-.052-2.707c-.006-.062-.011-.141-.016-.2a27.01 27.01 0 0 0-.473-2.378c-.121-.47-.275-.898-.369-1.057-.116-.197-.098-.31-.097-.432 0-.12.015-.245.037-.386a9.98 9.98 0 0 1 .234-1.045l.217-.028c-.017-.035-.014-.065-.031-.097l-.041-.381a32.8 32.8 0 0 1 .382-1.194l.2-.019c-.008-.016-.01-.038-.018-.053l-.043-.316c.63-3.28 2.587-7.443 4.8-9.791.066-.069.133-.128.198-.194Z" /></svg><span class="code"><b>SQLite</b> <i># The database that&#x27;s already on your phone.</i></span></li>
+        <li class="dep"><span class="ln">27</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.193 9.555c-1.264-5.58-4.252-7.414-4.573-8.115-.28-.394-.53-.954-.735-1.44-.036.495-.055.685-.523 1.184-.723.566-4.438 3.682-4.74 10.02-.282 5.912 4.27 9.435 4.888 9.884l.07.05A73.49 73.49 0 0111.91 24h.481c.114-1.032.284-2.056.51-3.07.417-.296.604-.463.85-.693a11.342 11.342 0 003.639-8.464c.01-.814-.103-1.662-.197-2.218zm-5.336 8.195s0-8.291.275-8.29c.213 0 .49 10.695.49 10.695-.381-.045-.765-1.76-.765-2.405z" /></svg><span class="code"><b>MongoDB</b> <i># Made queries 30% faster at Oneistox.</i></span></li>
+        <li class="dep"><span class="ln">28</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.71 13.145c-1.66 2.092-3.452 4.483-7.038 4.483-3.203 0-4.397-2.825-4.48-5.12.701 1.484 2.073 2.685 4.214 2.63 4.117-.133 6.94-3.852 6.94-7.239 0-4.05-3.022-6.972-8.268-6.972-3.752 0-8.4 1.428-11.455 3.685C2.59 6.937 3.885 9.958 4.35 9.626c2.648-1.904 4.748-3.13 6.784-3.744C8.12 9.244.886 17.05 0 18.425c.1 1.261 1.66 4.648 2.424 4.648.232 0 .431-.133.664-.365a100.49 100.49 0 0 0 5.54-6.765c.222 3.104 1.748 6.898 6.014 6.898 3.819 0 7.604-2.756 9.33-8.965.2-.764-.73-1.361-1.261-.73zm-4.349-5.013c0 1.959-1.926 2.922-3.685 2.922-.941 0-1.664-.247-2.235-.568 1.051-1.592 2.092-3.225 3.21-4.973 1.972.334 2.71 1.43 2.71 2.619z" /></svg><span class="code"><b>Redis</b> <i># Took Walmart&#x27;s average response time from 228 ms to 46 ms.</i></span></li>
+        <li class="dep"><span class="ln">29</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.71 2.136a1.43 1.43 0 0 0-2.047 0h-.007a1.48 1.48 0 0 0-.421 1.042c0 .41.161.777.422 1.039l.007.007c.257.264.616.426 1.019.426.404 0 .766-.162 1.027-.426l.003-.007c.261-.262.421-.629.421-1.039 0-.408-.159-.777-.421-1.042H9.71zM8.683 22.295c.404 0 .766-.167 1.027-.429l.003-.008c.261-.261.421-.631.421-1.036 0-.41-.159-.778-.421-1.044H9.71a1.42 1.42 0 0 0-1.027-.432 1.4 1.4 0 0 0-1.02.432h-.007c-.26.266-.422.634-.422 1.044 0 .406.161.775.422 1.036l.007.008c.258.262.617.429 1.02.429zm7.89-4.462c.359-.096.683-.33.882-.684l.027-.052a1.47 1.47 0 0 0 .114-1.067 1.454 1.454 0 0 0-.675-.896l-.021-.014a1.425 1.425 0 0 0-1.078-.132c-.36.091-.684.335-.881.686-.2.349-.241.75-.146 1.119.099.363.33.691.675.896h.002c.346.203.737.239 1.101.144zm-6.405-7.342a2.083 2.083 0 0 0-1.485-.627c-.58 0-1.103.242-1.482.627-.378.385-.612.916-.612 1.507s.233 1.124.612 1.514a2.08 2.08 0 0 0 2.967 0c.379-.39.612-.923.612-1.514s-.233-1.122-.612-1.507zm-.835-2.51c.843.141 1.6.552 2.178 1.144h.004c.092.093.182.196.265.299l1.446-.851a3.176 3.176 0 0 1-.047-1.808 3.149 3.149 0 0 1 1.456-1.926l.025-.016a3.062 3.062 0 0 1 2.345-.306c.77.21 1.465.721 1.898 1.482v.002c.431.757.518 1.626.313 2.408a3.145 3.145 0 0 1-1.456 1.928l-.198.118h-.02a3.095 3.095 0 0 1-2.154.201 3.127 3.127 0 0 1-1.514-.944l-1.444.848a4.162 4.162 0 0 1 0 2.879l1.444.846c.413-.47.939-.789 1.514-.944a3.041 3.041 0 0 1 2.371.319l.048.023v.002a3.17 3.17 0 0 1 1.408 1.906 3.215 3.215 0 0 1-.313 2.405l-.026.053-.003-.005a3.147 3.147 0 0 1-1.867 1.436 3.096 3.096 0 0 1-2.371-.318v-.006a3.156 3.156 0 0 1-1.456-1.927 3.175 3.175 0 0 1 .047-1.805l-1.446-.848a3.905 3.905 0 0 1-.265.294l-.004.005a3.938 3.938 0 0 1-2.178 1.138v1.699a3.09 3.09 0 0 1 1.56.862l.002.004c.565.572.914 1.368.914 2.243 0 .873-.35 1.664-.914 2.239l-.002.009a3.1 3.1 0 0 1-2.21.931 3.1 3.1 0 0 1-2.206-.93h-.002v-.009a3.186 3.186 0 0 1-.916-2.239c0-.875.35-1.672.916-2.243v-.004h.002a3.1 3.1 0 0 1 1.558-.862v-1.699a3.926 3.926 0 0 1-2.176-1.138l-.006-.005a4.098 4.098 0 0 1-1.173-2.874c0-1.122.452-2.136 1.173-2.872h.006a3.947 3.947 0 0 1 2.176-1.144V6.289a3.137 3.137 0 0 1-1.558-.864h-.002v-.004a3.192 3.192 0 0 1-.916-2.243c0-.871.35-1.669.916-2.243l.002-.002A3.084 3.084 0 0 1 8.683 0c.861 0 1.641.355 2.21.932v.002h.002c.565.574.914 1.372.914 2.243 0 .876-.35 1.667-.914 2.243l-.002.005a3.142 3.142 0 0 1-1.56.864v1.692zm8.121-1.129l-.012-.019a1.452 1.452 0 0 0-.87-.668 1.43 1.43 0 0 0-1.103.146h.002c-.347.2-.58.529-.677.896-.095.365-.054.768.146 1.119l.007.009c.2.347.519.579.874.673.357.103.755.059 1.098-.144l.019-.009a1.47 1.47 0 0 0 .657-.885 1.493 1.493 0 0 0-.141-1.118" /></svg><span class="code"><b>Kafka</b> <i># Event streams for Walmart&#x27;s stock and demand system.</i></span></li>
+        <li class="dep"><span class="ln">30</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z" /></svg><span class="code"><b>Node.js</b> <i># REST APIs at Oneistox, my first engineering job.</i></span></li>
+        <li class="dep"><span class="ln">31</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.03-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm-3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.263.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm6.41.862c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55a1.398 1.398 0 0 1-.072-.32c0-.128.064-.2.191-.2h.783c.151 0 .255.025.31.08.065.048.113.16.16.312l1.342 5.284 1.245-5.284c.04-.16.088-.264.151-.312a.549.549 0 0 1 .32-.08h.638c.152 0 .256.025.32.08.063.048.12.16.151.312l1.261 5.348 1.381-5.348c.048-.16.104-.264.16-.312a.52.52 0 0 1 .311-.08h.743c.127 0 .2.065.2.2 0 .04-.009.08-.017.128a1.137 1.137 0 0 1-.056.2l-1.923 6.17c-.048.16-.104.263-.168.311a.51.51 0 0 1-.303.08h-.687c-.151 0-.255-.024-.32-.08-.063-.056-.119-.16-.15-.32l-1.238-5.148-1.23 5.14c-.04.16-.087.264-.15.32-.065.056-.177.08-.32.08zm10.256.215c-.415 0-.83-.048-1.229-.143-.399-.096-.71-.2-.918-.32-.128-.071-.215-.151-.247-.223a.563.563 0 0 1-.048-.224v-.407c0-.167.064-.247.183-.247.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.566.215.878.279.319.064.63.096.95.096.502 0 .894-.088 1.165-.264a.86.86 0 0 0 .415-.758.777.777 0 0 0-.215-.559c-.144-.151-.416-.287-.807-.415l-1.157-.36c-.583-.183-1.014-.454-1.277-.813a1.902 1.902 0 0 1-.4-1.158c0-.335.073-.63.216-.886.144-.255.335-.479.575-.654.24-.184.51-.32.83-.415.32-.096.655-.136 1.006-.136.175 0 .359.008.535.032.183.024.35.056.518.088.16.04.312.08.455.127.144.048.256.096.336.144a.69.69 0 0 1 .24.2.43.43 0 0 1 .071.263v.375c0 .168-.064.256-.184.256a.83.83 0 0 1-.303-.096 3.652 3.652 0 0 0-1.532-.311c-.455 0-.815.071-1.062.223-.248.152-.375.383-.375.71 0 .224.08.416.24.567.159.152.454.304.877.44l1.134.358c.574.184.99.44 1.237.767.247.327.367.702.367 1.117 0 .343-.072.655-.207.926-.144.272-.336.511-.583.703-.248.2-.543.343-.886.447-.36.111-.734.167-1.142.167zM21.698 16.207c-2.626 1.94-6.442 2.969-9.722 2.969-4.598 0-8.74-1.7-11.87-4.526-.247-.223-.024-.527.272-.351 3.384 1.963 7.559 3.153 11.877 3.153 2.914 0 6.114-.607 9.06-1.852.439-.2.814.287.383.607zM22.792 14.961c-.336-.43-2.22-.207-3.074-.103-.255.032-.295-.192-.063-.36 1.5-1.053 3.967-.75 4.254-.399.287.36-.08 2.826-1.485 4.007-.215.184-.423.088-.327-.151.32-.79 1.03-2.57.695-2.994z" /></svg><span class="code"><b>AWS</b> <i># ECS, Lambda and S3 on the Walmart project.</i></span></li>
+        <li class="dep"><span class="ln">32</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z" /></svg><span class="code"><b>Docker</b> <i># Daily. It works on my machine, and now on yours too.</i></span></li>
+        <li class="blank"><span class="ln">33</span></li>
+        <li class="cmt"><span class="ln">34</span><span class="code"># languages, web &amp; engineering</span></li>
+        <li class="dep"><span class="ln">35</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.851 18.56s-.917.534.653.714c1.902.218 2.874.187 4.969-.211 0 0 .552.346 1.321.646-4.699 2.013-10.633-.118-6.943-1.149M8.276 15.933s-1.028.761.542.924c2.032.209 3.636.227 6.413-.308 0 0 .384.389.987.602-5.679 1.661-12.007.13-7.942-1.218M13.116 11.475c1.158 1.333-.304 2.533-.304 2.533s2.939-1.518 1.589-3.418c-1.261-1.772-2.228-2.652 3.007-5.688 0-.001-8.216 2.051-4.292 6.573M19.33 20.504s.679.559-.747.991c-2.712.822-11.288 1.069-13.669.033-.856-.373.75-.89 1.254-.998.527-.114.828-.093.828-.093-.953-.671-6.156 1.317-2.643 1.887 9.58 1.553 17.462-.7 14.977-1.82M9.292 13.21s-4.362 1.036-1.544 1.412c1.189.159 3.561.123 5.77-.062 1.806-.152 3.618-.477 3.618-.477s-.637.272-1.098.587c-4.429 1.165-12.986.623-10.522-.568 2.082-1.006 3.776-.892 3.776-.892M17.116 17.584c4.503-2.34 2.421-4.589.968-4.285-.355.074-.515.138-.515.138s.132-.207.385-.297c2.875-1.011 5.086 2.981-.928 4.562 0-.001.07-.062.09-.118M14.401 0s2.494 2.494-2.365 6.33c-3.896 3.077-.888 4.832-.001 6.836-2.274-2.053-3.943-3.858-2.824-5.539 1.644-2.469 6.197-3.665 5.19-7.627M9.734 23.924c4.322.277 10.959-.153 11.116-2.198 0 0-.302.775-3.572 1.391-3.688.694-8.239.613-10.937.168 0-.001.553.457 3.393.639" /></svg><span class="code"><b>Java</b> <i># Two years of production backend at Infosys.</i></span></li>
+        <li class="dep"><span class="ln">36</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m23.693 10.7058-4.73-8.1844c-.4094-.7106-1.4166-1.2942-2.2402-1.2942H7.2725c-.819 0-1.8308.5836-2.2402 1.2942L.307 10.7058c-.4095.7106-.4095 1.873 0 2.5837l4.7252 8.189c.4094.7107 1.4166 1.2943 2.2402 1.2943h9.455c.819 0 1.826-.5836 2.2402-1.2942l4.7252-8.189c.4095-.7107.4095-1.8732 0-2.5838zM10.9763 5.7547c0-.5365.4377-.9742.9742-.9742s.9742.4377.9742.9742v5.8217c0 .5366-.4377.9742-.9742.9742s-.9742-.4376-.9742-.9742zm.9742 12.4294c-3.6427 0-6.6077-2.965-6.6077-6.6077.0047-2.0896.993-4.0521 2.6685-5.304a.8657.8657 0 0 1 1.2142.1788.8657.8657 0 0 1-.1788 1.2143c-2.1602 1.6048-2.612 4.6592-1.0072 6.8194 1.6049 2.1603 4.6593 2.612 6.8195 1.0072 1.2378-.9177 1.9673-2.372 1.9673-3.9157a4.8972 4.8972 0 0 0-1.9861-3.925c-.386-.2824-.466-.8284-.1836-1.2143.2824-.386.8283-.466 1.2143-.1835 1.6895 1.2471 2.6826 3.2238 2.6873 5.3228 0 3.6474-2.965 6.6077-6.6077 6.6077z" /></svg><span class="code"><b>Spring Boot</b> <i># What the Walmart and Apple systems ran on.</i></span></li>
+        <li class="dep"><span class="ln">37</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z" /></svg><span class="code"><b>JavaScript</b> <i># EDIT, among other things.</i></span></li>
+        <li class="dep"><span class="ln">38</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" /></svg><span class="code"><b>React</b> <i># Components all the way down. EDIT is built on it.</i></span></li>
+        <li class="dep"><span class="ln">39</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.712 17.711H7.288l-1.204 2.916L12 24l5.916-3.373-1.204-2.916ZM14.692 0l7.832 16.855.814-12.856L14.692 0ZM9.308 0 .662 3.999l.814 12.856L9.308 0Zm-.405 13.93h6.198L12 6.396 8.903 13.93Z" /></svg><span class="code"><b>Angular</b> <i># Pixagram&#x27;s front end. React&#x27;s more opinionated cousin.</i></span></li>
+        <li class="dep"><span class="ln">40</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5921 9.1962s-.354-3.298-3.627-3.39c-3.2741-.09-4.9552 2.474-4.9552 6.14 0 3.6651 1.858 6.5972 5.0451 6.5972 3.184 0 3.5381-3.665 3.5381-3.665l6.1041.365s.36 3.31-2.196 5.836c-2.552 2.5241-5.6901 2.9371-7.8762 2.9201-2.19-.017-5.2261.034-8.1602-2.97-2.938-3.0101-3.436-5.9302-3.436-8.8002 0-2.8701.556-6.6702 4.047-9.5502C7.444.72 9.849 0 12.254 0c10.0422 0 10.7172 9.2602 10.7172 9.2602z" /></svg><span class="code"><b>C</b> <i># Learned during my B.Tech in New Delhi.</i></span></li>
+        <li class="dep"><span class="ln">41</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.394 6c-.167-.29-.398-.543-.652-.69L12.926.22c-.509-.294-1.34-.294-1.848 0L2.26 5.31c-.508.293-.923 1.013-.923 1.6v10.18c0 .294.104.62.271.91.167.29.398.543.652.69l8.816 5.09c.508.293 1.34.293 1.848 0l8.816-5.09c.254-.147.485-.4.652-.69.167-.29.27-.616.27-.91V6.91c.003-.294-.1-.62-.268-.91zM12 19.11c-3.92 0-7.109-3.19-7.109-7.11 0-3.92 3.19-7.11 7.11-7.11a7.133 7.133 0 016.156 3.553l-3.076 1.78a3.567 3.567 0 00-3.08-1.78A3.56 3.56 0 008.444 12 3.56 3.56 0 0012 15.555a3.57 3.57 0 003.08-1.778l3.078 1.78A7.135 7.135 0 0112 19.11zm7.11-6.715h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79zm2.962 0h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79z" /></svg><span class="code"><b>C++</b> <i># Also from the B.Tech, along with a healthy respect for memory.</i></span></li>
+        <li class="dep"><span class="ln">42</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.176 4.469a.817.817 0 00-.768.816v7.055a.816.816 0 001.182.73l7.058-3.527a.818.818 0 000-1.463L9.59 4.553a.808.808 0 00-.414-.084zm1.918 3.107h.638v.916h.916v.639h-.916v.918h-.638V9.13h-.918v-.639h.918v-.916zm-4.752 7.51v.367h.262c.086 0 .136.05.136.137v3.869h.41v-.273a2.6 2.6 0 00-.011-.256h.011s.281.603 1.028.603c.82 0 1.41-.646 1.41-1.635 0-.97-.522-1.642-1.361-1.642-.802 0-1.065.598-1.065.598H7.15s.012-.113.012-.256v-1.131c0-.267-.112-.381-.379-.381h-.441zm2.855 0v.387h.063c.118 0 .18.018.224.136l1.436 3.85h.467l1.437-3.85c.044-.118.105-.136.223-.136h.834v3.601h-.41v.385h1.25v-.385h-.418v-3.601h.418v-.387h-1.805c-.31 0-.404.056-.516.361l-1.076 2.942c-.08.223-.168.566-.168.566h-.011s-.088-.343-.168-.566L9.9 15.447c-.105-.298-.199-.361-.51-.361h-.193zm5.922 0v.387h.404v3.607c0 .268.112.379.38.379h1.89c.268 0 .379-.111.379-.379v-.435h-.404v.29c0 .094-.05.14-.137.14h-1.535c-.087 0-.137-.046-.137-.14v-1.484h1.64v-.387h-1.64v-1.591h1.492c.087 0 .137.043.137.136v.293h.41v-.435c0-.268-.112-.381-.379-.381h-2.5zM0 15.088v.385h.268c.086 0 .136.043.136.136v3.471c0 .268.112.379.38.379h1.81c.267 0 .379-.111.379-.379v-.435h-.41v.29c0 .094-.05.137-.137.137H.976c-.086 0-.136-.043-.136-.136v-3.47c0-.267-.112-.378-.38-.378H0zm18.334 0v.385h.076c.118 0 .197.018.229.136l1.002 3.85h.515l.897-3.047c.08-.28.156-.64.156-.64h.012s.067.366.142.646l.815 3.041h.515l1.008-3.85c.031-.118.106-.136.23-.136H24v-.385h-.193c-.311 0-.453.055-.528.36l-.76 3.015c-.055.224-.1.467-.1.467h-.01s-.039-.243-.1-.467l-.877-3.358h-.43l-.963 3.358c-.062.224-.12.467-.12.467h-.01s-.039-.243-.095-.467l-.757-3.016c-.075-.304-.219-.36-.53-.36h-.193zM4.637 16.256c-.274 0-1.02.094-1.02.53v.298h.404v-.2c0-.23.454-.273.61-.273.572 0 .808.23.808.883v.037h-.173c-.542 0-1.916.038-1.916 1.076 0 .622.54.926 1.062.926.784 0 1.046-.678 1.04-.678h.01s-.005.094-.005.23c0 .256.106.374.373.374h.43v-.367h-.262c-.087 0-.137-.044-.137-.137v-1.498c0-.672-.236-1.201-1.224-1.201zm3.527.387c.578 0 .988.49.988 1.255 0 .796-.452 1.262-1.006 1.262-.671 0-.996-.628-.996-1.256 0-.889.492-1.261 1.014-1.261zm-2.906 1.224h.181v.143c0 .54-.362 1.162-.959 1.162-.466 0-.695-.298-.695-.59 0-.703.982-.715 1.473-.715Z" /></svg><span class="code"><b>LabVIEW</b> <i># Programming by drawing wires between boxes.</i></span></li>
+        <li class="dep"><span class="ln">43</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.478 10.016c.24 0 .59.046 1.046.14v.726a2.465 2.465 0 0 0-.946-.213c-.41 0-.615.118-.615.354 0 .088.041.16.124.216.069.045.258.14.568.286.446.208.743.388.89.541.176.182.264.417.264.705 0 .415-.172.73-.516.949-.279.176-.64.264-1.085.264-.375 0-.753-.046-1.133-.139v-.755c.41.135.774.203 1.09.203.437 0 .655-.121.655-.362a.302.302 0 0 0-.095-.227c-.065-.065-.232-.155-.5-.27-.481-.208-.795-.384-.94-.53a.999.999 0 0 1-.284-.73c0-.377.137-.666.413-.864.272-.196.626-.294 1.064-.294zm21.19 0c.246 0 .565.04.956.123l.09.016v.727a2.471 2.471 0 0 0-.948-.213c-.409 0-.612.118-.612.354 0 .088.04.16.123.216.066.043.256.139.57.286.443.208.74.388.889.541.176.182.264.417.264.705 0 .415-.172.73-.514.949-.28.176-.643.264-1.087.264-.376 0-.754-.046-1.134-.139v-.755c.407.135.77.203 1.09.203.437 0 .655-.121.655-.362 0-.09-.03-.166-.092-.227-.066-.065-.233-.155-.503-.27-.48-.206-.793-.382-.94-.53a.997.997 0 0 1-.284-.732c0-.376.137-.664.413-.862.272-.196.627-.294 1.064-.294zm-12.674.066l.92 2.444.942-2.444h1.257v3.825h-.968v-2.708l-1.072 2.747h-.632l-1.052-2.747v2.708H8.67v-3.825zm-5.587 0v3.825H3.386v-3.825zm3.554 0v.692H6.327v.864H7.75v.63H6.327v.908h1.677v.73h-2.66v-3.824zm8.707 0v.692h-1.634v.864h1.422v.63h-1.422v.908h1.677v.73H14.05v-3.824zm1.898 0l1.255 2.56v-2.56h.719v3.825h-1.15l-1.288-2.595v2.595h-.72v-3.825z" /></svg><span class="code"><b>Siemens</b> <i># Industrial automation and PLCs.</i></span></li>
+        <li class="blank"><span class="ln">44</span></li>
+        <li class="cmt"><span class="ln">45</span><span class="code"># tooling &amp; staying organized</span></li>
+        <li class="dep"><span class="ln">46</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z" /></svg><span class="code"><b>Git</b> <i># Daily. Commit messages are getting better.</i></span></li>
+        <li class="dep"><span class="ln">47</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg><span class="code"><b>GitHub</b> <i># Where my side projects live.</i></span></li>
+        <li class="dep"><span class="ln">48</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.6152 0v.8867h3.8399V0zm5.0215 0v.8867h3.8418V0zm4.957 0v.8867h3.8418V0zm4.9356 0v.8867h3.8418V0zM2.4473 1.8945a.935.935 0 0 0-.9356.9356c0 .517.4185.9375.9356.9375h19.1054c.5171 0 .9356-.4204.9356-.9375a.935.935 0 0 0-.9356-.9356zm.168 2.8477V24H6.455V4.7422zm5.0214 0V20.543h3.8418V4.7422zm4.957 0V15.291h3.8497V4.7422zm4.9356 0v6.4941h3.8418V4.7422z" /></svg><span class="code"><b>pytest</b> <i># Tests that read like plain sentences.</i></span></li>
+        <li class="dep"><span class="ln">49</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m0 .97 4.111 6.453v4.09h2.638v-4.09L11.053.969H8.214L5.58 5.125 2.965.969Zm12.093.024-4.47 10.544h2.114l.97-2.345h4.775l.804 2.345h2.26L14.255.994Zm1.133 2.225 1.463 3.87h-3.096zm3.06 9.475v10.29H24v-2.199h-5.454v-8.091zm-12.175.002v10.335h2.217v-7.129l2.32 4.792h1.746l2.4-4.96v7.295h2.127V12.696h-2.904L9.44 17.37l-2.455-4.674Z" /></svg><span class="code"><b>YAML</b> <i># Config files, and the occasional indentation crisis.</i></span></li>
+        <li class="dep"><span class="ln">50</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.215 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1.001-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.001 1.001 0 0 0 23.013 0Z" /></svg><span class="code"><b>Jira</b> <i># Tickets, sprints, and the occasional “won&#x27;t fix”.</i></span></li>
+        <li class="dep"><span class="ln">51</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 0H3C1.35 0 0 1.35 0 3v3.858s3.854 2.24 4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.608 8.136-4.675.279-.161.58-.107.748-.01.164.097.606.348.84.48.232.134.221.502.013.622l-9.712 5.59c-.346.2-.69.204-1.048.002C3.478 10.907.998 9.463 0 8.882v2.02l4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.609 8.136-4.676.279-.16.58-.106.748-.008.164.096.606.347.84.48.232.133.221.5.013.62-.208.121-9.288 5.346-9.712 5.59-.346.2-.69.205-1.048.002C3.478 14.951.998 13.506 0 12.926v2.02l4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.609 8.136-4.676.279-.16.58-.106.748-.009.164.097.606.348.84.48.232.133.221.502.013.622l-9.712 5.59c-.346.199-.69.204-1.048.001C3.478 18.994.998 17.55 0 16.97V21c0 1.65 1.35 3 3 3h18c1.65 0 3-1.35 3-3V3c0-1.65-1.35-3-3-3z" /></svg><span class="code"><b>Todoist</b> <i># Where my to-do list lives, and occasionally gets done.</i></span></li>
+      </ol>
+      <div class="reqs-term"><span class="prompt">$</span> pip install janav<br /><span class="ok">Successfully installed janav-2026.10</span></div>
+    </div>
+  </section>
+
+  <!-- ================= OFF THE CLOCK ================= -->
+  <section id="off" class="block wrap">
+    <div class="off">
+      <div>
+        <p class="eyebrow">Off the clock</p>
+        <h2>When I <em>log off.</em></h2>
+      </div>
+      <div>
+        <p>For a while I spent a little too much of my life in front of a screen. My code was in great shape. Everything else, less so.</p>
+        <p>So now I log off on purpose. I travel whenever I can, take photos of most of it, and try to actually live a bit.</p>
+        <p>I also produce and mix music, which is mostly signal processing with better snacks.</p>
+      </div>
+    </div>
+    <!-- To add a photo, replace a <div class="ph">…</div> with <img src="photo.jpg" alt="Describe the photo"> -->
+    <div class="prints">
+      <figure class="print"><div class="ph"><span>Photo</span></div><figcaption>Somewhere new, phone on airplane mode</figcaption></figure>
+      <figure class="print"><div class="ph"><span>Photo</span></div><figcaption>Proof I went outside</figcaption></figure>
+      <figure class="print"><div class="ph"><span>Photo</span></div><figcaption>Me, for scale</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ================= LESSONS ================= -->
+  <section id="learned" class="block wrap">
+    <div class="block-head">
+      <p class="eyebrow">Lessons so far</p>
+      <h2>What broke, <em>and what it taught me.</em></h2>
+    </div>
+    <div class="lessons">
+      <article class="lesson">
+        <p class="from">From Apple</p>
+        <h3>If two reports disagree, assume they're both lying.</h3>
+        <p>On the vendor tracking platform the bugs weren't in the code, they were in the numbers. I now trust data the least when it looks the most finished.</p>
+      </article>
+      <article class="lesson">
+        <p class="from">From Walmart</p>
+        <h3>Fast is easy. Fast and correct is the job.</h3>
+        <p>Multi-threading made vendor plans 60% faster. Stopping two vendors from overwriting each other at peak time was the actual work.</p>
+      </article>
+      <article class="lesson">
+        <p class="from">From the master's</p>
+        <h3>AI is a power tool, not a pilot.</h3>
+        <p>I use it to move faster on the parts I already understand, then spend the time it saves building tools for myself. Exhibit A: <a href="#projects">EDIT</a>, the app that picks my outfit every morning so I don't have to.</p>
+      </article>
+      <article class="lesson">
+        <p class="from">From life</p>
+        <h3>AI can plan the trip. You still have to go.</h3>
+        <p>It'll write a decent itinerary in ten seconds. It can't get lost in a new city, find the good street food, or take the photo. That part's still on me, and it's the best part.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="contact wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Say <em>hello.</em></h2>
+    <p class="lede">I'm happy to talk about data science and software development roles, a project you're working on, or music. I reply to email quickly. Not 45 milliseconds quickly, but close.</p>
+    <div class="email">
+      <code id="addr">janavdhingra11@gmail.com</code>
+      <button class="btn" id="copy" type="button">Copy email</button>
+    </div>
+    <div class="links">
+      <a class="btn ghost" href="https://linkedin.com/in/janavdhingra" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn ghost" href="https://github.com/janavdhingra" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Janav Dhingra</span>
+    <span>Victoria, BC</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* theme toggle */
+  document.getElementById("theme").addEventListener("click", () => {
+    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+  });
+
+  /* copy email */
+  const copy = document.getElementById("copy"), addr = document.getElementById("addr");
+  copy.addEventListener("click", () => {
+    const done = () => { copy.textContent = "Copied"; setTimeout(() => copy.textContent = "Copy email", 1800); };
+    const fallback = () => { const s = getSelection(), r = document.createRange(); r.selectNodeContents(addr); s.removeAllRanges(); s.addRange(r); copy.textContent = "Press ⌘C"; };
+    try { navigator.clipboard.writeText(addr.textContent).then(done, fallback); } catch (e) { fallback(); }
+  });
+
+  /* ridgeline plot */
+  const cv = document.getElementById("ridge"), ctx = cv.getContext("2d");
+  let w = 0, h = 0, mouse = null, visible = true, t = 0;
+  const table = new Float32Array(512);
+  let seed = 11;
+  for (let k = 0; k < 512; k++) { seed = (seed * 16807) % 2147483647; table[k] = seed / 2147483647; }
+  const noise = x => { const i0 = Math.floor(x), f = x - i0, u = f * f * (3 - 2 * f); return table[i0 & 511] * (1 - u) + table[(i0 + 1) & 511] * u; };
+  const fbm = x => noise(x) * .6 + noise(x * 2.1 + 40) * .28 + noise(x * 4.3 + 90) * .12;
+
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    w = cv.clientWidth; h = cv.clientHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function draw() {
+    const css = getComputedStyle(root);
+    const bg = css.getPropertyValue("--bg").trim(), line = css.getPropertyValue("--plot").trim(), accent = css.getPropertyValue("--accent").trim();
+    ctx.clearRect(0, 0, w, h);
+    const lines = 18, gap = h / (lines + 3), step = 4, hi = 11;
+    for (let l = 0; l < lines; l++) {
+      const base = gap * (l + 3.2);
+      const centre = .5 + .18 * Math.sin(l * .7 + t * .04);
+      ctx.beginPath(); ctx.moveTo(0, base);
+      for (let x = 0; x <= w + step; x += step) {
+        const nx = x / w;
+        const env = Math.exp(-((nx - centre) ** 2) / .035);
+        let amp = fbm(nx * 6 + l * 17.3 + t * .12) * env * gap * 5.5;
+        if (mouse) {
+          const dy = Math.abs(mouse.y - base) / gap;
+          amp += Math.exp(-((x - mouse.x) ** 2) / 1800) * Math.exp(-dy * dy / 6) * gap * 2.4;
+        }
+        ctx.lineTo(x, base - Math.max(0, amp));
+      }
+      ctx.lineTo(w + step, base); ctx.closePath();
+      ctx.fillStyle = bg; ctx.fill();
+      ctx.lineWidth = l === hi ? 1.6 : 1;
+      ctx.strokeStyle = l === hi ? accent : line;
+      ctx.stroke();
+    }
+  }
+  function loop() { if (visible) { t += .016; draw(); } requestAnimationFrame(loop); }
+
+  resize(); draw();
+  addEventListener("resize", () => { resize(); draw(); });
+  new MutationObserver(draw).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+  if (!reduce) {
+    cv.addEventListener("pointermove", e => { const r = cv.getBoundingClientRect(); mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
+    cv.addEventListener("pointerleave", () => mouse = null);
+    new IntersectionObserver(([en]) => visible = en.isIntersecting).observe(cv);
+    requestAnimationFrame(loop);
+  }
+})();
+</script>
+
+</html>
