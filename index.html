@@ -273,7 +273,8 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .contact h2 { font-size: clamp(48px, 8vw, 104px); line-height: 1; }
 .contact .lede { font-size: 19px; color: var(--muted); max-width: 46ch; margin: 18px 0 30px; }
 .email { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.email .addr { font: 400 15px/1.2 var(--mono); color: var(--muted); user-select: all; overflow-wrap: anywhere; min-width: 0; }
+.email-link { font: 400 clamp(18px, 2.2vw, 26px)/1.3 var(--mono); color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 6px; overflow-wrap: anywhere; min-width: 0; transition: color .15s; }
+.email-link:hover { color: var(--accent); }
 .btn { font: 600 15px/1 var(--sans); padding: 14px 18px; border-radius: 4px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); cursor: pointer; text-decoration: none; }
 .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
 .btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
@@ -667,8 +668,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <h2>Say <em>hello.</em></h2>
       <p class="lede">I'm happy to talk about data science and software development roles, a project you're working on, or music. I reply to email quickly. Not 45 milliseconds quickly, but close.</p>
       <div class="email">
-        <a class="btn" href="mailto:janavdhingra11@gmail.com?subject=Hi%20Janav">Email me</a>
-        <span class="addr">janavdhingra11@gmail.com</span>
+        <a class="email-link" href="mailto:janavdhingra11@gmail.com?subject=Hi%20Janav">janavdhingra11@gmail.com</a>
       </div>
       <div class="links">
         <a class="btn ghost" href="https://linkedin.com/in/janavdhingra" target="_blank" rel="noopener">LinkedIn</a>
