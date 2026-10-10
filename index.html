@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" />
 <style>
-/* Layout: a quiet personal page. Text-led hero with a small ridgeline plot, a fact line, first-person work
+/* Layout: a quiet personal page. Text-led hero with a photo, a fact line and a draggable career timeline, first-person work
    stories, projects, the tech stack as a requirements.txt file, a short "off the clock", then contact. */
 :root {
   --bg: #f2f3f1;
@@ -70,9 +70,33 @@ h1 { font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; letter-spacing: -.0
 .portrait { margin: 0; justify-self: end; width: min(100%, 400px); }
 .portrait img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; background: var(--surface); }
 .portrait figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; font-style: italic; font-family: var(--serif); }
-figure.plot { margin: 8px 0 0; }
-#ridge { display: block; width: 100%; height: clamp(90px, 11vw, 140px); }
-figure.plot figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; font-style: italic; font-family: var(--serif); }
+/* career scrubber */
+.journey { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.jr-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; min-height: 2.2em; }
+.jr-date { font: 500 13px/1 var(--mono); color: var(--accent); min-width: 72px; font-variant-numeric: tabular-nums; }
+.jr-text { font: italic 400 clamp(18px, 1.8vw, 21px)/1.35 var(--serif); }
+.jr-track { position: relative; height: 140px; margin: 6px 12px 0; cursor: ew-resize; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
+.jr-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
+.jr-line, .jr-fill { position: absolute; left: 0; top: 69px; height: 2px; border-radius: 2px; }
+.jr-line { right: 0; background: var(--line); }
+.jr-fill { background: var(--accent); }
+.jr-stop { position: absolute; left: var(--x); top: 0; bottom: 0; width: 0; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; font: inherit; }
+.jr-dot { position: absolute; left: -6px; top: 64px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--plot); transition: border-color .2s, background .2s; }
+.jr-stop.past { color: var(--ink); }
+.jr-stop.past .jr-dot { border-color: var(--accent); }
+.jr-stop.current .jr-dot { background: var(--accent); }
+.jr-label { position: absolute; white-space: nowrap; font-size: 14px; line-height: 1.3; transition: color .2s; }
+.jr-label b { font-weight: 600; }
+.jr-label.up { bottom: calc(100% - 52px); }
+.jr-label.down { top: 88px; }
+.jr-label.l { left: -6px; }
+.jr-label.c { left: 0; transform: translateX(-50%); }
+.jr-label.r { right: -6px; }
+.jr-stop:hover .jr-label, .jr-stop:focus-visible .jr-label { color: var(--accent); }
+.jr-handle { position: absolute; top: 61px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); pointer-events: none; }
+.jr-track.settle .jr-handle, .jr-track.settle .jr-fill { transition: left .45s cubic-bezier(.2,.8,.2,1), width .45s cubic-bezier(.2,.8,.2,1); }
+.jr-now { position: absolute; right: -12px; top: 88px; font: 400 11px/1 var(--mono); color: var(--muted); }
+.jr-hint { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
 
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 32px; margin: 0; padding-block: 22px 8px; border-top: 1px solid var(--line); }
 .facts dt { font-size: 13px; color: var(--muted); }
@@ -221,6 +245,12 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 @media (max-width: 800px) {
   .bar nav a:not(.mail) { display: none; }
   .hero { grid-template-columns: minmax(0, 1fr); }
+  .jr-sub { display: none; }
+  .jr-label.up, .jr-label.down { top: 88px; bottom: auto; }
+  .jr-label.l { left: -6px; transform: none; }
+  .jr-label.r { right: auto; left: 0; transform: translateX(-50%); }
+  .jr-track { height: 112px; }
+  .jr-now { top: 40px; }
   .portrait { justify-self: start; width: min(100%, 360px); }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .story, .off { grid-template-columns: minmax(0, 1fr); }
@@ -279,10 +309,21 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div><dt>Previously</dt><dd>Infosys, for Walmart &amp; Apple</dd></div>
       <div><dt>Looking for</dt><dd>Data, ML &amp; software roles</dd></div>
     </dl>
-    <figure class="plot">
-      <canvas id="ridge" aria-label="A slowly moving ridgeline plot"></canvas>
-      <figcaption>Move your cursor over it. It reacts, unlike most dashboards.</figcaption>
-    </figure>
+    <div class="journey">
+      <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing a Master of Applied Data Science at UVic, in Victoria.</span></div>
+      <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic">
+        <div class="jr-line"></div>
+        <div class="jr-fill" style="width:100%"></div>
+        <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">B.Tech · New Delhi</span></span></button>
+        <button type="button" class="jr-stop" style="--x:32.37%" data-t="2021.9167" aria-label="Jump to 2021, Oneistox · Gurugram"><span class="jr-dot"></span><span class="jr-label down c"><b>2021</b> <span class="jr-sub">Oneistox · Gurugram</span></span></button>
+        <button type="button" class="jr-stop" style="--x:55.49%" data-t="2023.5833" aria-label="Jump to 2023, Infosys for Apple"><span class="jr-dot"></span><span class="jr-label up c"><b>2023</b> <span class="jr-sub">Infosys for Apple</span></span></button>
+        <button type="button" class="jr-stop" style="--x:71.68%" data-t="2024.7500" aria-label="Jump to 2024, Infosys for Walmart"><span class="jr-dot"></span><span class="jr-label down c"><b>2024</b> <span class="jr-sub">Infosys for Walmart</span></span></button>
+        <button type="button" class="jr-stop" style="--x:89.02%" data-t="2026.0000" aria-label="Jump to 2026, UVic · Victoria"><span class="jr-dot"></span><span class="jr-label up r"><b>2026</b> <span class="jr-sub">UVic · Victoria</span></span></button>
+        <div class="jr-handle" style="left:100%"></div>
+        <span class="jr-now">now</span>
+      </div>
+      <p class="jr-hint">Drag along the line, tap a year, or use the arrow keys.</p>
+    </div>
   </section>
 
   <!-- ================= WORK ================= -->
@@ -610,58 +651,63 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     try { navigator.clipboard.writeText(addr.textContent).then(done, fallback); } catch (e) { fallback(); }
   });
 
-  /* ridgeline plot */
-  const cv = document.getElementById("ridge"), ctx = cv.getContext("2d");
-  let w = 0, h = 0, mouse = null, visible = true, t = 0;
-  const table = new Float32Array(512);
-  let seed = 11;
-  for (let k = 0; k < 512; k++) { seed = (seed * 16807) % 2147483647; table[k] = seed / 2147483647; }
-  const noise = x => { const i0 = Math.floor(x), f = x - i0, u = f * f * (3 - 2 * f); return table[i0 & 511] * (1 - u) + table[(i0 + 1) & 511] * u; };
-  const fbm = x => noise(x) * .6 + noise(x * 2.1 + 40) * .28 + noise(x * 4.3 + 90) * .12;
-
-  function resize() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    w = cv.clientWidth; h = cv.clientHeight;
-    cv.width = w * dpr; cv.height = h * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  function draw() {
-    const css = getComputedStyle(root);
-    const bg = css.getPropertyValue("--bg").trim(), line = css.getPropertyValue("--plot").trim(), accent = css.getPropertyValue("--accent").trim();
-    ctx.clearRect(0, 0, w, h);
-    const lines = 9, gap = h / (lines + 2.5), step = 4, hi = 6;
-    for (let l = 0; l < lines; l++) {
-      const base = gap * (l + 2.6);
-      const centre = .5 + .18 * Math.sin(l * .7 + t * .04);
-      ctx.beginPath(); ctx.moveTo(0, base);
-      for (let x = 0; x <= w + step; x += step) {
-        const nx = x / w;
-        const env = Math.exp(-((nx - centre) ** 2) / .035);
-        let amp = fbm(nx * 6 + l * 17.3 + t * .12) * env * gap * 5.5;
-        if (mouse) {
-          const dy = Math.abs(mouse.y - base) / gap;
-          amp += Math.exp(-((x - mouse.x) ** 2) / 1800) * Math.exp(-dy * dy / 6) * gap * 2.4;
-        }
-        ctx.lineTo(x, base - Math.max(0, amp));
-      }
-      ctx.lineTo(w + step, base); ctx.closePath();
-      ctx.fillStyle = bg; ctx.fill();
-      ctx.lineWidth = l === hi ? 1.6 : 1;
-      ctx.strokeStyle = l === hi ? accent : line;
-      ctx.stroke();
+  /* career scrubber: drag through time, see what I was doing */
+  const track = document.querySelector(".jr-track");
+  if (track) {
+    const T0 = 2019 + 7 / 12;
+    const now = new Date(), TNOW = Math.max(now.getFullYear() + now.getMonth() / 12, 2026 + 1 / 12);
+    const periods = [
+      [2019 + 7 / 12, "Studying Information Technology at MSIT, in New Delhi."],
+      [2021 + 11 / 12, "Interning at Oneistox in Gurugram: MongoDB, Node.js and my first real APIs."],
+      [2022 + 5 / 12, "Finishing my B.Tech in New Delhi."],
+      [2023 + 7 / 12, "Infosys, for Apple: making the vendor numbers agree with each other."],
+      [2024 + 9 / 12, "Infosys, for Walmart: turning demand forecasts into what goes on the shelf."],
+      [2025 + 11 / 12, "Packing up Gurugram for Victoria."],
+      [2026, "Doing a Master of Applied Data Science at UVic, in Victoria."]
+    ];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const fill = track.querySelector(".jr-fill"), handle = track.querySelector(".jr-handle");
+    const stops = [...track.querySelectorAll(".jr-stop")];
+    const dateEl = document.querySelector(".jr-date"), textEl = document.querySelector(".jr-text");
+    const pct = t => (t - T0) / (TNOW - T0) * 100;
+    stops.forEach(b => b.style.setProperty("--x", pct(+b.dataset.t) + "%"));
+    let t = TNOW;
+    const label = v => { const m = Math.round((v % 1) * 12) % 12, y = Math.floor(v + 1e-6); return v >= TNOW - 1 / 24 ? "Now" : months[m] + " " + y; };
+    function set(v) {
+      t = Math.min(TNOW, Math.max(T0, v));
+      const p = pct(t);
+      fill.style.width = p + "%"; handle.style.left = p + "%";
+      let text = periods[0][1];
+      for (const [start, txt] of periods) if (t >= start - 1e-3) text = txt;
+      dateEl.textContent = label(t); textEl.textContent = text;
+      stops.forEach((b, i) => {
+        const st = +b.dataset.t, next = stops[i + 1] ? +stops[i + 1].dataset.t : Infinity;
+        b.classList.toggle("past", st <= t + 1e-3);
+        b.classList.toggle("current", st <= t + 1e-3 && t < next - 1e-3);
+      });
+      track.setAttribute("aria-valuenow", Math.round(p));
+      track.setAttribute("aria-valuetext", label(t) + ": " + text);
     }
-  }
-  function loop() { if (visible) { t += .016; draw(); } requestAnimationFrame(loop); }
-
-  resize(); draw();
-  addEventListener("resize", () => { resize(); draw(); });
-  new MutationObserver(draw).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
-  if (!reduce) {
-    cv.addEventListener("pointermove", e => { const r = cv.getBoundingClientRect(); mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
-    cv.addEventListener("pointerleave", () => mouse = null);
-    new IntersectionObserver(([en]) => visible = en.isIntersecting).observe(cv);
-    requestAnimationFrame(loop);
+    const fromX = x => { const r = track.getBoundingClientRect(); return T0 + (x - r.left) / r.width * (TNOW - T0); };
+    let dragging = false;
+    track.addEventListener("pointerdown", e => {
+      if (e.target.closest(".jr-stop")) return;
+      dragging = true; track.classList.remove("settle"); track.setPointerCapture(e.pointerId); set(fromX(e.clientX));
+    });
+    track.addEventListener("pointermove", e => {
+      if (dragging || e.pointerType === "mouse") { track.classList.remove("settle"); set(fromX(e.clientX)); }
+    });
+    const end = () => { dragging = false; };
+    track.addEventListener("pointerup", end); track.addEventListener("pointercancel", end);
+    track.addEventListener("pointerleave", e => { if (e.pointerType === "mouse" && !dragging) { track.classList.add("settle"); set(TNOW); } });
+    stops.forEach(b => b.addEventListener("click", () => { track.classList.add("settle"); set(+b.dataset.t); }));
+    track.addEventListener("keydown", e => {
+      const step = { ArrowRight: 1 / 12, ArrowUp: 1 / 12, ArrowLeft: -1 / 12, ArrowDown: -1 / 12, PageUp: 1, PageDown: -1 }[e.key];
+      if (step) { e.preventDefault(); track.classList.remove("settle"); set(t + step); }
+      else if (e.key === "Home") { e.preventDefault(); set(T0); }
+      else if (e.key === "End") { e.preventDefault(); set(TNOW); }
+    });
+    set(TNOW);
   }
 })();
 </script>
