@@ -48,7 +48,7 @@ h2 em, h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
 .lead-in { color: var(--muted); font-size: 19px; max-width: 54ch; margin: 14px 0 0; }
 
 /* ---------- top bar ---------- */
-.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
 .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; }
 .mark { font: 500 21px/1 var(--serif); text-decoration: none; }
 .bar nav { display: flex; gap: 26px; align-items: center; font-size: 15px; }
@@ -58,7 +58,8 @@ h2 em, h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
 #theme { font: inherit; font-size: 13px; background: none; color: var(--muted); cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
 
 /* ---------- hero ---------- */
-.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px 56px; align-items: center; }
+.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px 56px; align-items: stretch; }
+.hero > div { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.025em; }
 .hero .sub { font-size: clamp(17px, 1.5vw, 20px); color: var(--muted); max-width: 46ch; margin: 18px 0 0; }
 .hero-role { color: var(--accent); margin-bottom: 18px; }
@@ -68,11 +69,11 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .hero .sub b { color: var(--ink); font-weight: 500; }
 .hero .roles { margin: 18px 0 0; font-size: 15px; color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
 .hero .roles::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); flex: none; }
-.portrait { margin: 0; justify-self: end; width: min(100%, 400px, calc(42svh * .8)); }
-.portrait img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; background: var(--surface); }
+.portrait { margin: 0; min-height: 480px; height: min(calc(100svh - var(--bar) - 64px), 860px); }
+.portrait img { display: block; width: 100%; max-width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; border-radius: 4px; background: var(--surface); }
 .portrait figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; font-style: italic; font-family: var(--serif); }
 /* career scrubber */
-.journey { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.journey { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
 .jr-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; min-height: 2.2em; }
 .jr-date { font: 500 13px/1 var(--mono); color: var(--accent); min-width: 72px; font-variant-numeric: tabular-nums; }
 .jr-text { font: italic 400 clamp(18px, 1.8vw, 21px)/1.35 var(--serif); }
@@ -116,12 +117,11 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
   .reqs-term .out { min-height: 1.6em; }
 }
 
-/* one section per screen; snap between them on larger screens */
+/* one section per screen on larger screens */
 .screen { display: flex; flex-direction: column; justify-content: center; padding-block: 56px; }
 .screen > .wrap { width: 100%; }
 @media (min-width: 900px) and (min-height: 640px) {
-  html { scroll-snap-type: y proximity; }
-  .screen { min-height: calc(100svh - var(--bar)); padding-block: 32px; scroll-snap-align: start; }
+  .screen { min-height: calc(100svh - var(--bar)); padding-block: 32px; }
 }
 .block-head { margin-bottom: 28px; }
 
@@ -270,7 +270,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .jr-label.r { right: auto; left: 0; transform: translateX(-50%); }
   .jr-track { height: 112px; }
   .jr-now { top: 40px; }
-  .portrait { justify-self: start; width: min(100%, 360px); }
+  .portrait { width: min(100%, 440px); height: auto; min-height: 0; }
+  .portrait img { height: auto; aspect-ratio: 4 / 5; }
   .screen.intro { padding-top: 24px; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .story, .off { grid-template-columns: minmax(0, 1fr); }
@@ -319,25 +320,25 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </ul>
           <p class="sub">Hi, I'm Janav. I spent three years as a software engineer. Somewhere along the way I noticed I knew exactly where the data went, but not what it was saying. So now I'm doing a <b>Master of Applied Data Science</b> at the University of Victoria to close that gap.</p>
           <p class="roles">Open to data scientist, machine learning engineer, AI engineer and software developer roles.</p>
+        <div class="journey">
+          <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing a Master of Applied Data Science at UVic, in Victoria.</span></div>
+          <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic">
+            <div class="jr-line"></div>
+            <div class="jr-fill" style="width:100%"></div>
+            <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">New Delhi</span></span></button>
+            <button type="button" class="jr-stop" style="--x:32.37%" data-t="2021.9167" aria-label="Jump to 2021, Oneistox · Gurugram"><span class="jr-dot"></span><span class="jr-label down c"><b>2021</b> <span class="jr-sub">Oneistox</span></span></button>
+            <button type="button" class="jr-stop" style="--x:55.49%" data-t="2023.5833" aria-label="Jump to 2023, Infosys for Apple"><span class="jr-dot"></span><span class="jr-label up c"><b>2023</b> <span class="jr-sub">Apple</span></span></button>
+            <button type="button" class="jr-stop" style="--x:71.68%" data-t="2024.7500" aria-label="Jump to 2024, Infosys for Walmart"><span class="jr-dot"></span><span class="jr-label down c"><b>2024</b> <span class="jr-sub">Walmart</span></span></button>
+            <button type="button" class="jr-stop" style="--x:89.02%" data-t="2026.0000" aria-label="Jump to 2026, UVic · Victoria"><span class="jr-dot"></span><span class="jr-label up r"><b>2026</b> <span class="jr-sub">UVic</span></span></button>
+            <div class="jr-handle" style="left:100%"></div>
+            <span class="jr-now">now</span>
+          </div>
+          <p class="jr-hint">Drag along the line, tap a year, or use the arrow keys.</p>
+        </div>
         </div>
         <figure class="portrait">
           <img src="img/janav-victoria.jpg" alt="Janav in the gardens outside the Empress hotel in Victoria" width="1200" height="1500" />
         </figure>
-      </div>
-      <div class="journey">
-        <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing a Master of Applied Data Science at UVic, in Victoria.</span></div>
-        <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic">
-          <div class="jr-line"></div>
-          <div class="jr-fill" style="width:100%"></div>
-          <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">B.Tech · New Delhi</span></span></button>
-          <button type="button" class="jr-stop" style="--x:32.37%" data-t="2021.9167" aria-label="Jump to 2021, Oneistox · Gurugram"><span class="jr-dot"></span><span class="jr-label down c"><b>2021</b> <span class="jr-sub">Oneistox · Gurugram</span></span></button>
-          <button type="button" class="jr-stop" style="--x:55.49%" data-t="2023.5833" aria-label="Jump to 2023, Infosys for Apple"><span class="jr-dot"></span><span class="jr-label up c"><b>2023</b> <span class="jr-sub">Infosys for Apple</span></span></button>
-          <button type="button" class="jr-stop" style="--x:71.68%" data-t="2024.7500" aria-label="Jump to 2024, Infosys for Walmart"><span class="jr-dot"></span><span class="jr-label down c"><b>2024</b> <span class="jr-sub">Infosys for Walmart</span></span></button>
-          <button type="button" class="jr-stop" style="--x:89.02%" data-t="2026.0000" aria-label="Jump to 2026, UVic · Victoria"><span class="jr-dot"></span><span class="jr-label up r"><b>2026</b> <span class="jr-sub">UVic · Victoria</span></span></button>
-          <div class="jr-handle" style="left:100%"></div>
-          <span class="jr-now">now</span>
-        </div>
-        <p class="jr-hint">Drag along the line, tap a year, or use the arrow keys.</p>
       </div>
     </div>
   </section>
@@ -600,7 +601,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         </div>
       </div>
       <figure class="life-photo">
-        <img src="img/janav-railing.jpg" alt="Janav in a red shirt leaning on a railing, looking out across a glass-roofed atrium" width="1200" height="1500" loading="lazy" />
+        <img src="img/janav-railing.jpg" alt="Janav in a red shirt leaning on a railing, looking out across a glass-roofed atrium" width="1200" height="1500" loading="lazy" decoding="async" />
       </figure>
     </div>
     </div>
@@ -656,7 +657,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       </div>
       </div>
       <figure class="contact-photo">
-        <img src="img/janav-corridor.jpg" alt="Janav in a tan sweater holding a coffee, in a long plant-lined walkway" width="1200" height="1500" loading="lazy" />
+        <img src="img/janav-corridor.jpg" alt="Janav in a tan sweater holding a coffee, in a long plant-lined walkway" width="1200" height="1500" loading="lazy" decoding="async" />
       </figure>
     </div>
     </div>
