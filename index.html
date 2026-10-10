@@ -58,7 +58,7 @@ h2 em, h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
 #theme { font: inherit; font-size: 13px; background: none; color: var(--muted); cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
 
 /* ---------- hero ---------- */
-.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px 56px; align-items: stretch; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px clamp(32px, 4vw, 56px); align-items: stretch; }
 .hero > div { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.025em; }
 .hero .sub { font-size: clamp(17px, 1.5vw, 20px); color: var(--muted); max-width: 46ch; margin: 18px 0 0; }
@@ -70,6 +70,7 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .hero .roles { margin: 18px 0 0; font-size: 15px; color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
 .hero .roles::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); flex: none; }
 .portrait { margin: 0; min-height: 480px; height: min(calc(100svh - var(--bar) - 64px), 860px); }
+@media (min-width: 801px) and (max-height: 760px) { .portrait { height: calc(100svh - var(--bar) - 32px); } }
 .portrait img { display: block; width: 100%; max-width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; border-radius: 4px; background: var(--surface); }
 .portrait figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; font-style: italic; font-family: var(--serif); }
 /* career scrubber */
@@ -115,6 +116,25 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
   .reqs-body .dep:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .hover-hint { display: inline; }
   .reqs-term .out { min-height: 1.6em; }
+}
+
+/* intro scales with the window height so the whole thing fits on one screen */
+@media (min-width: 801px) {
+  .intro h1 { font-size: clamp(34px, min(4.4vw, 7svh), 62px); }
+  .intro .hero-role { margin-bottom: min(18px, 1.8svh); }
+  .intro .traits { margin-top: min(22px, 2.2svh); }
+  .intro .traits li { padding: min(6px, .7svh) 13px; }
+  .intro .sub { font-size: clamp(15px, min(1.45vw, 2.5svh), 20px); margin-top: min(18px, 2svh); line-height: 1.55; }
+  .intro .journey { margin-top: min(28px, 3svh); padding-top: min(18px, 2svh); }
+  .intro .jr-text { font-size: clamp(16px, min(1.6vw, 2.6svh), 21px); }
+  .intro .portrait { min-height: 0; }
+}
+@media (min-width: 801px) and (max-height: 760px) {
+  .screen.intro { padding-block: 16px; }
+  .intro .jr-track { height: 112px; }
+  .intro .jr-label.down { top: 84px; }
+  .intro .jr-now { top: 84px; }
+  .intro .jr-hint { display: none; }
 }
 
 /* one section per screen on larger screens */
@@ -319,10 +339,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             <li>Developer</li><li>Tinkerer</li><li>Traveller</li>
           </ul>
           <p class="sub">Hi, I'm Janav. I spent three years as a software engineer. Somewhere along the way I noticed I knew exactly where the data went, but not what it was saying. So now I'm doing a <b>Master of Applied Data Science</b> at the University of Victoria to close that gap.</p>
-          <p class="roles">Open to data scientist, machine learning engineer, AI engineer and software developer roles.</p>
         <div class="journey">
-          <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing my master's at UVic and looking for data science, ML and software roles.</span></div>
-          <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic, looking for roles">
+          <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing my master's at UVic. Open to data scientist, ML engineer, AI engineer and software developer roles.</span></div>
+          <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic, open to data scientist, ML engineer, AI engineer and software developer roles">
             <div class="jr-line"></div>
             <div class="jr-fill" style="width:100%"></div>
             <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">New Delhi</span></span></button>
@@ -728,7 +747,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       fill.style.width = p + "%"; handle.style.left = p + "%";
       let text = periods[0][1];
       for (const [start, txt] of periods) if (t >= start - 1e-3) text = txt;
-      if (t >= TNOW - 1 / 24) text = "Doing my master's at UVic and looking for data science, ML and software roles.";
+      if (t >= TNOW - 1 / 24) text = "Doing my master's at UVic. Open to data scientist, ML engineer, AI engineer and software developer roles.";
       dateEl.textContent = label(t); textEl.textContent = text;
       stops.forEach((b, i) => {
         const st = +b.dataset.t, next = stops[i + 1] ? +stops[i + 1].dataset.t : Infinity;
