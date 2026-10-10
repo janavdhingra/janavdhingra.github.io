@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" />
 <style>
-/* Layout: a quiet personal page. Text-led hero with a photo, a fact line and a draggable career timeline, first-person work
+/* Layout: a quiet personal page. One screen per section: intro with photo and a draggable career timeline, first-person work
    stories, projects, the tech stack as a requirements.txt file, a short "off the clock", then contact. */
 :root {
   --bg: #f2f3f1;
@@ -19,6 +19,7 @@
   --line: #d2d6d2;
   --plot: #a3aba8;
   --accent: #2e5e5a;
+  --bar: 64px;
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
@@ -35,7 +36,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--bar); }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -57,9 +58,9 @@ h2 em, h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
 #theme { font: inherit; font-size: 13px; background: none; color: var(--muted); cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
 
 /* ---------- hero ---------- */
-.hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px 56px; align-items: center; padding-block: clamp(48px, 8vw, 96px) 40px; }
-h1 { font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; letter-spacing: -.025em; }
-.hero .sub { font-size: clamp(18px, 1.7vw, 21px); color: var(--muted); max-width: 44ch; margin: 24px 0 0; }
+.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px 56px; align-items: center; }
+h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.025em; }
+.hero .sub { font-size: clamp(17px, 1.5vw, 20px); color: var(--muted); max-width: 46ch; margin: 18px 0 0; }
 .hero-role { color: var(--accent); margin-bottom: 18px; }
 .traits { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .traits li { font-size: 14px; font-weight: 500; padding: 6px 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
@@ -67,15 +68,15 @@ h1 { font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; letter-spacing: -.0
 .hero .sub b { color: var(--ink); font-weight: 500; }
 .hero .roles { margin: 18px 0 0; font-size: 15px; color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
 .hero .roles::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); flex: none; }
-.portrait { margin: 0; justify-self: end; width: min(100%, 400px); }
+.portrait { margin: 0; justify-self: end; width: min(100%, 400px, calc(42svh * .8)); }
 .portrait img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; background: var(--surface); }
 .portrait figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; font-style: italic; font-family: var(--serif); }
 /* career scrubber */
-.journey { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.journey { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
 .jr-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; min-height: 2.2em; }
 .jr-date { font: 500 13px/1 var(--mono); color: var(--accent); min-width: 72px; font-variant-numeric: tabular-nums; }
 .jr-text { font: italic 400 clamp(18px, 1.8vw, 21px)/1.35 var(--serif); }
-.jr-track { position: relative; height: 140px; margin: 6px 12px 0; cursor: ew-resize; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
+.jr-track { position: relative; height: 128px; margin: 0 12px; cursor: ew-resize; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
 .jr-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
 .jr-line, .jr-fill { position: absolute; left: 0; top: 69px; height: 2px; border-radius: 2px; }
 .jr-line { right: 0; background: var(--line); }
@@ -103,8 +104,26 @@ h1 { font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; letter-spacing: -.0
 .facts dd { margin: 2px 0 0; font-weight: 500; }
 
 /* ---------- sections ---------- */
-section.block { padding-block: 88px 24px; }
-.block-head { margin-bottom: 40px; }
+/* desktop: package names only, notes print in the terminal line on hover */
+.hover-hint { display: none; }
+@media (min-width: 900px) {
+  .reqs .reqs-body { columns: 4 200px; padding-block: 14px; }
+  .reqs .reqs-body li { padding: 2px 0; }
+  .reqs-body .code i { display: none; }
+  .reqs-body .dep { cursor: default; }
+  .reqs-body .dep:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hover-hint { display: inline; }
+  .reqs-term .out { min-height: 1.6em; }
+}
+
+/* one section per screen; snap between them on larger screens */
+.screen { display: flex; flex-direction: column; justify-content: center; padding-block: 56px; }
+.screen > .wrap { width: 100%; }
+@media (min-width: 900px) and (min-height: 640px) {
+  html { scroll-snap-type: y proximity; }
+  .screen { min-height: calc(100svh - var(--bar)); padding-block: 32px; scroll-snap-align: start; }
+}
+.block-head { margin-bottom: 28px; }
 
 /* ---------- work stories ---------- */
 .story { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 12px 56px; padding-block: 40px; border-top: 1px solid var(--line); }
@@ -147,7 +166,7 @@ section.block { padding-block: 88px 24px; }
 .project a { font-size: 15px; font-weight: 600; color: var(--accent); text-decoration: none; }
 .project a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-.feature-project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px 56px; align-items: center; padding: clamp(24px, 4vw, 44px); background: var(--surface); border-radius: 4px; margin-bottom: 20px; }
+.feature-project { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 32px 56px; align-items: center; padding: clamp(24px, 4vw, 44px); background: var(--surface); border-radius: 4px; margin-bottom: 20px; }
 .fp-kicker { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
 .feature-project h3 { font-size: clamp(32px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -.015em; }
 .fp-tagline { font: italic 400 21px/1.4 var(--serif); color: var(--muted); margin: 10px 0 18px; }
@@ -156,7 +175,7 @@ section.block { padding-block: 88px 24px; }
 .fp-facts li { padding-left: 18px; position: relative; }
 .fp-facts li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 .fp-facts b { color: var(--ink); font-weight: 600; }
-.phones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.phones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; width: min(100%, calc(46svh * 9 / 19.5 * 3 + 28px)); justify-self: center; }
 .phone { margin: 0; }
 .phone:nth-child(2) { margin-top: 36px; }
 .phone:nth-child(3) { margin-top: 12px; }
@@ -230,11 +249,11 @@ section.block { padding-block: 88px 24px; }
 .contact-text { min-width: 0; }
 .contact-photo { margin: 0; justify-self: end; width: min(100%, 360px); }
 .contact-photo img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; background: var(--surface); }
-.contact { padding-block: 104px 72px; }
+
 .contact h2 { font-size: clamp(48px, 8vw, 104px); line-height: 1; }
 .contact .lede { font-size: 19px; color: var(--muted); max-width: 46ch; margin: 18px 0 30px; }
 .email { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.email code { font: 400 clamp(16px, 2.2vw, 22px)/1.2 var(--mono); padding: 13px 16px; background: var(--surface); border-radius: 4px; user-select: all; overflow-wrap: anywhere; min-width: 0; }
+.email .addr { font: 400 15px/1.2 var(--mono); color: var(--muted); user-select: all; overflow-wrap: anywhere; min-width: 0; }
 .btn { font: 600 15px/1 var(--sans); padding: 14px 18px; border-radius: 4px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); cursor: pointer; text-decoration: none; }
 .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
 .btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
@@ -252,6 +271,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .jr-track { height: 112px; }
   .jr-now { top: 40px; }
   .portrait { justify-self: start; width: min(100%, 360px); }
+  .screen.intro { padding-top: 24px; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .story, .off { grid-template-columns: minmax(0, 1fr); }
   .life-photo { justify-self: start; width: min(100%, 360px); }
@@ -264,7 +284,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .projects, .lessons { grid-template-columns: minmax(0, 1fr); }
   .feature-project { grid-template-columns: minmax(0, 1fr); }
   .phone .ph, .phone img { border-radius: 16px; border-width: 4px; }
-  section.block { padding-block: 64px 16px; }
+  .screen { padding-block: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .track i { animation: none; }
@@ -286,209 +306,220 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </div>
 </header>
 
-<main id="top">
-  <!-- ================= INTRO ================= -->
-  <section class="wrap">
-    <div class="hero">
-      <div>
-        <p class="eyebrow hero-role">Software developer &amp; data scientist</p>
-        <h1>I used to move the data. <em>Now I ask it questions.</em></h1>
-        <ul class="traits" aria-label="About me">
-          <li>Developer</li><li>Tinkerer</li><li>Traveller</li>
-        </ul>
-        <p class="sub">Hi, I'm Janav. I spent three years as a software engineer. Somewhere along the way I noticed I knew exactly where the data went, but not what it was saying. So now I'm doing a <b>Master of Applied Data Science</b> at the University of Victoria to close that gap.</p>
-        <p class="roles">Open to data scientist, machine learning engineer, AI engineer and software developer roles.</p>
-      </div>
-      <figure class="portrait">
-        <img src="img/janav-victoria.jpg" alt="Janav in the gardens outside the Empress hotel in Victoria" width="1200" height="1500" />
-      </figure>
-    </div>
-    <dl class="facts">
-      <div><dt>Based in</dt><dd>Victoria, BC</dd></div>
-      <div><dt>Studying</dt><dd>Applied Data Science, UVic</dd></div>
-      <div><dt>Previously</dt><dd>Infosys, for Walmart &amp; Apple</dd></div>
-      <div><dt>Looking for</dt><dd>Data, ML &amp; software roles</dd></div>
-    </dl>
-    <div class="journey">
-      <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing a Master of Applied Data Science at UVic, in Victoria.</span></div>
-      <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic">
-        <div class="jr-line"></div>
-        <div class="jr-fill" style="width:100%"></div>
-        <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">B.Tech · New Delhi</span></span></button>
-        <button type="button" class="jr-stop" style="--x:32.37%" data-t="2021.9167" aria-label="Jump to 2021, Oneistox · Gurugram"><span class="jr-dot"></span><span class="jr-label down c"><b>2021</b> <span class="jr-sub">Oneistox · Gurugram</span></span></button>
-        <button type="button" class="jr-stop" style="--x:55.49%" data-t="2023.5833" aria-label="Jump to 2023, Infosys for Apple"><span class="jr-dot"></span><span class="jr-label up c"><b>2023</b> <span class="jr-sub">Infosys for Apple</span></span></button>
-        <button type="button" class="jr-stop" style="--x:71.68%" data-t="2024.7500" aria-label="Jump to 2024, Infosys for Walmart"><span class="jr-dot"></span><span class="jr-label down c"><b>2024</b> <span class="jr-sub">Infosys for Walmart</span></span></button>
-        <button type="button" class="jr-stop" style="--x:89.02%" data-t="2026.0000" aria-label="Jump to 2026, UVic · Victoria"><span class="jr-dot"></span><span class="jr-label up r"><b>2026</b> <span class="jr-sub">UVic · Victoria</span></span></button>
-        <div class="jr-handle" style="left:100%"></div>
-        <span class="jr-now">now</span>
-      </div>
-      <p class="jr-hint">Drag along the line, tap a year, or use the arrow keys.</p>
-    </div>
-  </section>
-
-  <!-- ================= WORK ================= -->
-  <section id="work" class="block wrap">
-    <div class="block-head">
-      <p class="eyebrow">Work</p>
-      <h2>What I've been doing, <em>newest first.</em></h2>
-    </div>
-
-    <article class="story">
-      <div class="meta">
-        <span class="n">01</span>
-        <span class="org">University of Victoria</span>
-        <span>Master of Applied Data Science</span>
-        <span>Jan 2026 – now</span>
-      </div>
-      <div>
-        <h3>The switch.</h3>
-        <div class="note">
-          <p>For three years my job was making data move faster. I got one request from 228 milliseconds down to 45 and felt great about it.</p>
-          <p>Then I noticed the forecasts I was shipping around were more interesting than the shipping. So I went back to school to work on the part that thinks.</p>
-          <p class="kicker">Same data. Better questions.</p>
+<main>
+  <!-- 1. Intro -->
+  <section class="screen intro" id="top">
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <p class="eyebrow hero-role">Software developer &amp; data scientist</p>
+          <h1>I used to move the data. <em>Now I ask it questions.</em></h1>
+          <ul class="traits" aria-label="About me">
+            <li>Developer</li><li>Tinkerer</li><li>Traveller</li>
+          </ul>
+          <p class="sub">Hi, I'm Janav. I spent three years as a software engineer. Somewhere along the way I noticed I knew exactly where the data went, but not what it was saying. So now I'm doing a <b>Master of Applied Data Science</b> at the University of Victoria to close that gap.</p>
+          <p class="roles">Open to data scientist, machine learning engineer, AI engineer and software developer roles.</p>
         </div>
-        <p>Coursework in statistical learning, machine learning, optimization, data warehousing and data visualization, plus a research project on how far you can trust a model's predictions (it's in Projects). I'm also in the UVic Data Science and Entrepreneur clubs.</p>
-      </div>
-    </article>
-
-    <article class="story">
-      <div class="meta">
-        <span class="n">02</span>
-        <span class="org">Infosys, for Walmart</span>
-        <span>Software Engineer</span>
-        <span>Oct 2024 – Dec 2025</span>
-      </div>
-      <div>
-        <h3>Turning demand forecasts into what goes on the shelf.</h3>
-        <p>I led development of an internal stock and demand system for Walmart North America. The Data Science team sent forecasts in, and the system worked out what each store needed and where it should go: shelf, hanger or warehouse. Stores in coastal and dry climates got different advice, depending on how fast items were selling.</p>
-        <div class="figs">
-          <div><b>60%</b><span>less time to generate vendor plans</span></div>
-          <div><b>80%</b><span>lower average response time</span></div>
-          <div><b>3×</b><span>the throughput</span></div>
-        </div>
-        <div class="meter" role="img" aria-label="Average response time fell from 228.4 milliseconds to 45.6 milliseconds">
-          <p>Average response time, before and after moving storage from S3 to Redis</p>
-          <div class="mrow"><span>Before</span><div class="track"><i style="--w:100%; --c:var(--plot)"></i></div><b>228.4 ms</b></div>
-          <div class="mrow"><span>After</span><div class="track"><i style="--w:20%; --c:var(--accent)"></i></div><b>45.6 ms</b></div>
-        </div>
-        <p class="stack-line">Java · Spring Boot · PostgreSQL · Kafka · Redis · AWS</p>
-        <p class="award"><b>Infosys Insta Award, 2025</b> for this system.</p>
-      </div>
-    </article>
-
-    <article class="story">
-      <div class="meta">
-        <span class="n">03</span>
-        <span class="org">Infosys, for Apple</span>
-        <span>Software Engineer</span>
-        <span>Aug 2023 – Sep 2024</span>
-      </div>
-      <div>
-        <h3>Making the vendor numbers agree with each other.</h3>
-        <p>My first project after university. Apple's vendor tracking reports didn't always add up, so I designed a multi-step SQL workflow that fixed the inconsistencies, and a pipeline of scheduled batch jobs and event-driven processing to feed it. I also pulled reports and one-off extracts from large transactional datasets for the business side.</p>
-        <p class="stack-line">SQL · PostgreSQL · Spring Boot · 85%+ test coverage</p>
-      </div>
-    </article>
-
-    <article class="story">
-      <div class="meta">
-        <span class="n">04</span>
-        <span class="org">Oneistox</span>
-        <span>Software Development Intern</span>
-        <span>Dec 2021 – May 2022</span>
-      </div>
-      <div>
-        <h3>Where it started.</h3>
-        <p>My first engineering job, during my B.Tech in New Delhi. I reworked MongoDB schemas and queries so data loaded 30% faster, and built the REST APIs and backend for onboarding, course tracking and mentoring.</p>
-        <p class="stack-line">Node.js · Express · MongoDB</p>
-      </div>
-    </article>
-  </section>
-
-  <!-- ================= PROJECTS ================= -->
-  <section id="projects" class="block wrap">
-    <div class="block-head">
-      <p class="eyebrow">Projects</p>
-      <h2>Things I built <em>because I wanted to.</em></h2>
-    </div>
-    <article class="feature-project">
-      <div class="fp-text">
-        <p class="fp-kicker">Featured · Mobile web app</p>
-        <h3>EDIT: Daily Style</h3>
-        <p class="fp-tagline">One outfit a day, picked from your own closet. Nobody needs an infinite scroll at 7:40 in the morning.</p>
-        <p>EDIT checks the live weather where you are and what's on your calendar, then gives you one main look, two backups, and a short reason why it works. A presentation gets something sharper. A lecture gets something easier.</p>
-        <p>The picks come from a scoring system I wrote by hand. It rates each combination on colour harmony, fit balance, formality and warmth, and it learns from what you like, save and actually wear.</p>
-        <ul class="fp-facts">
-          <li><b>No accounts, no server database.</b> Everything stays on your phone.</li>
-          <li><b>Installs like an app.</b> It's a PWA, so it lives on your home screen.</li>
-          <li><b>Calendar sync</b> through a small serverless relay on Netlify.</li>
-        </ul>
-        <p class="stack-line">React · JavaScript · Open-Meteo API · iCal parsing · Netlify Functions · browser storage</p>
-      </div>
-      <!-- To add a screenshot, replace a <div class="ph">…</div> with <img src="edit-1.png" alt="Describe the screen"> -->
-      <div class="phones">
-        <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Today's pick</figcaption></figure>
-        <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Why it works</figcaption></figure>
-        <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Your closet</figcaption></figure>
-      </div>
-    </article>
-
-    <article class="feature-project fp-wide">
-      <div class="fp-text">
-        <p class="fp-kicker">Full-stack · Microservices</p>
-        <h3>Pixagram</h3>
-        <p class="fp-tagline">I built this before AI was writing everyone's code. I kinda like it.</p>
-        <p>An Instagram-style app where you can post photos, like, comment, follow people and see what's trending. Six Spring Boot services sit behind one gateway that checks your login token on every request, and each service keeps its own MySQL database. One <code>docker-compose up</code> starts all seven containers.</p>
-        <p>Trending hashtags get pulled out of captions as you post. The Caption Studio writes captions in four tones and tags every post with one of seven vibes, all from hand-written keyword lists and templates, because that's what AI meant back then.</p>
-        <p class="stack-line">Angular 17 · TypeScript · Spring Boot · Spring Cloud Gateway · MySQL 8 · JWT · Docker Compose</p>
-        <a class="fp-link" href="https://github.com/janavdhingra/pixagram" target="_blank" rel="noopener">See it on GitHub →</a>
-      </div>
-      <dl class="fp-stats">
-        <div><dt>6</dt><dd>microservices</dd></div>
-        <div><dt>4</dt><dd>database schemas</dd></div>
-        <div><dt>17+</dt><dd>REST APIs</dd></div>
-        <div><dt>7</dt><dd>containers, one command</dd></div>
-      </dl>
-    </article>
-
-    <article class="feature-project fp-wide fp-research">
-      <div class="fp-text">
-        <p class="fp-kicker">Master's research · Machine learning</p>
-        <h3>How sure is the model? Prediction intervals for jet engines</h3>
-        <p class="fp-tagline">A model that says "74 more flights" sounds confident. One that says "58 to 85, guaranteed 90% of the time" is actually useful.</p>
-        <p>With three classmates at UVic, I worked on predicting how many flights a turbofan engine has left before it's unsafe, using NASA's C-MAPSS data. We wrapped LSTM and gradient-boosting models in seven conformal prediction methods, which turn a single guess into a range with a coverage guarantee, and tested that guarantee across 112 combinations of data, model and method.</p>
-        <p>It held almost everywhere. Where it broke, on the hardest dataset and only for mid-life engines, we used Kolmogorov–Smirnov tests to trace it to calibration and test engines not looking alike, then repaired it with weighted CQR. Then we broke it on purpose with a frozen-pipeline stress test, just to see how it fails.</p>
-        <p class="stack-line">Python · LSTM &amp; quantile LSTM · gradient boosting · conformal prediction (MAPIE) · KS tests · 63 unit tests</p>
-      </div>
-      <div class="fp-side">
-        <figure class="rul-fig">
-          <svg class="rul-chart" viewBox="0 0 400 150" role="img" aria-label="A point prediction of 74 flights versus a conformal interval from 58 to 85 flights, on an axis from 40 to 100 flights">
-            <text x="20" y="18" class="lbl">Point model: "74 more flights"</text>
-            <line x1="20" y1="34" x2="380" y2="34" class="axis" />
-            <circle cx="224.0" cy="34" r="6" class="dot" />
-            <text x="20" y="74" class="lbl">Conformal: "58 to 85 flights, 90% guaranteed"</text>
-            <line x1="20" y1="90" x2="380" y2="90" class="axis" />
-            <rect x="128.0" y="84" width="162.0" height="12" rx="6" class="band" />
-            <circle cx="224.0" cy="90" r="4" class="dot" />
-            <text x="128.0" y="114" class="tick" text-anchor="middle">58</text>
-            <text x="290.0" y="114" class="tick" text-anchor="middle">85</text>
-            <text x="20" y="140" class="tick">40</text>
-            <text x="380" y="140" class="tick" text-anchor="end">100 flights</text>
-          </svg>
-          <figcaption>Same model underneath. The range is what an engineer can safely act on.</figcaption>
+        <figure class="portrait">
+          <img src="img/janav-victoria.jpg" alt="Janav in the gardens outside the Empress hotel in Victoria" width="1200" height="1500" />
         </figure>
-        <dl class="fp-stats">
-          <div><dt>15.30</dt><dd>LSTM error (RMSE) on FD001, under the 16 target</dd></div>
-          <div><dt>30%</dt><dd>narrower intervals with CQR, same guarantee</dd></div>
-          <div><dt>89.5%</dt><dd>coverage restored on the one dataset that broke</dd></div>
-          <div><dt>1</dt><dd>command to reproduce every table and figure</dd></div>
-        </dl>
       </div>
-    </article>
+      <div class="journey">
+        <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing a Master of Applied Data Science at UVic, in Victoria.</span></div>
+        <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic">
+          <div class="jr-line"></div>
+          <div class="jr-fill" style="width:100%"></div>
+          <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">B.Tech · New Delhi</span></span></button>
+          <button type="button" class="jr-stop" style="--x:32.37%" data-t="2021.9167" aria-label="Jump to 2021, Oneistox · Gurugram"><span class="jr-dot"></span><span class="jr-label down c"><b>2021</b> <span class="jr-sub">Oneistox · Gurugram</span></span></button>
+          <button type="button" class="jr-stop" style="--x:55.49%" data-t="2023.5833" aria-label="Jump to 2023, Infosys for Apple"><span class="jr-dot"></span><span class="jr-label up c"><b>2023</b> <span class="jr-sub">Infosys for Apple</span></span></button>
+          <button type="button" class="jr-stop" style="--x:71.68%" data-t="2024.7500" aria-label="Jump to 2024, Infosys for Walmart"><span class="jr-dot"></span><span class="jr-label down c"><b>2024</b> <span class="jr-sub">Infosys for Walmart</span></span></button>
+          <button type="button" class="jr-stop" style="--x:89.02%" data-t="2026.0000" aria-label="Jump to 2026, UVic · Victoria"><span class="jr-dot"></span><span class="jr-label up r"><b>2026</b> <span class="jr-sub">UVic · Victoria</span></span></button>
+          <div class="jr-handle" style="left:100%"></div>
+          <span class="jr-now">now</span>
+        </div>
+        <p class="jr-hint">Drag along the line, tap a year, or use the arrow keys.</p>
+      </div>
+    </div>
   </section>
 
-  <!-- ================= STACK ================= -->
-  <section id="stack" class="block wrap">
+  <!-- 2–4. Work -->
+  <section class="screen" id="work">
+    <div class="wrap">
+      <div class="block-head">
+        <p class="eyebrow">Work</p>
+        <h2>What I've been doing, <em>newest first.</em></h2>
+      </div>
+      <article class="story">
+        <div class="meta">
+          <span class="n">01</span>
+          <span class="org">University of Victoria</span>
+          <span>Master of Applied Data Science</span>
+          <span>Jan 2026 – now</span>
+        </div>
+        <div>
+          <h3>The switch.</h3>
+          <div class="note">
+            <p>For three years my job was making data move faster. I got one request from 228 milliseconds down to 45 and felt great about it.</p>
+            <p>Then I noticed the forecasts I was shipping around were more interesting than the shipping. So I went back to school to work on the part that thinks.</p>
+            <p class="kicker">Same data. Better questions.</p>
+          </div>
+          <p>Coursework in statistical learning, machine learning, optimization, data warehousing and data visualization, plus a research project on how far you can trust a model's predictions (it's in Projects). I'm also in the UVic Data Science and Entrepreneur clubs.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="screen" id="walmart">
+    <div class="wrap">
+      <article class="story">
+        <div class="meta">
+          <span class="n">02</span>
+          <span class="org">Infosys, for Walmart</span>
+          <span>Software Engineer</span>
+          <span>Oct 2024 – Dec 2025</span>
+        </div>
+        <div>
+          <h3>Turning demand forecasts into what goes on the shelf.</h3>
+          <p>I led development of an internal stock and demand system for Walmart North America. The Data Science team sent forecasts in, and the system worked out what each store needed and where it should go: shelf, hanger or warehouse. Stores in coastal and dry climates got different advice, depending on how fast items were selling.</p>
+          <div class="figs">
+            <div><b>60%</b><span>less time to generate vendor plans</span></div>
+            <div><b>80%</b><span>lower average response time</span></div>
+            <div><b>3×</b><span>the throughput</span></div>
+          </div>
+          <div class="meter" role="img" aria-label="Average response time fell from 228.4 milliseconds to 45.6 milliseconds">
+            <p>Average response time, before and after moving storage from S3 to Redis</p>
+            <div class="mrow"><span>Before</span><div class="track"><i style="--w:100%; --c:var(--plot)"></i></div><b>228.4 ms</b></div>
+            <div class="mrow"><span>After</span><div class="track"><i style="--w:20%; --c:var(--accent)"></i></div><b>45.6 ms</b></div>
+          </div>
+          <p class="stack-line">Java · Spring Boot · PostgreSQL · Kafka · Redis · AWS</p>
+          <p class="award"><b>Infosys Insta Award, 2025</b> for this system.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="screen" id="apple">
+    <div class="wrap">
+      <article class="story">
+        <div class="meta">
+          <span class="n">03</span>
+          <span class="org">Infosys, for Apple</span>
+          <span>Software Engineer</span>
+          <span>Aug 2023 – Sep 2024</span>
+        </div>
+        <div>
+          <h3>Making the vendor numbers agree with each other.</h3>
+          <p>My first project after university. Apple's vendor tracking reports didn't always add up, so I designed a multi-step SQL workflow that fixed the inconsistencies, and a pipeline of scheduled batch jobs and event-driven processing to feed it. I also pulled reports and one-off extracts from large transactional datasets for the business side.</p>
+          <p class="stack-line">SQL · PostgreSQL · Spring Boot · 85%+ test coverage</p>
+        </div>
+      </article>
+      <article class="story">
+        <div class="meta">
+          <span class="n">04</span>
+          <span class="org">Oneistox</span>
+          <span>Software Development Intern</span>
+          <span>Dec 2021 – May 2022</span>
+        </div>
+        <div>
+          <h3>Where it started.</h3>
+          <p>My first engineering job, during my B.Tech in New Delhi. I reworked MongoDB schemas and queries so data loaded 30% faster, and built the REST APIs and backend for onboarding, course tracking and mentoring.</p>
+          <p class="stack-line">Node.js · Express · MongoDB</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 5–7. Projects -->
+  <section class="screen" id="projects">
+    <div class="wrap">
+      <div class="block-head">
+        <p class="eyebrow">Projects</p>
+        <h2>Things I built <em>because I wanted to.</em></h2>
+      </div>
+      <article class="feature-project">
+        <div class="fp-text">
+          <p class="fp-kicker">Featured · Mobile web app</p>
+          <h3>EDIT: Daily Style</h3>
+          <p class="fp-tagline">One outfit a day, picked from your own closet. Nobody needs an infinite scroll at 7:40 in the morning.</p>
+          <p>EDIT checks the live weather where you are and what's on your calendar, then gives you one main look, two backups, and a short reason why it works. A presentation gets something sharper. A lecture gets something easier.</p>
+          <p>The picks come from a scoring system I wrote by hand. It rates each combination on colour harmony, fit balance, formality and warmth, and it learns from what you like, save and actually wear.</p>
+          <ul class="fp-facts">
+            <li><b>No accounts, no server database.</b> Everything stays on your phone.</li>
+            <li><b>Installs like an app.</b> It's a PWA, so it lives on your home screen.</li>
+            <li><b>Calendar sync</b> through a small serverless relay on Netlify.</li>
+          </ul>
+          <p class="stack-line">React · JavaScript · Open-Meteo API · iCal parsing · Netlify Functions · browser storage</p>
+        </div>
+        <!-- To add a screenshot, replace a <div class="ph">…</div> with <img src="edit-1.png" alt="Describe the screen"> -->
+        <div class="phones">
+          <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Today's pick</figcaption></figure>
+          <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Why it works</figcaption></figure>
+          <figure class="phone"><div class="ph"><span>Screenshot</span></div><figcaption>Your closet</figcaption></figure>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="screen" id="research">
+    <div class="wrap">
+      <article class="feature-project fp-wide fp-research">
+        <div class="fp-text">
+          <p class="fp-kicker">Master's research · Machine learning</p>
+          <h3>How sure is the model? Prediction intervals for jet engines</h3>
+          <p class="fp-tagline">A model that says "74 more flights" sounds confident. One that says "58 to 85, guaranteed 90% of the time" is actually useful.</p>
+          <p>With three classmates at UVic, I worked on predicting how many flights a turbofan engine has left before it's unsafe, using NASA's C-MAPSS data. We wrapped LSTM and gradient-boosting models in seven conformal prediction methods, which turn a single guess into a range with a coverage guarantee, and tested that guarantee across 112 combinations of data, model and method.</p>
+          <p>It held almost everywhere. Where it broke, on the hardest dataset and only for mid-life engines, we used Kolmogorov–Smirnov tests to trace it to calibration and test engines not looking alike, then repaired it with weighted CQR. Then we broke it on purpose with a frozen-pipeline stress test, just to see how it fails.</p>
+          <p class="stack-line">Python · LSTM &amp; quantile LSTM · gradient boosting · conformal prediction (MAPIE) · KS tests · 63 unit tests</p>
+        </div>
+        <div class="fp-side">
+          <figure class="rul-fig">
+            <svg class="rul-chart" viewBox="0 0 400 150" role="img" aria-label="A point prediction of 74 flights versus a conformal interval from 58 to 85 flights, on an axis from 40 to 100 flights">
+              <text x="20" y="18" class="lbl">Point model: "74 more flights"</text>
+              <line x1="20" y1="34" x2="380" y2="34" class="axis" />
+              <circle cx="224.0" cy="34" r="6" class="dot" />
+              <text x="20" y="74" class="lbl">Conformal: "58 to 85 flights, 90% guaranteed"</text>
+              <line x1="20" y1="90" x2="380" y2="90" class="axis" />
+              <rect x="128.0" y="84" width="162.0" height="12" rx="6" class="band" />
+              <circle cx="224.0" cy="90" r="4" class="dot" />
+              <text x="128.0" y="114" class="tick" text-anchor="middle">58</text>
+              <text x="290.0" y="114" class="tick" text-anchor="middle">85</text>
+              <text x="20" y="140" class="tick">40</text>
+              <text x="380" y="140" class="tick" text-anchor="end">100 flights</text>
+            </svg>
+            <figcaption>Same model underneath. The range is what an engineer can safely act on.</figcaption>
+          </figure>
+          <dl class="fp-stats">
+            <div><dt>15.30</dt><dd>LSTM error (RMSE) on FD001, under the 16 target</dd></div>
+            <div><dt>30%</dt><dd>narrower intervals with CQR, same guarantee</dd></div>
+            <div><dt>89.5%</dt><dd>coverage restored on the one dataset that broke</dd></div>
+            <div><dt>1</dt><dd>command to reproduce every table and figure</dd></div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="screen" id="pixagram">
+    <div class="wrap">
+      <article class="feature-project fp-wide">
+        <div class="fp-text">
+          <p class="fp-kicker">Full-stack · Microservices</p>
+          <h3>Pixagram</h3>
+          <p class="fp-tagline">I built this before AI was writing everyone's code. I kinda like it.</p>
+          <p>An Instagram-style app where you can post photos, like, comment, follow people and see what's trending. Six Spring Boot services sit behind one gateway that checks your login token on every request, and each service keeps its own MySQL database. One <code>docker-compose up</code> starts all seven containers.</p>
+          <p>Trending hashtags get pulled out of captions as you post. The Caption Studio writes captions in four tones and tags every post with one of seven vibes, all from hand-written keyword lists and templates, because that's what AI meant back then.</p>
+          <p class="stack-line">Angular 17 · TypeScript · Spring Boot · Spring Cloud Gateway · MySQL 8 · JWT · Docker Compose</p>
+          <a class="fp-link" href="https://github.com/janavdhingra/pixagram" target="_blank" rel="noopener">See it on GitHub →</a>
+        </div>
+        <dl class="fp-stats">
+          <div><dt>6</dt><dd>microservices</dd></div>
+          <div><dt>4</dt><dd>database schemas</dd></div>
+          <div><dt>17+</dt><dd>REST APIs</dd></div>
+          <div><dt>7</dt><dd>containers, one command</dd></div>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <!-- 8. Tools -->
+  <section class="screen" id="stack">
+    <div class="wrap">
     <div class="block-head">
       <p class="eyebrow">Tools</p>
       <h2>What's in my <em>requirements.txt</em></h2>
@@ -550,12 +581,14 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <li class="dep"><span class="ln">50</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.215 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1.001-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.001 1.001 0 0 0 23.013 0Z" /></svg><span class="code"><b>Jira</b> <i># Tickets, sprints, and the occasional “won&#x27;t fix”.</i></span></li>
         <li class="dep"><span class="ln">51</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 0H3C1.35 0 0 1.35 0 3v3.858s3.854 2.24 4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.608 8.136-4.675.279-.161.58-.107.748-.01.164.097.606.348.84.48.232.134.221.502.013.622l-9.712 5.59c-.346.2-.69.204-1.048.002C3.478 10.907.998 9.463 0 8.882v2.02l4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.609 8.136-4.676.279-.16.58-.106.748-.008.164.096.606.347.84.48.232.133.221.5.013.62-.208.121-9.288 5.346-9.712 5.59-.346.2-.69.205-1.048.002C3.478 14.951.998 13.506 0 12.926v2.02l4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.609 8.136-4.676.279-.16.58-.106.748-.009.164.097.606.348.84.48.232.133.221.502.013.622l-9.712 5.59c-.346.199-.69.204-1.048.001C3.478 18.994.998 17.55 0 16.97V21c0 1.65 1.35 3 3 3h18c1.65 0 3-1.35 3-3V3c0-1.65-1.35-3-3-3z" /></svg><span class="code"><b>Todoist</b> <i># Where my to-do list lives, and occasionally gets done.</i></span></li>
       </ol>
-      <div class="reqs-term"><span class="prompt">$</span> pip install janav<br /><span class="ok">Successfully installed janav-2026.10</span></div>
+      <div class="reqs-term" aria-live="polite"><div><span class="prompt">$</span> <span class="cmd">pip install janav</span></div><div class="ok out">Successfully installed janav-2026.10<span class="hover-hint">. Hover a package to see why it's here.</span></div></div>
+    </div>
     </div>
   </section>
 
-  <!-- ================= OFF THE CLOCK ================= -->
-  <section id="off" class="block wrap">
+  <!-- 9. Off the clock -->
+  <section class="screen" id="off">
+    <div class="wrap">
     <div class="off">
       <div>
         <p class="eyebrow">Off the clock</p>
@@ -570,10 +603,12 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <img src="img/janav-railing.jpg" alt="Janav in a red shirt leaning on a railing, looking out across a glass-roofed atrium" width="1200" height="1500" loading="lazy" />
       </figure>
     </div>
+    </div>
   </section>
 
-  <!-- ================= LESSONS ================= -->
-  <section id="learned" class="block wrap">
+  <!-- 10. Lessons -->
+  <section class="screen" id="learned">
+    <div class="wrap">
     <div class="block-head">
       <p class="eyebrow">Lessons so far</p>
       <h2>What broke, <em>and what it taught me.</em></h2>
@@ -600,18 +635,20 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <p>It'll write a decent itinerary in ten seconds. It can't get lost in a new city, find the good street food, or take the photo. That part's still on me, and it's the best part.</p>
       </article>
     </div>
+    </div>
   </section>
 
-  <!-- ================= CONTACT ================= -->
-  <section id="contact" class="contact wrap">
+  <!-- 11. Contact -->
+  <section class="screen contact" id="contact">
+    <div class="wrap">
     <div class="contact-grid">
       <div class="contact-text">
       <p class="eyebrow">Contact</p>
       <h2>Say <em>hello.</em></h2>
       <p class="lede">I'm happy to talk about data science and software development roles, a project you're working on, or music. I reply to email quickly. Not 45 milliseconds quickly, but close.</p>
       <div class="email">
-        <code id="addr">janavdhingra11@gmail.com</code>
-        <button class="btn" id="copy" type="button">Copy email</button>
+        <a class="btn" href="mailto:janavdhingra11@gmail.com?subject=Hi%20Janav">Email me</a>
+        <span class="addr">janavdhingra11@gmail.com</span>
       </div>
       <div class="links">
         <a class="btn ghost" href="https://linkedin.com/in/janavdhingra" target="_blank" rel="noopener">LinkedIn</a>
@@ -621,6 +658,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <figure class="contact-photo">
         <img src="img/janav-corridor.jpg" alt="Janav in a tan sweater holding a coffee, in a long plant-lined walkway" width="1200" height="1500" loading="lazy" />
       </figure>
+    </div>
     </div>
   </section>
 </main>
@@ -643,13 +681,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     root.dataset.theme = dark ? "light" : "dark";
   });
 
-  /* copy email */
-  const copy = document.getElementById("copy"), addr = document.getElementById("addr");
-  copy.addEventListener("click", () => {
-    const done = () => { copy.textContent = "Copied"; setTimeout(() => copy.textContent = "Copy email", 1800); };
-    const fallback = () => { const s = getSelection(), r = document.createRange(); r.selectNodeContents(addr); s.removeAllRanges(); s.addRange(r); copy.textContent = "Press ⌘C"; };
-    try { navigator.clipboard.writeText(addr.textContent).then(done, fallback); } catch (e) { fallback(); }
-  });
+  /* requirements.txt: hovering a package prints its note in the terminal line */
+  const term = document.querySelector(".reqs-term");
+  if (term) {
+    const cmd = term.querySelector(".cmd"), out = term.querySelector(".out"), base = [cmd.innerHTML, out.innerHTML];
+    const show = li => {
+      const name = li.querySelector("b").textContent, note = li.querySelector("i").textContent.replace(/^#\s*/, "");
+      cmd.textContent = "pip show " + name.toLowerCase().replace(/[^a-z0-9.+-]+/g, "-");
+      out.textContent = note;
+    };
+    const reset = () => { cmd.innerHTML = base[0]; out.innerHTML = base[1]; };
+    document.querySelectorAll(".reqs-body .dep").forEach(li => {
+      li.tabIndex = 0;
+      li.addEventListener("mouseenter", () => show(li));
+      li.addEventListener("focus", () => show(li));
+    });
+    document.querySelector(".reqs-body").addEventListener("mouseleave", reset);
+  }
 
   /* career scrubber: drag through time, see what I was doing */
   const track = document.querySelector(".jr-track");
