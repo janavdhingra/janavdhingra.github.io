@@ -314,14 +314,12 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .jr-label.r { right: auto; left: 0; transform: translateX(-50%); }
   .jr-track { height: 112px; }
   .jr-now { top: 40px; }
-  .portrait { width: min(100%, 440px); height: auto; min-height: 0; }
-  .portrait img { height: auto; aspect-ratio: 4 / 5; }
+  .portrait, .life-photo, .contact-photo { width: 100%; height: auto; min-height: 0; justify-self: stretch; }
+  .portrait img, .life-photo img, .contact-photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; max-height: 78svh; object-fit: cover; }
   .screen.intro { padding-top: 24px; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .story, .off { grid-template-columns: minmax(0, 1fr); }
-  .life-photo { justify-self: start; width: min(100%, 360px); }
   .contact-grid { grid-template-columns: minmax(0, 1fr); }
-  .contact-photo { justify-self: start; width: min(100%, 360px); }
   .reqs-body { font-size: 13px; padding-right: 14px; }
   .reqs-body li { grid-template-columns: 30px 16px minmax(0, 1fr); column-gap: 8px; }
   .meta { flex-direction: row; flex-wrap: wrap; gap: 2px 12px; align-items: baseline; }
@@ -336,7 +334,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   html { scroll-behavior: auto; }
 }
 </style>
-
+</head>
+<body>
 <header class="bar">
   <div class="wrap">
     <a class="mark" href="#top">Janav Dhingra</a>
@@ -644,7 +643,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         </div>
       </div>
       <figure class="life-photo">
-        <img src="img/janav-railing.jpg" alt="Janav in a red shirt leaning on a railing, looking out across a glass-roofed atrium" width="1200" height="1500" loading="lazy" decoding="async" />
+        <img src="img/janav-railing.jpg" alt="Janav in a red shirt leaning on a railing, looking out across a glass-roofed atrium" width="1200" height="1500" decoding="async" />
       </figure>
     </div>
     </div>
@@ -699,7 +698,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       </div>
       </div>
       <figure class="contact-photo">
-        <img src="img/janav-corridor.jpg" alt="Janav in a tan sweater holding a coffee, in a long plant-lined walkway" width="1200" height="1500" loading="lazy" decoding="async" />
+        <img src="img/janav-corridor.jpg" alt="Janav in a tan sweater holding a coffee, in a long plant-lined walkway" width="1200" height="1500" decoding="async" />
       </figure>
     </div>
     </div>
@@ -830,5 +829,5 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   }
 })();
 </script>
-
+</body>
 </html>
