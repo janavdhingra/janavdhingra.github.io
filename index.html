@@ -70,13 +70,12 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .hero .roles { margin: 18px 0 0; font-size: 15px; color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
 .hero .roles::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); flex: none; }
 .portrait { margin: 0; min-height: 480px; height: min(calc(100svh - var(--bar) - 64px), 860px); }
-@media (min-width: 801px) and (max-height: 760px) { .portrait { height: calc(100svh - var(--bar) - 32px); } }
 .portrait img { display: block; width: 100%; max-width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; border-radius: 4px; background: var(--surface); }
 .portrait figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; font-style: italic; font-family: var(--serif); }
 /* career scrubber */
 .journey { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
-.jr-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; min-height: 2.2em; }
-.jr-date { font: 500 13px/1 var(--mono); color: var(--accent); min-width: 72px; font-variant-numeric: tabular-nums; }
+.jr-readout { display: grid; gap: 4px; }
+.jr-date { font: 500 13px/1 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
 .jr-text { font: italic 400 clamp(18px, 1.8vw, 21px)/1.35 var(--serif); }
 .jr-track { position: relative; height: 128px; margin: 0 12px; cursor: ew-resize; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
 .jr-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
@@ -97,7 +96,12 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .jr-label.r { right: -6px; }
 .jr-stop:hover .jr-label, .jr-stop:focus-visible .jr-label { color: var(--accent); }
 .jr-handle { position: absolute; top: 61px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); pointer-events: none; }
-.jr-track.settle .jr-handle, .jr-track.settle .jr-fill { transition: left .45s cubic-bezier(.2,.8,.2,1), width .45s cubic-bezier(.2,.8,.2,1); }
+.jr-track.settle .jr-handle, .jr-track.settle .jr-fill { transition: left .55s cubic-bezier(.22,.9,.24,1), width .55s cubic-bezier(.22,.9,.24,1); }
+.jr-track.dragging { cursor: grabbing; }
+.jr-track.dragging .jr-handle { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 22%, transparent); }
+.jr-handle { transition: box-shadow .2s; }
+.jr-text { display: block; transition: opacity .14s ease, transform .14s ease; }
+.jr-readout.swap .jr-text { opacity: 0; transform: translateY(4px); }
 .jr-now { position: absolute; right: -12px; top: 88px; font: 400 11px/1 var(--mono); color: var(--muted); }
 .jr-hint { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
 
@@ -130,11 +134,29 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
   .intro .portrait { min-height: 0; }
 }
 @media (min-width: 801px) and (max-height: 760px) {
-  .screen.intro { padding-block: 16px; }
+  .intro h1 { font-size: clamp(30px, min(4vw, 6.2svh), 56px); }
+  .intro .sub { font-size: clamp(14px, 2.35svh, 18px); line-height: 1.5; }
+  .intro .traits { margin-top: 1.4svh; }
+  .intro .journey { margin-top: 2svh; padding-top: 1.6svh; }
   .intro .jr-track { height: 112px; }
   .intro .jr-label.down { top: 84px; }
   .intro .jr-now { top: 84px; }
   .intro .jr-hint { display: none; }
+}
+
+/* intro + contact: text sits in the page column, photo runs to the right edge of the screen, full height */
+@media (min-width: 801px) {
+  .screen.intro, .screen.contact { padding-block: 0; }
+  .intro > .wrap, .contact > .wrap { max-width: none; padding: 0; }
+  .intro .hero, .contact .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; min-height: calc(100svh - var(--bar)); align-items: stretch; }
+  .intro .hero > div, .contact .contact-text {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 24px clamp(32px, 4vw, 64px) 24px max(clamp(16px, 4vw, 40px), calc((100vw - 1120px) / 2 + clamp(16px, 4vw, 40px)));
+  }
+  .intro .portrait, .contact .contact-photo { margin: 0; width: auto; height: auto; min-height: 0; justify-self: stretch; position: relative; }
+  .intro .portrait img, .contact .contact-photo img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; aspect-ratio: auto; border-radius: 0; object-fit: cover; }
+  .intro .portrait img { object-position: 50% 35%; }
+  .contact .contact-photo img { object-position: 50% 55%; }
 }
 
 /* one section per screen on larger screens */
@@ -353,7 +375,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             <div class="jr-handle" style="left:100%"></div>
             <span class="jr-now">now</span>
           </div>
-          <p class="jr-hint">Drag along the line, tap a year, or use the arrow keys.</p>
+          <p class="jr-hint">Drag the dot, tap a year, or use the arrow keys.</p>
         </div>
         </div>
         <figure class="portrait">
@@ -719,11 +741,12 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelector(".reqs-body").addEventListener("mouseleave", reset);
   }
 
-  /* career scrubber: drag through time, see what I was doing */
+  /* career scrubber: drag or click through time; it glides and settles on the nearest year */
   const track = document.querySelector(".jr-track");
   if (track) {
     const T0 = 2019 + 7 / 12;
     const now = new Date(), TNOW = Math.max(now.getFullYear() + now.getMonth() / 12, 2026 + 1 / 12);
+    const NOW_TEXT = "Doing my master's at UVic. Open to data scientist, ML engineer, AI engineer and software developer roles.";
     const periods = [
       [2019 + 7 / 12, "Studying Information Technology at MSIT, in New Delhi."],
       [2021 + 11 / 12, "Interning at Oneistox in Gurugram: MongoDB, Node.js and my first real APIs."],
@@ -736,47 +759,73 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     const fill = track.querySelector(".jr-fill"), handle = track.querySelector(".jr-handle");
     const stops = [...track.querySelectorAll(".jr-stop")];
-    const dateEl = document.querySelector(".jr-date"), textEl = document.querySelector(".jr-text");
+    const readout = document.querySelector(".jr-readout");
+    const dateEl = readout.querySelector(".jr-date"), textEl = readout.querySelector(".jr-text");
+    const anchors = stops.map(b => +b.dataset.t).concat(TNOW);
     const pct = t => (t - T0) / (TNOW - T0) * 100;
     stops.forEach(b => b.style.setProperty("--x", pct(+b.dataset.t) + "%"));
-    let t = TNOW;
-    const label = v => { const m = Math.round((v % 1) * 12) % 12, y = Math.floor(v + 1e-6); return v >= TNOW - 1 / 24 ? "Now" : months[m] + " " + y; };
-    function set(v) {
+    const atNow = v => v >= TNOW - 1 / 24;
+    const label = v => atNow(v) ? "Now" : months[Math.round((v % 1) * 12) % 12] + " " + Math.floor(v + 1e-6);
+    const textFor = v => { if (atNow(v)) return NOW_TEXT; let txt = periods[0][1]; for (const [st, x] of periods) if (v >= st - 1e-3) txt = x; return txt; };
+    let t = TNOW, shown = textEl.textContent, swapTimer;
+    function set(v, animate) {
       t = Math.min(TNOW, Math.max(T0, v));
+      track.classList.toggle("settle", !!animate);
       const p = pct(t);
       fill.style.width = p + "%"; handle.style.left = p + "%";
-      let text = periods[0][1];
-      for (const [start, txt] of periods) if (t >= start - 1e-3) text = txt;
-      if (t >= TNOW - 1 / 24) text = "Doing my master's at UVic. Open to data scientist, ML engineer, AI engineer and software developer roles.";
-      dateEl.textContent = label(t); textEl.textContent = text;
+      dateEl.textContent = label(t);
+      const txt = textFor(t);
+      if (txt !== shown) {            // only swap the sentence when the chapter changes, with a short fade
+        shown = txt; clearTimeout(swapTimer);
+        readout.classList.add("swap");
+        swapTimer = setTimeout(() => { textEl.textContent = shown; readout.classList.remove("swap"); }, 140);
+      }
       stops.forEach((b, i) => {
         const st = +b.dataset.t, next = stops[i + 1] ? +stops[i + 1].dataset.t : Infinity;
         b.classList.toggle("past", st <= t + 1e-3);
         b.classList.toggle("current", st <= t + 1e-3 && t < next - 1e-3);
       });
       track.setAttribute("aria-valuenow", Math.round(p));
-      track.setAttribute("aria-valuetext", label(t) + ": " + text);
+      track.setAttribute("aria-valuetext", label(t) + ": " + txt);
     }
+    const nearest = v => anchors.reduce((best, a) => Math.abs(a - v) < Math.abs(best - v) ? a : best, anchors[0]);
     const fromX = x => { const r = track.getBoundingClientRect(); return T0 + (x - r.left) / r.width * (TNOW - T0); };
-    let dragging = false;
+    let dragging = false, moved = false, startX = 0;
     track.addEventListener("pointerdown", e => {
       if (e.target.closest(".jr-stop")) return;
-      dragging = true; track.classList.remove("settle"); track.setPointerCapture(e.pointerId); set(fromX(e.clientX));
+      dragging = true; moved = false; startX = e.clientX;
+      track.setPointerCapture(e.pointerId);
     });
     track.addEventListener("pointermove", e => {
-      if (dragging || e.pointerType === "mouse") { track.classList.remove("settle"); set(fromX(e.clientX)); }
+      if (!dragging) return;
+      if (!moved && Math.abs(e.clientX - startX) < 4) return;
+      moved = true; track.classList.add("dragging"); set(fromX(e.clientX), false);
     });
-    const end = () => { dragging = false; };
-    track.addEventListener("pointerup", end); track.addEventListener("pointercancel", end);
-    track.addEventListener("pointerleave", e => { if (e.pointerType === "mouse" && !dragging) { track.classList.add("settle"); set(TNOW); } });
-    stops.forEach(b => b.addEventListener("click", () => { track.classList.add("settle"); set(+b.dataset.t); }));
+    const release = e => {
+      if (!dragging) return;
+      dragging = false; track.classList.remove("dragging");
+      set(nearest(moved ? t : fromX(e.clientX)), true);   // a click glides to the nearest year; a drag settles on it
+    };
+    track.addEventListener("pointerup", release);
+    track.addEventListener("pointercancel", () => { dragging = false; track.classList.remove("dragging"); set(nearest(t), true); });
+    stops.forEach(b => b.addEventListener("click", () => set(+b.dataset.t, true)));
     track.addEventListener("keydown", e => {
-      const step = { ArrowRight: 1 / 12, ArrowUp: 1 / 12, ArrowLeft: -1 / 12, ArrowDown: -1 / 12, PageUp: 1, PageDown: -1 }[e.key];
-      if (step) { e.preventDefault(); track.classList.remove("settle"); set(t + step); }
-      else if (e.key === "Home") { e.preventDefault(); set(T0); }
-      else if (e.key === "End") { e.preventDefault(); set(TNOW); }
+      const i = anchors.indexOf(nearest(t));
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") { e.preventDefault(); set(anchors[Math.min(anchors.length - 1, i + 1)], true); }
+      else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { e.preventDefault(); set(anchors[Math.max(0, i - 1)], true); }
+      else if (e.key === "Home") { e.preventDefault(); set(T0, true); }
+      else if (e.key === "End") { e.preventDefault(); set(TNOW, true); }
     });
-    set(TNOW);
+    function reserve() {
+      const keep = textEl.textContent; let tallest = 0;
+      textEl.style.minHeight = "0";
+      for (const txt of periods.map(p => p[1]).concat(NOW_TEXT)) { textEl.textContent = txt; tallest = Math.max(tallest, textEl.offsetHeight); }
+      textEl.textContent = keep; textEl.style.minHeight = tallest + "px";
+    }
+    reserve();
+    let resizeTimer; addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(reserve, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserve);
+    set(TNOW, false);
   }
 })();
 </script>
