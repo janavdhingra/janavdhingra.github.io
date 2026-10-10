@@ -321,8 +321,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <p class="sub">Hi, I'm Janav. I spent three years as a software engineer. Somewhere along the way I noticed I knew exactly where the data went, but not what it was saying. So now I'm doing a <b>Master of Applied Data Science</b> at the University of Victoria to close that gap.</p>
           <p class="roles">Open to data scientist, machine learning engineer, AI engineer and software developer roles.</p>
         <div class="journey">
-          <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing a Master of Applied Data Science at UVic, in Victoria.</span></div>
-          <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic">
+          <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing my master's at UVic and looking for data science, ML and software roles.</span></div>
+          <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic, looking for roles">
             <div class="jr-line"></div>
             <div class="jr-fill" style="width:100%"></div>
             <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">New Delhi</span></span></button>
@@ -728,6 +728,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       fill.style.width = p + "%"; handle.style.left = p + "%";
       let text = periods[0][1];
       for (const [start, txt] of periods) if (t >= start - 1e-3) text = txt;
+      if (t >= TNOW - 1 / 24) text = "Doing my master's at UVic and looking for data science, ML and software roles.";
       dateEl.textContent = label(t); textEl.textContent = text;
       stops.forEach((b, i) => {
         const st = +b.dataset.t, next = stops[i + 1] ? +stops[i + 1].dataset.t : Infinity;
