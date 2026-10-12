@@ -219,7 +219,7 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .fp-facts li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 .fp-facts b { color: var(--ink); font-weight: 600; }
 .phones { display: flex; justify-content: center; align-items: flex-start; width: 100%; padding-top: 18px; }
-.phone { margin: 0; flex: none; width: min(36%, calc(52svh * 9 / 19.5), 210px); transition: transform .3s ease; }
+.phone { margin: 0; flex: none; width: min(38%, calc(52svh * 9 / 19.5), 210px); transition: transform .3s ease; }
 .phone + .phone { margin-left: -5%; }
 .phone:nth-child(1) { transform: rotate(-4deg) translateY(26px); }
 .phone:nth-child(2) { z-index: 2; transform: translateY(-6px); }
@@ -232,7 +232,16 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 }
 .phone .ph { display: grid; place-items: center; }
 .phone .ph span { font: italic 400 15px/1 var(--serif); color: var(--muted); }
-.phones-wrap { min-width: 0; }
+#projects .feature-project { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+#projects .feature-project { padding: clamp(22px, 3vw, 36px); gap: 24px 40px; }
+#projects .fp-text > p:not(.stack-line) { font-size: 16px; line-height: 1.6; margin-bottom: 10px; }
+#projects .fp-tagline { margin: 8px 0 14px; font-size: 19px; }
+#projects .fp-facts { margin: 12px 0 4px; gap: 6px; }
+.edit-visual { display: flex; align-items: flex-start; gap: 18px; min-width: 0; }
+.phones-wrap { min-width: 0; flex: 1; }
+.worn { margin: 0; flex: none; width: 31%; padding-top: 6px; }
+.worn img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 14px; box-shadow: 0 18px 40px -22px rgba(0,0,0,.35); }
+.worn figcaption { margin-top: 14px; text-align: center; font: italic 400 15px/1.3 var(--serif); color: var(--muted); }
 .phones-cap { margin: 40px 0 0; text-align: center; font: italic 400 15px/1.3 var(--serif); color: var(--muted); }
 
 .fp-wide { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; }
@@ -331,6 +340,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .meta .n { margin: 0; }
   .projects, .lessons { grid-template-columns: minmax(0, 1fr); }
   .feature-project { grid-template-columns: minmax(0, 1fr); }
+  #projects .feature-project { grid-template-columns: minmax(0, 1fr); }
+  .edit-visual { flex-direction: column; align-items: center; gap: 28px; }
+  .phones-wrap { width: 100%; }
+  .worn { width: min(62%, 260px); padding-top: 0; }
   .phone .ph, .phone img { border-radius: 16px; border-width: 4px; }
   .screen { padding-block: 44px; }
 }
@@ -496,13 +509,19 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </ul>
           <p class="stack-line">React · JavaScript · Open-Meteo API · iCal parsing · Netlify Functions · browser storage</p>
         </div>
-          <div class="phones-wrap">
-        <div class="phones">
-            <figure class="phone"><img src="img/edit-today.jpg" alt="EDIT's Today screen: weather in Victoria, a calendar event, and the outfit picked for it" width="600" height="1299" decoding="async" /></figure>
-            <figure class="phone"><img src="img/edit-why.jpg" alt="EDIT's outfit card listing why the outfit works, with other options below" width="600" height="1299" decoding="async" /></figure>
-            <figure class="phone"><img src="img/edit-closet.jpg" alt="EDIT's closet screen showing a grid of 25 shirts and sweaters" width="600" height="1299" decoding="async" /></figure>
-          </div>
-        <p class="phones-cap">Today's pick · Why it works · Your closet</p>
+          <div class="edit-visual">
+        <div class="phones-wrap">
+          <div class="phones">
+              <figure class="phone"><img src="img/edit-today.jpg" alt="EDIT's Today screen: weather in Victoria, a calendar event, and the outfit picked for it" width="600" height="1299" decoding="async" /></figure>
+              <figure class="phone"><img src="img/edit-why.jpg" alt="EDIT's outfit card listing why the outfit works, with other options below" width="600" height="1299" decoding="async" /></figure>
+              <figure class="phone"><img src="img/edit-closet.jpg" alt="EDIT's closet screen showing a grid of 25 shirts and sweaters" width="600" height="1299" decoding="async" /></figure>
+            </div>
+          <p class="phones-cap">Today's pick · Why it works · Your closet</p>
+        </div>
+        <figure class="worn">
+          <img src="img/edit-worn.jpg" alt="Janav in a mirror selfie wearing the outfit EDIT picked: light blue oxford shirt, grey knit sweater over the shoulders, navy shorts" width="720" height="1280" decoding="async" />
+          <figcaption>What it picked, worn.</figcaption>
+        </figure>
       </div>
       </article>
     </div>
