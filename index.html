@@ -164,7 +164,7 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 /* ---------- sections ---------- */
 /* phones: each group shows 3 packages, the rest fold behind a "+ N more" line */
 .reqs-body .more-row { display: none; }
-@media (max-width: 800px) {
+@media (max-width: 600px) {
   .reqs-body .dep.folded { display: none; }
   .reqs-body .more-row { display: grid; }
   .more-row .code { grid-column: 2 / 4; }
@@ -348,7 +348,7 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .reqs { background: var(--surface); border-radius: 6px; overflow: hidden; font-family: var(--sans); font-variant-numeric: tabular-nums; }
 .reqs-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 12px 20px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); }
 .reqs-bar .file { color: var(--ink); font-weight: 500; }
-.reqs-body { list-style: none; margin: 0; padding: 18px 20px 18px 0; columns: 2 420px; column-gap: 24px; font-size: 14px; line-height: 1.5; }
+.reqs-body { list-style: none; margin: 0; padding: 18px 20px 18px 0; columns: 2 420px; column-gap: 24px; font-size: 15px; line-height: 1.5; }
 .reqs-body li { display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); align-items: start; column-gap: 10px; padding: 3px 0; break-inside: avoid; border-radius: 3px; }
 .reqs-body .ln { text-align: right; color: var(--plot); font-variant-numeric: tabular-nums; user-select: none; }
 .reqs-body svg { width: 16px; height: 16px; margin-top: 2px; fill: var(--muted); transition: fill .15s; }
