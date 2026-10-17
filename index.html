@@ -162,6 +162,16 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .facts dd { margin: 2px 0 0; font-weight: 500; }
 
 /* ---------- sections ---------- */
+/* phones: each group shows 3 packages, the rest fold behind a "+ N more" line */
+.reqs-body .more-row { display: none; }
+@media (max-width: 800px) {
+  .reqs-body .dep.folded { display: none; }
+  .reqs-body .more-row { display: grid; }
+  .more-row .code { grid-column: 2 / 4; }
+  .more-btn { font: 600 13px/1.5 var(--sans); color: var(--accent); background: none; border: 0; padding: 4px 0; cursor: pointer; text-align: left; }
+  .more-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+}
+
 /* desktop: package names only, notes print in the terminal line on hover */
 .hover-hint { display: none; }
 @media (min-width: 900px) {
@@ -884,6 +894,20 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     });
     document.querySelector(".reqs-body").addEventListener("mouseleave", reset);
   }
+
+  /* requirements.txt on phones: fold each group after 3 packages */
+  document.querySelectorAll(".reqs-body .cmt").forEach(cmt => {
+    const deps = [];
+    for (let el = cmt.nextElementSibling; el && el.classList.contains("dep"); el = el.nextElementSibling) deps.push(el);
+    const extra = deps.slice(3);
+    if (!extra.length) return;
+    extra.forEach(li => li.classList.add("folded"));
+    const row = document.createElement("li");
+    row.className = "more-row";
+    row.innerHTML = '<span class="ln"></span><span class="code"><button type="button" class="more-btn" aria-expanded="false">+ ' + extra.length + ' more</button></span>';
+    deps[2].after(row);
+    row.querySelector("button").addEventListener("click", () => { extra.forEach(li => li.classList.remove("folded")); row.remove(); });
+  });
 
   /* career scrubber: drag or click through time; it glides and settles on the nearest year */
   const track = document.querySelector(".jr-track");
