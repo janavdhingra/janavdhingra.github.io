@@ -394,6 +394,9 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .req-pop { position: fixed; z-index: 60; width: max-content; max-width: min(300px, calc(100vw - 16px)); background: var(--ink); color: var(--bg); border-radius: 8px; padding: 12px 14px; box-shadow: 0 14px 34px -14px rgba(0,0,0,.45); font: 400 14px/1.4 var(--sans); opacity: 0; transform: translateY(4px); transition: opacity .16s ease, transform .16s ease; }
 .req-pop.show { opacity: 1; transform: none; }
 .req-pop[hidden] { display: none; }
+.req-pop.peek { pointer-events: none; }
+.req-pop .rp-hint { display: block; margin-top: 4px; font-size: 12px; font-weight: 400; opacity: .65; }
+.reqs-body .dep.pinned { background: color-mix(in srgb, var(--accent) 16%, transparent); }
 .req-pop .rp-name { font-weight: 600; font-size: 15px; }
 .req-pop .rp-note { font: italic 400 15px/1.35 var(--serif); margin-top: 4px; }
 .req-pop .rp-used { margin-top: 10px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent); font-size: 13px; opacity: .9; }
@@ -1044,6 +1047,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
     const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { back.hidden = true; seen.disconnect(); } }), { threshold: 1 });
     let current = null, hideTimer, from = null;
+    const hover = matchMedia("(hover: hover)").matches;
     const usesOf = li => {
       const n = li.querySelector("b").textContent, seen = new Map();
       tokens.forEach(t => { if (matches(t.text, n) && !seen.has(t.place)) seen.set(t.place, t.el); });
@@ -1058,26 +1062,34 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       const top = r.bottom + 8 + h > innerHeight - 8 ? r.top - h - 8 : r.bottom + 8;
       pop.style.left = left + "px"; pop.style.top = top + "px";
     };
-    const open = li => {
+    /* hover only previews; a click pins the card so the mouse can reach its links */
+    let pinned = false;
+    const open = (li, pin) => {
       clearTimeout(hideTimer);
-      if (current === li && !pop.hidden) return;
-      current = li;
+      if (current === li && !pop.hidden && pinned === pin) return;
+      if (current) current.classList.remove("pinned");
+      current = li; pinned = pin;
+      li.classList.toggle("pinned", pin);
+      pop.classList.toggle("peek", !pin);
       const name = li.querySelector("b").textContent, note = li.querySelector("i") ? li.querySelector("i").textContent.replace(/^#\s*/, "") : "";
       pop.innerHTML = '<div class="rp-name"></div><div class="rp-note"></div>' + (li.uses.length ? '<div class="rp-used">Used in → </div>' : "");
       pop.querySelector(".rp-name").textContent = name;
       pop.querySelector(".rp-note").textContent = note;
+      const used = pop.querySelector(".rp-used");
       li.uses.forEach((u, i) => {
-        const b = document.createElement("button");
-        b.type = "button"; b.textContent = u.label;
-        b.addEventListener("click", () => jump(li, u));
-        const used = pop.querySelector(".rp-used");
         if (i) used.append(" · ");
-        used.append(b);
+        if (pin) {
+          const b = document.createElement("button");
+          b.type = "button"; b.textContent = u.label;
+          b.addEventListener("click", () => jump(li, u));
+          used.append(b);
+        } else used.append(u.label);
       });
+      if (used && !pin) used.insertAdjacentHTML("beforeend", '<span class="rp-hint">' + (hover ? "Click" : "Tap") + " to open the links</span>");
       pop.hidden = false; place(li); void pop.offsetWidth; pop.classList.add("show");
     };
-    const close = () => { pop.classList.remove("show"); pop.hidden = true; current = null; };
-    const later = () => { clearTimeout(hideTimer); hideTimer = setTimeout(close, 220); };
+    const close = () => { pop.classList.remove("show"); pop.hidden = true; if (current) current.classList.remove("pinned"); current = null; pinned = false; };
+    const later = () => { if (pinned) return; clearTimeout(hideTimer); hideTimer = setTimeout(close, 120); };
     const jump = (li, u) => {
       from = li; close();
       const n = li.querySelector("b").textContent;
@@ -1096,19 +1108,16 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       from.focus({ preventScroll: true });
     });
 
-    const hover = matchMedia("(hover: hover)").matches;
     deps.forEach(li => {
-      if (hover) { li.addEventListener("mouseenter", () => open(li)); li.addEventListener("mouseleave", later); }
-      li.addEventListener("click", () => (current === li && !pop.hidden && !hover) ? close() : open(li));
-      li.addEventListener("focus", () => open(li));
+      if (hover) { li.addEventListener("mouseenter", () => { if (!pinned) open(li, false); }); li.addEventListener("mouseleave", later); }
+      li.addEventListener("click", () => (current === li && pinned) ? close() : open(li, true));
+      li.addEventListener("focus", () => { if (!pinned) open(li, false); });
       li.addEventListener("blur", e => { if (!pop.contains(e.relatedTarget)) later(); });
       li.addEventListener("keydown", e => {
-        if ((e.key === "Enter" || e.key === " ") && li.uses.length) { e.preventDefault(); open(li); pop.querySelector("button").focus(); }
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(li, true); const b = pop.querySelector("button"); if (b) b.focus(); }
         else if (e.key === "Escape") close();
       });
     });
-    pop.addEventListener("mouseenter", () => clearTimeout(hideTimer));
-    pop.addEventListener("mouseleave", later);
     pop.addEventListener("focusout", e => { if (!pop.contains(e.relatedTarget) && e.relatedTarget !== current) later(); });
     pop.addEventListener("keydown", e => { if (e.key === "Escape" && current) { const li = current; close(); li.focus(); } });
     document.addEventListener("click", e => { if (!pop.hidden && !pop.contains(e.target) && !e.target.closest(".reqs-body .dep")) close(); });
