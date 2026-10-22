@@ -376,6 +376,14 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 #perennial .fp-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 4px; }
 #perennial .fp-stats dt { font-size: clamp(30px, 2.8vw, 38px); }
 #perennial .fp-stats dd { font-size: 13px; }
+.fp-links .stack-line { margin: 0; }
+.fp-side.fp-links { gap: 14px; }
+.fp-side.fp-links .fp-stats { margin-bottom: 4px; }
+.fp-links .fp-link { display: inline-block; margin-top: -4px; }
+#perennial .fp-side .stack-line { margin: 0; }
+#projects .edit-links { grid-column: 2; display: grid; gap: 14px; justify-items: start; }
+#projects .fp-text { grid-row: span 2; }
+#projects .feature-project { align-content: start; }
 .fp-close { margin: 0; padding-top: 14px; border-top: 1px solid var(--line); font: italic 400 17px/1.45 var(--serif); color: var(--muted); max-width: 52ch; }
 .lightbox.wide .lb-figure img { max-width: min(92vw, 1280px); border-radius: 10px; }
 
@@ -456,6 +464,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .projects, .lessons { grid-template-columns: minmax(0, 1fr); }
   .feature-project { grid-template-columns: minmax(0, 1fr); }
   #projects .feature-project, #perennial .feature-project { grid-template-columns: minmax(0, 1fr); }
+  #projects .edit-links { grid-column: auto; }
+  #projects .fp-text { grid-row: auto; }
   #perennial .fp-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .edit-visual { flex-direction: column; align-items: center; gap: 28px; }
   .phones-wrap { width: 100%; }
@@ -640,7 +650,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             <li><b>The AI gets three narrow tools</b> to change your data, and each reply is capped at five rounds of tool calls.</li>
           </ul>
         </div>
-        <div class="fp-side">
+        <div class="fp-side fp-links">
           <div class="shots">
             <figure><img src="img/perennial-chat.jpg" alt="Perennial's garden: a sunflower and a small bonsai on green hills, with the AI Gardener chat open on the right" width="1600" height="1000" decoding="async" /></figure>
             <figure><img src="img/perennial-plant.jpg" alt="A sunflower's detail panel: 60% grown, growing stage, last watered yesterday, a 5-day streak and its progress history" width="1600" height="1000" decoding="async" /></figure>
@@ -673,8 +683,6 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             <li><b>Installs like an app.</b> It's a PWA, so it lives on your home screen.</li>
             <li><b>Calendar sync</b> through a small serverless relay on Netlify.</li>
           </ul>
-          <p class="stack-line">React · JavaScript · Open-Meteo API · iCal parsing · Netlify Functions · browser storage</p>
-          <a class="fp-link" href="https://github.com/janavdhingra/edit-daily-style" target="_blank" rel="noopener">See it on GitHub →</a>
         </div>
           <div class="edit-visual">
         <div class="phones-wrap">
@@ -690,6 +698,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <figcaption>What it picked, worn.</figcaption>
         </figure>
       </div>
+        <div class="fp-links edit-links">
+          <p class="stack-line">React · JavaScript · Open-Meteo API · iCal parsing · Netlify Functions · browser storage</p>
+          <a class="fp-link" href="https://github.com/janavdhingra/edit-daily-style" target="_blank" rel="noopener">See it on GitHub →</a>
+        </div>
       </article>
     </div>
   </section>
@@ -740,15 +752,17 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <p class="fp-tagline">I built this before AI was writing everyone's code. I kinda like it.</p>
           <p>An Instagram-style app where you can post photos, like, comment, follow people and see what's trending. Six Spring Boot services sit behind one gateway that checks your login token on every request, and each service keeps its own MySQL database. One <code>docker-compose up</code> starts all seven containers.</p>
           <p>Trending hashtags get pulled out of captions as you post. The Caption Studio writes captions in four tones and tags every post with one of seven vibes, using hand-written keyword lists and templates.</p>
+        </div>
+        <div class="fp-side fp-links">
+          <dl class="fp-stats">
+            <div><dt>6</dt><dd>microservices</dd></div>
+            <div><dt>4</dt><dd>database schemas</dd></div>
+            <div><dt>17+</dt><dd>REST APIs</dd></div>
+            <div><dt>7</dt><dd>containers, one command</dd></div>
+          </dl>
           <p class="stack-line">Angular 17 · TypeScript · Spring Boot · Spring Cloud Gateway · MySQL 8 · JWT · Docker Compose</p>
           <a class="fp-link" href="https://github.com/janavdhingra/pixagram" target="_blank" rel="noopener">See it on GitHub →</a>
         </div>
-        <dl class="fp-stats">
-          <div><dt>6</dt><dd>microservices</dd></div>
-          <div><dt>4</dt><dd>database schemas</dd></div>
-          <div><dt>17+</dt><dd>REST APIs</dd></div>
-          <div><dt>7</dt><dd>containers, one command</dd></div>
-        </dl>
       </article>
     </div>
   </section>
