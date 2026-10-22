@@ -358,6 +358,7 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .rul-chart .band { fill: var(--accent); opacity: .85; }
 .rul-fig figcaption { margin-top: 8px; font: italic 400 15px/1.35 var(--serif); color: var(--muted); }
 .fp-research .fp-stats dt { font-size: clamp(34px, 3.4vw, 44px); }
+.fp-research .fp-stats { gap: 18px 24px; }
 
 /* perennial: landscape screenshots, one large and two below */
 #perennial .feature-project { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); padding: clamp(22px, 2.4vw, 28px); gap: 24px 40px; }
@@ -492,7 +493,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <a class="mark" href="#top">Janav Dhingra</a>
     <nav>
       <a href="#work">Work</a>
-      <a href="#perennial">Projects</a>
+      <a href="#research">Projects</a>
       <a href="#stack">Stack</a>
       <a href="#off">Life</a>
       <a class="mail" href="#contact">Email me</a>
@@ -631,40 +632,44 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
 
   <!-- 5–7. Projects -->
-  <section class="screen" id="perennial">
+  <section class="screen" id="research">
     <div class="wrap">
       <div class="block-head">
         <p class="eyebrow">Projects</p>
         <h2>Projects</h2>
       </div>
-      <article class="feature-project">
+      <article class="feature-project fp-wide fp-research">
         <div class="fp-text">
-          <p class="fp-kicker">Full-stack · AI · Productivity</p>
-          <h3>Perennial</h3>
-          <p class="fp-tagline">My to-do list never made me feel anything. So I turned it into a garden.</p>
-          <p>Every project in Perennial is a plant. Finish tasks and log progress, and it grows from seed to flower. Ignore it for a week, and it starts to wilt. You pick a plant that fits the goal: a sunflower for creative work, a bonsai for habits, a fern for learning.</p>
-          <p>There's no separate database. The whole garden lives in Todoist: plants are tasks, steps are subtasks, and each plant's history is stored in comments. Tick something off on your phone, and a background sync picks it up within 10 seconds and grows the plant.</p>
-          <p>The AI Gardener is a chat coach built on Claude. It can see your whole garden and suggest what to work on. Tell it "I finished the landing page today," and it updates the right plant through tool calls.</p>
-          <ul class="fp-facts">
-            <li><b>Plants have generations.</b> A finished goal can grow a follow-up, so a morning routine becomes Gen 2, then Gen 3.</li>
-            <li><b>The AI gets three narrow tools</b> to change your data, and each reply is capped at five rounds of tool calls.</li>
-          </ul>
+          <p class="fp-kicker">Master's research · Machine learning</p>
+          <h3>Prediction intervals for jet engine remaining life</h3>
+          <p class="fp-tagline">Instead of "74 more flights", the model says "58 to 85 flights, 90% of the time".</p>
+          <p>This project predicts how many flights a turbofan engine has left before it's unsafe, using NASA's C-MAPSS data. We wrapped LSTM and gradient-boosting models in seven conformal prediction methods, which turn a single guess into a range with a coverage guarantee, and tested that guarantee across 112 combinations of data, model and method.</p>
+          <p>It held almost everywhere. Where it broke, on the hardest dataset and only for mid-life engines, we used Kolmogorov–Smirnov tests to trace it to calibration and test engines not looking alike, then repaired it with weighted CQR. A frozen-pipeline stress test measured how the guarantee fails when a new fault mode appears.</p>
         </div>
         <div class="fp-side fp-links">
-          <div class="shots">
-            <figure><img src="img/perennial-chat.jpg" alt="Perennial's garden: a sunflower and a small bonsai on green hills, with the AI Gardener chat open on the right" width="1600" height="1000" decoding="async" /></figure>
-            <figure><img src="img/perennial-plant.jpg" alt="A sunflower's detail panel: 60% grown, growing stage, last watered yesterday, a 5-day streak and its progress history" width="1600" height="1000" decoding="async" /></figure>
-            <figure><img src="img/perennial-seed.jpg" alt="The Choose Your Seed dialog with five plants: sunflower, bonsai, rose, cactus and fern" width="1600" height="1000" decoding="async" /></figure>
-          </div>
+          <figure class="rul-fig">
+            <svg class="rul-chart" viewBox="0 0 400 150" role="img" aria-label="A point prediction of 74 flights versus a conformal interval from 58 to 85 flights, on an axis from 40 to 100 flights">
+              <text x="20" y="18" class="lbl">Point model: "74 more flights"</text>
+              <line x1="20" y1="34" x2="380" y2="34" class="axis" />
+              <circle cx="224.0" cy="34" r="6" class="dot" />
+              <text x="20" y="74" class="lbl">Conformal: "58 to 85 flights, 90% guaranteed"</text>
+              <line x1="20" y1="90" x2="380" y2="90" class="axis" />
+              <rect x="128.0" y="84" width="162.0" height="12" rx="6" class="band" />
+              <circle cx="224.0" cy="90" r="4" class="dot" />
+              <text x="128.0" y="114" class="tick" text-anchor="middle">58</text>
+              <text x="290.0" y="114" class="tick" text-anchor="middle">85</text>
+              <text x="20" y="140" class="tick">40</text>
+              <text x="380" y="140" class="tick" text-anchor="end">100 flights</text>
+            </svg>
+            <figcaption>Point prediction vs. 90% prediction interval, same model.</figcaption>
+          </figure>
           <dl class="fp-stats">
-            <div><dt>0</dt><dd>databases. Todoist holds everything.</dd></div>
-            <div><dt>5</dt><dd>plant types</dd></div>
-            <div><dt>5</dt><dd>growth stages</dd></div>
-            <div><dt>10s</dt><dd>sync with Todoist</dd></div>
+            <div><dt>15.30</dt><dd>LSTM error (RMSE) on FD001, under the 16 target</dd></div>
+            <div><dt>30%</dt><dd>narrower intervals with CQR, same guarantee</dd></div>
+            <div><dt>89.5%</dt><dd>coverage restored on the one dataset that broke</dd></div>
+            <div><dt>1</dt><dd>command to reproduce every table and figure</dd></div>
           </dl>
-          <p class="stack-line">React · TypeScript · Framer Motion · Tailwind CSS · Node.js · Express · Todoist API · Claude API</p>
-          <a class="fp-link" href="https://github.com/janavdhingra/perennial" target="_blank" rel="noopener">See it on GitHub →</a>
-          <p class="fp-close">Progress you can't see doesn't feel like progress. A checkbox looks the same on day one and day ninety. A plant doesn't.</p>
+          <p class="stack-line">Python · LSTM &amp; quantile LSTM · gradient boosting · conformal prediction (MAPIE) · KS tests · 63 unit tests</p>
         </div>
       </article>
     </div>
@@ -705,40 +710,36 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       </article>
     </div>
   </section>
-  <section class="screen" id="research">
+  <section class="screen" id="perennial">
     <div class="wrap">
-      <article class="feature-project fp-wide fp-research">
+      <article class="feature-project">
         <div class="fp-text">
-          <p class="fp-kicker">Master's research · Machine learning</p>
-          <h3>Prediction intervals for jet engine remaining life</h3>
-          <p class="fp-tagline">Instead of "74 more flights", the model says "58 to 85 flights, 90% of the time".</p>
-          <p>This project predicts how many flights a turbofan engine has left before it's unsafe, using NASA's C-MAPSS data. We wrapped LSTM and gradient-boosting models in seven conformal prediction methods, which turn a single guess into a range with a coverage guarantee, and tested that guarantee across 112 combinations of data, model and method.</p>
-          <p>It held almost everywhere. Where it broke, on the hardest dataset and only for mid-life engines, we used Kolmogorov–Smirnov tests to trace it to calibration and test engines not looking alike, then repaired it with weighted CQR. A frozen-pipeline stress test measured how the guarantee fails when a new fault mode appears.</p>
-          <p class="stack-line">Python · LSTM &amp; quantile LSTM · gradient boosting · conformal prediction (MAPIE) · KS tests · 63 unit tests</p>
+          <p class="fp-kicker">Full-stack · AI · Productivity</p>
+          <h3>Perennial</h3>
+          <p class="fp-tagline">My to-do list never made me feel anything. So I turned it into a garden.</p>
+          <p>Every project in Perennial is a plant. Finish tasks and log progress, and it grows from seed to flower. Ignore it for a week, and it starts to wilt. You pick a plant that fits the goal: a sunflower for creative work, a bonsai for habits, a fern for learning.</p>
+          <p>There's no separate database. The whole garden lives in Todoist: plants are tasks, steps are subtasks, and each plant's history is stored in comments. Tick something off on your phone, and a background sync picks it up within 10 seconds and grows the plant.</p>
+          <p>The AI Gardener is a chat coach built on Claude. It can see your whole garden and suggest what to work on. Tell it "I finished the landing page today," and it updates the right plant through tool calls.</p>
+          <ul class="fp-facts">
+            <li><b>Plants have generations.</b> A finished goal can grow a follow-up, so a morning routine becomes Gen 2, then Gen 3.</li>
+            <li><b>The AI gets three narrow tools</b> to change your data, and each reply is capped at five rounds of tool calls.</li>
+          </ul>
         </div>
-        <div class="fp-side">
-          <figure class="rul-fig">
-            <svg class="rul-chart" viewBox="0 0 400 150" role="img" aria-label="A point prediction of 74 flights versus a conformal interval from 58 to 85 flights, on an axis from 40 to 100 flights">
-              <text x="20" y="18" class="lbl">Point model: "74 more flights"</text>
-              <line x1="20" y1="34" x2="380" y2="34" class="axis" />
-              <circle cx="224.0" cy="34" r="6" class="dot" />
-              <text x="20" y="74" class="lbl">Conformal: "58 to 85 flights, 90% guaranteed"</text>
-              <line x1="20" y1="90" x2="380" y2="90" class="axis" />
-              <rect x="128.0" y="84" width="162.0" height="12" rx="6" class="band" />
-              <circle cx="224.0" cy="90" r="4" class="dot" />
-              <text x="128.0" y="114" class="tick" text-anchor="middle">58</text>
-              <text x="290.0" y="114" class="tick" text-anchor="middle">85</text>
-              <text x="20" y="140" class="tick">40</text>
-              <text x="380" y="140" class="tick" text-anchor="end">100 flights</text>
-            </svg>
-            <figcaption>Point prediction vs. 90% prediction interval, same model.</figcaption>
-          </figure>
+        <div class="fp-side fp-links">
+          <div class="shots">
+            <figure><img src="img/perennial-chat.jpg" alt="Perennial's garden: a sunflower and a small bonsai on green hills, with the AI Gardener chat open on the right" width="1600" height="1000" decoding="async" /></figure>
+            <figure><img src="img/perennial-plant.jpg" alt="A sunflower's detail panel: 60% grown, growing stage, last watered yesterday, a 5-day streak and its progress history" width="1600" height="1000" decoding="async" /></figure>
+            <figure><img src="img/perennial-seed.jpg" alt="The Choose Your Seed dialog with five plants: sunflower, bonsai, rose, cactus and fern" width="1600" height="1000" decoding="async" /></figure>
+          </div>
           <dl class="fp-stats">
-            <div><dt>15.30</dt><dd>LSTM error (RMSE) on FD001, under the 16 target</dd></div>
-            <div><dt>30%</dt><dd>narrower intervals with CQR, same guarantee</dd></div>
-            <div><dt>89.5%</dt><dd>coverage restored on the one dataset that broke</dd></div>
-            <div><dt>1</dt><dd>command to reproduce every table and figure</dd></div>
+            <div><dt>0</dt><dd>databases. Todoist holds everything.</dd></div>
+            <div><dt>5</dt><dd>plant types</dd></div>
+            <div><dt>5</dt><dd>growth stages</dd></div>
+            <div><dt>10s</dt><dd>sync with Todoist</dd></div>
           </dl>
+          <p class="stack-line">React · TypeScript · Framer Motion · Tailwind CSS · Node.js · Express · Todoist API · Claude API</p>
+          <a class="fp-link" href="https://github.com/janavdhingra/perennial" target="_blank" rel="noopener">See it on GitHub →</a>
+          <p class="fp-close">Progress you can't see doesn't feel like progress. A checkbox looks the same on day one and day ninety. A plant doesn't.</p>
         </div>
       </article>
     </div>
