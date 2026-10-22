@@ -121,7 +121,7 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 @media (prefers-reduced-motion: reduce) { .logo-track { animation: none; flex-wrap: wrap; width: auto; gap: 14px 28px; } .logo-track > :nth-child(n+6) { display: none; } .logo-rail { mask-image: none; -webkit-mask-image: none; } }
 
 /* timeline pop-up card */
-.jr-tip { position: absolute; bottom: calc(100% + 6px); left: var(--tx, 0); z-index: 5; width: max-content; max-width: min(280px, 90vw);
+.jr-tip { position: absolute; bottom: calc(100% + 8px); left: var(--tx, 0); z-index: 5; width: max-content; max-width: min(280px, 90vw);
   background: var(--ink); color: var(--bg); border-radius: 8px; padding: 12px 14px; box-shadow: 0 14px 34px -14px rgba(0,0,0,.45);
   transform: translateY(4px); opacity: 0; transition: opacity .16s ease, transform .16s ease; pointer-events: none; }
 .jr-tip.show { opacity: 1; transform: translateY(0); }
@@ -138,34 +138,23 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .journey { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
 .jr-readout { display: grid; gap: 4px; }
 .jr-date { font: 500 13px/1 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
-.jr-text { font: italic 400 clamp(18px, 1.8vw, 21px)/1.35 var(--serif); }
-.jr-track { position: relative; height: 128px; margin: 0 12px; cursor: ew-resize; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
-.jr-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
-.jr-line, .jr-fill { position: absolute; left: 0; top: 69px; height: 2px; border-radius: 2px; }
-.jr-line { right: 0; background: var(--line); }
-.jr-fill { background: var(--accent); }
-.jr-stop { position: absolute; left: var(--x); top: 0; bottom: 0; width: 0; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; font: inherit; }
-.jr-dot { position: absolute; left: -6px; top: 64px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--plot); transition: border-color .2s, background .2s; }
-.jr-stop.past { color: var(--ink); }
-.jr-stop.past .jr-dot { border-color: var(--accent); }
-.jr-stop.current .jr-dot { background: var(--accent); }
-.jr-label { position: absolute; white-space: nowrap; font-size: 14px; line-height: 1.3; transition: color .2s; }
-.jr-label b { font-weight: 600; }
-.jr-label.up { bottom: calc(100% - 52px); }
-.jr-label.down { top: 88px; }
-.jr-label.l { left: -6px; }
-.jr-label.c { left: 0; transform: translateX(-50%); }
-.jr-label.r { right: -6px; }
-.jr-stop:hover .jr-label, .jr-stop:focus-visible .jr-label { color: var(--accent); }
-.jr-handle { position: absolute; top: 61px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); pointer-events: none; }
-.jr-track.settle .jr-handle, .jr-track.settle .jr-fill { transition: left .55s cubic-bezier(.22,.9,.24,1), width .55s cubic-bezier(.22,.9,.24,1); }
-.jr-track.dragging { cursor: grabbing; }
-.jr-track.dragging .jr-handle { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 22%, transparent); }
-.jr-handle { transition: box-shadow .2s; }
-.jr-text { display: block; transition: opacity .14s ease, transform .14s ease; }
-.jr-readout.swap .jr-text { opacity: 0; transform: translateY(4px); }
-.jr-now { position: absolute; right: -12px; top: 88px; font: 400 11px/1 var(--mono); color: var(--muted); }
-.jr-hint { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+.jr-text { font: italic 400 clamp(17px, 1.6vw, 20px)/1.35 var(--serif); }
+.jr-readout { margin: 0 0 14px; }
+/* proportional timeline: one lane for study, one for work, bars as long as each chapter lasted */
+.tl { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr); row-gap: 6px; }
+.tl-name { align-self: end; padding-bottom: 1px; font-size: 12px; color: var(--muted); line-height: 1; }
+.tl-row { position: relative; height: 30px; }
+.tl-bar { position: absolute; bottom: 0; left: var(--l); width: var(--w); height: 30px; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; color: var(--ink); }
+.tl-bar::after { content: ""; position: absolute; left: 0; right: 1px; bottom: 0; height: 7px; border-radius: 2px; background: var(--plot); transition: background .15s; }
+.tl-bar.now::after { right: 0; background: linear-gradient(90deg, var(--accent) 55%, color-mix(in srgb, var(--accent) 0%, transparent)); }
+.tl-label { position: absolute; left: 0; bottom: 12px; white-space: nowrap; font-size: 13px; line-height: 1.2; transition: color .15s; }
+.tl-bar.now .tl-label { color: var(--accent); font-weight: 600; }
+.tl-bar:hover::after, .tl-bar:focus-visible::after { background: var(--accent); }
+.tl-bar:hover .tl-label, .tl-bar:focus-visible .tl-label { color: var(--accent); }
+.tl-bar:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+.tl-axis { grid-column: 2; position: relative; height: 22px; margin-top: 4px; border-top: 1px solid var(--line); }
+.tl-tick { position: absolute; left: var(--l); top: -4px; height: 4px; border-left: 1px solid var(--line); }
+.tl-tick span { position: absolute; top: 7px; left: 0; translate: -50% 0; font: 400 11px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 32px; margin: 0; padding-block: 22px 8px; border-top: 1px solid var(--line); }
 .facts dt { font-size: 13px; color: var(--muted); }
@@ -201,7 +190,6 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
   .intro .traits { margin-top: min(22px, 2.2svh); }
   .intro .sub { font-size: clamp(15px, min(1.45vw, 2.5svh), 20px); margin-top: min(18px, 2svh); line-height: 1.55; }
   .intro .journey { margin-top: min(22px, 2.4svh); padding-top: min(14px, 1.6svh); }
-  .intro .jr-text { font-size: clamp(16px, min(1.6vw, 2.6svh), 21px); }
   .intro .portrait { min-height: 0; }
 }
 @media (min-width: 801px) and (max-height: 760px) {
@@ -216,10 +204,6 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
   .intro .sub { font-size: clamp(14px, 2.35svh, 18px); line-height: 1.5; }
   .intro .traits { margin-top: 1.4svh; }
   .intro .journey { margin-top: 2svh; padding-top: 1.6svh; }
-  .intro .jr-track { height: 112px; }
-  .intro .jr-label.down { top: 84px; }
-  .intro .jr-now { top: 84px; }
-  .intro .jr-hint { display: none; }
 }
 
 /* intro + contact: text sits in the page column, photo runs to the right edge of the screen, full height */
@@ -461,12 +445,6 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 @media (max-width: 800px) {
   .bar nav a:not(.mail) { display: none; }
   .hero { grid-template-columns: minmax(0, 1fr); }
-  .jr-sub { display: none; }
-  .jr-label.up, .jr-label.down { top: 88px; bottom: auto; }
-  .jr-label.l { left: -6px; transform: none; }
-  .jr-label.r { right: auto; left: 0; transform: translateX(-50%); }
-  .jr-track { height: 112px; }
-  .jr-now { top: 40px; }
   .portrait, .life-photo, .contact-photo { width: 100%; height: auto; min-height: 0; justify-self: stretch; }
   .portrait img, .life-photo img, .contact-photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; max-height: 78svh; object-fit: cover; }
   .screen.intro { padding-top: 24px; }
@@ -530,25 +508,27 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </ul>
           <p class="sub">I'm Janav. After almost three years as a software engineer, I wanted to understand the data I was moving, not just move it. Now I'm doing a <b>Master of Applied Data Science</b> at the University of Victoria.</p>
         <div class="journey">
-          <div class="jr-readout" aria-live="polite"><span class="jr-date">Now</span><span class="jr-text">Doing my master's at UVic. Open to data scientist, ML engineer, AI engineer and software developer roles.</span></div>
-          <div class="jr-track" role="slider" tabindex="0" aria-label="Scrub through my timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="Now: master's at UVic, open to data scientist, ML engineer, AI engineer and software developer roles">
-            <div class="jr-line"></div>
-            <div class="jr-fill" style="width:100%"></div>
-            <button type="button" class="jr-stop" style="--x:0.00%" data-t="2019.5833" aria-describedby="jr-tip" aria-label="Jump to 2019, B.Tech · New Delhi"><span class="jr-dot"></span><span class="jr-label up l"><b>2019</b> <span class="jr-sub">New Delhi</span></span></button>
-            <button type="button" class="jr-stop" style="--x:32.37%" data-t="2021.9167" aria-describedby="jr-tip" aria-label="Jump to 2021, Oneistox · Gurugram"><span class="jr-dot"></span><span class="jr-label down c"><b>2021</b> <span class="jr-sub">Oneistox</span></span></button>
-            <button type="button" class="jr-stop" style="--x:55.49%" data-t="2023.5833" aria-describedby="jr-tip" aria-label="Jump to 2023, Infosys for Apple"><span class="jr-dot"></span><span class="jr-label up c"><b>2023</b> <span class="jr-sub">Apple</span></span></button>
-            <button type="button" class="jr-stop" style="--x:71.68%" data-t="2024.7500" aria-describedby="jr-tip" aria-label="Jump to 2024, Infosys for Walmart"><span class="jr-dot"></span><span class="jr-label down c"><b>2024</b> <span class="jr-sub">Walmart</span></span></button>
-            <button type="button" class="jr-stop" style="--x:89.02%" data-t="2026.0000" aria-describedby="jr-tip" aria-label="Jump to 2026, UVic · Victoria"><span class="jr-dot"></span><span class="jr-label up r"><b>2026</b> <span class="jr-sub">UVic</span></span></button>
-            <div class="jr-handle" style="left:100%"></div>
-            <span class="jr-now">now</span>
+          <p class="jr-readout"><span class="jr-date">Now</span><span class="jr-text">Doing my master's at UVic. Open to data scientist, ML engineer, AI engineer and software developer roles.</span></p>
+          <div class="tl" role="group" aria-label="Timeline, 2019 to now">
+            <span class="tl-name">Study</span>
+            <div class="tl-row">
+              <button type="button" class="tl-bar" style="--l:0.00%; --w:56.32%" data-from="2019.5833" data-to="2023.6667" data-tip="btech" aria-describedby="jr-tip" aria-label="B.Tech in Information Technology, New Delhi, Aug 2019 to Aug 2023"><span class="tl-label">B.Tech, New Delhi</span></button>
+              <button type="button" class="tl-bar now" style="--l:88.51%; --w:11.49%" data-from="2026.0000" data-to="now" data-tip="uvic" aria-describedby="jr-tip" aria-label="Master of Applied Data Science, UVic, Jan 2026 to now"><span class="tl-label">UVic</span></button>
+            </div>
+            <span class="tl-name">Work</span>
+            <div class="tl-row">
+              <button type="button" class="tl-bar" style="--l:32.18%; --w:6.90%" data-from="2021.9167" data-to="2022.4167" data-tip="oneistox" aria-describedby="jr-tip" aria-label="Software development intern, Oneistox, Dec 2021 to May 2022"><span class="tl-label">Oneistox</span></button>
+              <button type="button" class="tl-bar" style="--l:55.17%; --w:16.09%" data-from="2023.5833" data-to="2024.7500" data-tip="apple" aria-describedby="jr-tip" aria-label="Software engineer at Infosys for Apple, Aug 2023 to Sep 2024"><span class="tl-label">Apple</span></button>
+              <button type="button" class="tl-bar" style="--l:71.26%; --w:17.24%" data-from="2024.7500" data-to="2026.0000" data-tip="walmart" aria-describedby="jr-tip" aria-label="Software engineer at Infosys for Walmart, Oct 2024 to Dec 2025"><span class="tl-label">Walmart</span></button>
+            </div>
+            <div class="tl-axis" aria-hidden="true"><span class="tl-tick" style="--l:5.75%" data-y="2020"><span>2020</span></span><span class="tl-tick" style="--l:19.54%" data-y="2021"><span>2021</span></span><span class="tl-tick" style="--l:33.33%" data-y="2022"><span>2022</span></span><span class="tl-tick" style="--l:47.13%" data-y="2023"><span>2023</span></span><span class="tl-tick" style="--l:60.92%" data-y="2024"><span>2024</span></span><span class="tl-tick" style="--l:74.71%" data-y="2025"><span>2025</span></span><span class="tl-tick" style="--l:88.51%" data-y="2026"><span>2026</span></span></div>
             <div class="jr-tip" role="tooltip" id="jr-tip" hidden></div>
-          <template data-for="2019.5833"><div class="tip-brand"><span>New Delhi</span></div><div class="tip-role">B.Tech, Information Technology</div><div class="tip-when">Aug 2019 – Aug 2023</div><div class="tip-line">Data structures, databases, operating systems and networks.</div></template>
-          <template data-for="2021.9167"><div class="tip-brand"><span>Oneistox</span></div><div class="tip-role">Software Development Intern</div><div class="tip-when">Dec 2021 – May 2022</div><div class="tip-line">MongoDB tuning and REST APIs in Node.js.</div></template>
-          <template data-for="2023.5833"><div class="tip-brand"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg><span class="for">for</span><svg class="logo l-apple" aria-hidden="true"><use href="#lg-apple" /></svg><span>Apple</span></div><div class="tip-role">Software Engineer</div><div class="tip-when">Aug 2023 – Sep 2024</div><div class="tip-line">SQL reporting workflows and data pipelines.</div></template>
-          <template data-for="2024.7500"><div class="tip-brand"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg><span class="for">for</span><svg class="logo l-walmart" aria-hidden="true"><use href="#lg-walmart" /></svg></div><div class="tip-role">Software Engineer</div><div class="tip-when">Oct 2024 – Dec 2025</div><div class="tip-line">Led the stock and demand system. Infosys Insta Award, 2025.</div></template>
-          <template data-for="2026.0000"><div class="tip-brand"><svg class="logo l-uvic" aria-hidden="true"><use href="#lg-uvic" /></svg></div><div class="tip-role">Master of Applied Data Science</div><div class="tip-when">Jan 2026 – now</div><div class="tip-line">Open to data science, ML and software roles.</div></template>
+          <template data-for="btech"><div class="tip-brand"><span>New Delhi</span></div><div class="tip-role">B.Tech, Information Technology</div><div class="tip-when">Aug 2019 – Aug 2023</div><div class="tip-line">Data structures, databases, operating systems and networks.</div></template>
+          <template data-for="oneistox"><div class="tip-brand"><span>Oneistox</span></div><div class="tip-role">Software Development Intern</div><div class="tip-when">Dec 2021 – May 2022</div><div class="tip-line">MongoDB tuning and REST APIs in Node.js.</div></template>
+          <template data-for="apple"><div class="tip-brand"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg><span class="for">for</span><svg class="logo l-apple" aria-hidden="true"><use href="#lg-apple" /></svg><span>Apple</span></div><div class="tip-role">Software Engineer</div><div class="tip-when">Aug 2023 – Sep 2024</div><div class="tip-line">SQL reporting workflows and data pipelines.</div></template>
+          <template data-for="walmart"><div class="tip-brand"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg><span class="for">for</span><svg class="logo l-walmart" aria-hidden="true"><use href="#lg-walmart" /></svg></div><div class="tip-role">Software Engineer</div><div class="tip-when">Oct 2024 – Dec 2025</div><div class="tip-line">Led the stock and demand system. Infosys Insta Award, 2025.</div></template>
+          <template data-for="uvic"><div class="tip-brand"><svg class="logo l-uvic" aria-hidden="true"><use href="#lg-uvic" /></svg></div><div class="tip-role">Master of Applied Data Science</div><div class="tip-when">Jan 2026 – now</div><div class="tip-line">Open to data science, ML and software roles.</div></template>
           </div>
-          <p class="jr-hint">Hover a year to see what I was doing, or drag the dot.</p>
         </div>
         <div class="logo-rail" role="img" aria-label="Where I've worked and studied: Infosys, Walmart, Apple, the University of Victoria and Oneistox">
           <div class="logo-track" aria-hidden="true"><span class="li"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg></span><span class="li"><svg class="logo l-walmart" aria-hidden="true"><use href="#lg-walmart" /></svg></span><span class="li li-apple"><svg class="logo l-apple" aria-hidden="true"><use href="#lg-apple" /></svg><span>Apple</span></span><span class="li"><svg class="logo l-uvic" aria-hidden="true"><use href="#lg-uvic" /></svg></span><span class="li wm">Oneistox</span><span class="li"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg></span><span class="li"><svg class="logo l-walmart" aria-hidden="true"><use href="#lg-walmart" /></svg></span><span class="li li-apple"><svg class="logo l-apple" aria-hidden="true"><use href="#lg-apple" /></svg><span>Apple</span></span><span class="li"><svg class="logo l-uvic" aria-hidden="true"><use href="#lg-uvic" /></svg></span><span class="li wm">Oneistox</span></div>
@@ -1077,115 +1057,36 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     row.querySelector("button").addEventListener("click", () => { extra.forEach(li => li.classList.remove("folded")); row.remove(); });
   });
 
-  /* career scrubber: drag or click through time; it glides and settles on the nearest year */
-  const track = document.querySelector(".jr-track");
-  if (track) {
-    const T0 = 2019 + 7 / 12;
-    const now = new Date(), TNOW = Math.max(now.getFullYear() + now.getMonth() / 12, 2026 + 1 / 12);
-    const NOW_TEXT = "Doing my master's at UVic. Open to data scientist, ML engineer, AI engineer and software developer roles.";
-    const periods = [
-      [2019 + 7 / 12, "Studying Information Technology in New Delhi."],
-      [2021 + 11 / 12, "Software development intern at Oneistox, Gurugram."],
-      [2022 + 5 / 12, "Finishing my B.Tech in New Delhi."],
-      [2023 + 7 / 12, "Software engineer at Infosys, on Apple's vendor reporting platform."],
-      [2024 + 9 / 12, "Software engineer at Infosys, on Walmart's stock and demand system."],
-      [2025 + 11 / 12, "Moving from Gurugram to Victoria."],
-      [2026, "Doing a Master of Applied Data Science at UVic, in Victoria."]
-    ];
-    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const fill = track.querySelector(".jr-fill"), handle = track.querySelector(".jr-handle");
-    const stops = [...track.querySelectorAll(".jr-stop")];
-    const readout = document.querySelector(".jr-readout");
-    const dateEl = readout.querySelector(".jr-date"), textEl = readout.querySelector(".jr-text");
-    const anchors = stops.map(b => +b.dataset.t).concat(TNOW);
-    const pct = t => (t - T0) / (TNOW - T0) * 100;
-    stops.forEach(b => b.style.setProperty("--x", pct(+b.dataset.t) + "%"));
-    const atNow = v => v >= TNOW - 1 / 24;
-    const label = v => atNow(v) ? "Now" : months[Math.round((v % 1) * 12) % 12] + " " + Math.floor(v + 1e-6);
-    const textFor = v => { if (atNow(v)) return NOW_TEXT; let txt = periods[0][1]; for (const [st, x] of periods) if (v >= st - 1e-3) txt = x; return txt; };
-    let t = TNOW, shown = textEl.textContent, swapTimer;
-    function set(v, animate) {
-      t = Math.min(TNOW, Math.max(T0, v));
-      track.classList.toggle("settle", !!animate);
-      const p = pct(t);
-      fill.style.width = p + "%"; handle.style.left = p + "%";
-      dateEl.textContent = label(t);
-      const txt = textFor(t);
-      if (txt !== shown) {            // only swap the sentence when the chapter changes, with a short fade
-        shown = txt; clearTimeout(swapTimer);
-        readout.classList.add("swap");
-        swapTimer = setTimeout(() => { textEl.textContent = shown; readout.classList.remove("swap"); }, 140);
-      }
-      stops.forEach((b, i) => {
-        const st = +b.dataset.t, next = stops[i + 1] ? +stops[i + 1].dataset.t : Infinity;
-        b.classList.toggle("past", st <= t + 1e-3);
-        b.classList.toggle("current", st <= t + 1e-3 && t < next - 1e-3);
-      });
-      track.setAttribute("aria-valuenow", Math.round(p));
-      track.setAttribute("aria-valuetext", label(t) + ": " + txt);
-    }
-    const nearest = v => anchors.reduce((best, a) => Math.abs(a - v) < Math.abs(best - v) ? a : best, anchors[0]);
-    const fromX = x => { const r = track.getBoundingClientRect(); return T0 + (x - r.left) / r.width * (TNOW - T0); };
-    let dragging = false, moved = false, startX = 0;
-    track.addEventListener("pointerdown", e => {
-      if (e.target.closest(".jr-stop")) return;
-      dragging = true; moved = false; startX = e.clientX;
-      track.setPointerCapture(e.pointerId);
+  /* timeline: bars sized by how long each chapter lasted; the current one runs up to today */
+  const tl = document.querySelector(".tl");
+  if (tl) {
+    const T0 = 2019 + 7 / 12, d = new Date(), END = Math.max(d.getFullYear() + (d.getMonth() + 1) / 12, 2026 + 2 / 12);
+    const pct = t => (t - T0) / (END - T0) * 100;
+    tl.querySelectorAll(".tl-bar").forEach(b => {
+      const from = +b.dataset.from, to = b.dataset.to === "now" ? END : +b.dataset.to;
+      b.style.setProperty("--l", pct(from) + "%"); b.style.setProperty("--w", (pct(to) - pct(from)) + "%");
     });
-    track.addEventListener("pointermove", e => {
-      if (!dragging) return;
-      if (!moved && Math.abs(e.clientX - startX) < 4) return;
-      moved = true; track.classList.add("dragging"); set(fromX(e.clientX), false);
-    });
-    const release = e => {
-      if (!dragging) return;
-      dragging = false; track.classList.remove("dragging");
-      set(nearest(moved ? t : fromX(e.clientX)), true);   // a click glides to the nearest year; a drag settles on it
-    };
-    track.addEventListener("pointerup", release);
-    track.addEventListener("pointercancel", () => { dragging = false; track.classList.remove("dragging"); set(nearest(t), true); });
-    stops.forEach(b => b.addEventListener("click", () => set(+b.dataset.t, true)));
-    track.addEventListener("keydown", e => {
-      const i = anchors.indexOf(nearest(t));
-      if (e.key === "ArrowRight" || e.key === "ArrowUp") { e.preventDefault(); set(anchors[Math.min(anchors.length - 1, i + 1)], true); keyTip(); }
-      else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { e.preventDefault(); set(anchors[Math.max(0, i - 1)], true); keyTip(); }
-      else if (e.key === "Home") { e.preventDefault(); set(T0, true); }
-      else if (e.key === "End") { e.preventDefault(); set(TNOW, true); }
-    });
-    function reserve() {
-      const keep = textEl.textContent; let tallest = 0;
-      textEl.style.minHeight = "0";
-      for (const txt of periods.map(p => p[1]).concat(NOW_TEXT)) { textEl.textContent = txt; tallest = Math.max(tallest, textEl.offsetHeight); }
-      textEl.textContent = keep; textEl.style.minHeight = tallest + "px";
-    }
-    reserve();
-    let resizeTimer; addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(reserve, 120); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserve);
-    /* pop-up card on hover / focus / tap */
-    const tip = track.querySelector(".jr-tip"); let tipTimer;
+    tl.querySelectorAll(".tl-tick").forEach(k => k.style.setProperty("--l", pct(+k.dataset.y) + "%"));
+    /* pop-up card on hover / focus / tap, pointing at the bar */
+    const tip = tl.querySelector(".jr-tip"); let tipTimer;
     const showTip = b => {
-      const t = track.querySelector('template[data-for="' + b.dataset.t + '"]'); if (!t) return;
+      const t = tl.querySelector('template[data-for="' + b.dataset.tip + '"]'); if (!t) return;
       tip.replaceChildren(t.content.cloneNode(true)); tip.hidden = false;
-      // place the card in pixels: centred on the dot, but kept 8px inside the screen
-      const tr = track.getBoundingClientRect(), dot = b.getBoundingClientRect().left - tr.left;
-      const w = tip.offsetWidth, min = 8 - tr.left, max = document.documentElement.clientWidth - tr.left - w - 8;
-      const left = Math.min(Math.max(dot - w / 2, min), max);
+      const box = tl.getBoundingClientRect(), r = b.getBoundingClientRect(), mid = r.left + Math.min(r.width, 160) / 2 - box.left;
+      const w = tip.offsetWidth, min = 8 - box.left, max = document.documentElement.clientWidth - box.left - w - 8;
+      const left = Math.min(Math.max(mid - w / 2, min), max);
       tip.style.setProperty("--tx", left + "px");
-      tip.style.setProperty("--arrow", Math.min(Math.max(dot - left, 14), w - 14) + "px");
+      tip.style.setProperty("--arrow", Math.min(Math.max(mid - left, 14), w - 14) + "px");
       clearTimeout(tipTimer); void tip.offsetWidth; tip.classList.add("show");
     };
     const hideTip = () => { tip.classList.remove("show"); clearTimeout(tipTimer); tipTimer = setTimeout(() => { if (!tip.classList.contains("show")) tip.hidden = true; }, 180); };
-    stops.forEach(b => {
+    tl.querySelectorAll(".tl-bar").forEach(b => {
       b.addEventListener("mouseenter", () => showTip(b));
       b.addEventListener("mouseleave", hideTip);
       b.addEventListener("focus", () => showTip(b));
       b.addEventListener("blur", hideTip);
       b.addEventListener("click", () => { showTip(b); if (matchMedia("(hover: none)").matches) { clearTimeout(tipTimer); tipTimer = setTimeout(hideTip, 2600); } });
     });
-    track.addEventListener("pointerdown", e => { if (!e.target.closest(".jr-stop")) hideTip(); });
-    function keyTip() { const b = stops.find(x => Math.abs(+x.dataset.t - t) < 1e-3); b ? showTip(b) : hideTip(); }
-    track.addEventListener("blur", hideTip);
-    set(TNOW, false);
   }
 })();
 </script>
