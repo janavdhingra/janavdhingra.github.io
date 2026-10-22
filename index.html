@@ -185,9 +185,10 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 /* desktop: package names only, notes print in the terminal line on hover */
 .hover-hint { display: none; }
 @media (min-width: 900px) {
-  .reqs .reqs-body { columns: 4 200px; padding-block: 14px; }
-  .reqs .reqs-body li { padding: 2px 0; }
+  .reqs .reqs-body { columns: 4 200px; padding-block: 10px; }
+  .reqs .reqs-body li { padding: 1px 0; }
   .reqs-body .code i { display: none; }
+  .reqs-body .dep { cursor: default; }
   .reqs-body .dep:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .hover-hint { display: inline; }
   .reqs-term .out { min-height: 1.6em; }
@@ -388,29 +389,20 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .lightbox.wide .lb-figure img { max-width: min(92vw, 1280px); border-radius: 10px; }
 
 /* ---------- stack as requirements.txt ---------- */
-/* requirements.txt pop-up: the note, plus links to where the tool shows up on this page */
-.reqs-body .dep { cursor: pointer; }
-.reqs-body .dep.used b::after { content: "↗"; margin-left: 3px; font-size: .78em; color: var(--accent); }
-.req-pop { position: fixed; z-index: 60; width: max-content; max-width: min(300px, calc(100vw - 16px)); background: var(--ink); color: var(--bg); border-radius: 8px; padding: 12px 14px; box-shadow: 0 14px 34px -14px rgba(0,0,0,.45); font: 400 14px/1.4 var(--sans); opacity: 0; transform: translateY(4px); transition: opacity .16s ease, transform .16s ease; }
-.req-pop.show { opacity: 1; transform: none; }
-.req-pop[hidden] { display: none; }
-.req-pop.peek { pointer-events: none; }
-.req-pop .rp-hint { display: block; margin-top: 4px; font-size: 12px; font-weight: 400; opacity: .65; }
-.reqs-body .dep.pinned { background: color-mix(in srgb, var(--accent) 16%, transparent); }
-.req-pop .rp-name { font-weight: 600; font-size: 15px; }
-.req-pop .rp-note { font: italic 400 15px/1.35 var(--serif); margin-top: 4px; }
-.req-pop .rp-used { margin-top: 10px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent); font-size: 13px; opacity: .9; }
-.req-pop .rp-used button { font: 600 13px/1.4 var(--sans); color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.req-pop .rp-used button:hover { color: var(--accent); }
-.req-pop .rp-used button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
-.tk { border-radius: 3px; }
-.tk.hl { animation: tk-hl 2.6s ease forwards; }
-@keyframes tk-hl { 0%, 55% { background: color-mix(in srgb, var(--accent) 30%, transparent); color: var(--ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); } 100% { background: transparent; box-shadow: 0 0 0 3px transparent; } }
-.req-back { position: fixed; left: 50%; bottom: 18px; z-index: 60; translate: -50% 0; font: 600 14px/1 var(--sans); padding: 12px 16px; border-radius: 999px; border: 0; background: var(--ink); color: var(--bg); box-shadow: 0 14px 34px -14px rgba(0,0,0,.5); cursor: pointer; white-space: nowrap; }
-.req-back[hidden] { display: none; }
-.req-back:hover { background: var(--accent); }
-.req-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) { .tk.hl { animation-duration: 3s; } .req-pop { transition: none; } }
+/* filter row: all, or one job or project */
+.reqs-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 8px 20px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.reqs-filter .rf-cmd { color: var(--muted); margin-right: 4px; }
+.reqs-filter button { font: 500 13px/1 var(--sans); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 6px 11px; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+.reqs-filter button:hover { border-color: var(--accent); }
+.reqs-filter button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.reqs-filter button[data-key="all"][aria-pressed="true"] { background: var(--ink); border-color: var(--ink); }
+.reqs-filter button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.reqs-body .dep { transition: opacity .2s ease, background .2s ease; }
+.reqs.filtering .reqs-body .dep { opacity: .38; }
+.reqs.filtering .reqs-body .dep.on { opacity: 1; background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.reqs.filtering .reqs-body .dep.on svg { fill: var(--accent); }
+.reqs.filtering .reqs-body .dep.on b { color: var(--ink); font-weight: 600; }
+
 
 .reqs { background: var(--surface); border-radius: 6px; overflow: hidden; font-family: var(--sans); font-variant-numeric: tabular-nums; }
 .reqs-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 12px 20px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); }
@@ -1010,122 +1002,65 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* requirements.txt: hovering a package prints its note in the terminal line */
   const term = document.querySelector(".reqs-term");
   if (term) {
-    const cmd = term.querySelector(".cmd"), out = term.querySelector(".out"), base = [cmd.innerHTML, out.innerHTML];
+    const cmd = term.querySelector(".cmd"), out = term.querySelector(".out");
     const show = li => {
       const name = li.querySelector("b").textContent, note = li.querySelector("i") ? li.querySelector("i").textContent.replace(/^#\s*/, "") : "Installed.";
       cmd.textContent = "pip show " + name.toLowerCase().replace(/[^a-z0-9.+-]+/g, "-");
       out.textContent = note;
     };
-    const reset = () => { cmd.innerHTML = base[0]; out.innerHTML = base[1]; };
     document.querySelectorAll(".reqs-body .dep").forEach(li => {
       li.tabIndex = 0;
       li.addEventListener("mouseenter", () => show(li));
       li.addEventListener("focus", () => show(li));
     });
-    document.querySelector(".reqs-body").addEventListener("mouseleave", reset);
   }
 
-  /* requirements.txt: a pop-up with the note and every place on the page the tool is used;
-     picking a place scrolls there, highlights the tool in that stack line, and offers a way back */
-  const reqs = document.querySelector(".reqs-body");
-  if (reqs) {
-    const lines = [...document.querySelectorAll("[data-place] .stack-line, [data-place] .fp-link")];
-    const tokens = [];
-    lines.forEach(line => {
-      if (line.classList.contains("fp-link")) { tokens.push({ el: line, text: "GitHub", place: line.closest("[data-place]") }); return; }
-      line.innerHTML = line.textContent.split(" · ").map(t => '<span class="tk">' + t + "</span>").join(" · ");
-      line.querySelectorAll(".tk").forEach(el => tokens.push({ el, text: el.textContent, place: line.closest("[data-place]") }));
+  /* requirements.txt: pick a job or project and the tools it used light up */
+  const reqBox = document.querySelector(".reqs");
+  if (reqBox) {
+    const n = el => el.querySelector("b").textContent;
+    const matches = (t, name) => t === name || t.startsWith(name + " ") || t.includes("(" + name + ")");
+    const deps = [...reqBox.querySelectorAll(".reqs-body .dep")];
+    const sets = new Map();
+    document.querySelectorAll("[data-place]").forEach(card => {
+      const toks = [];
+      card.querySelectorAll(".stack-line").forEach(l => toks.push(...l.textContent.split(" · ").map(t => t.trim())));
+      if (card.querySelector(".fp-link")) toks.push("GitHub");
+      const used = deps.filter(li => toks.some(t => matches(t, n(li))));
+      if (used.length) sets.set(card.dataset.place, used);
     });
-    const matches = (t, n) => t === n || t.startsWith(n + " ") || t.includes("(" + n + ")");
+    const order = ["Walmart", "Apple", "Oneistox", "Jet engine research", "EDIT", "Perennial", "Pixagram"];
+    const file = { "Jet engine research": "research" };
+    const bar = document.createElement("div");
+    bar.className = "reqs-filter"; bar.setAttribute("role", "group"); bar.setAttribute("aria-label", "Show the tools used for");
+    bar.innerHTML = '<span class="rf-cmd">pip install -r</span>';
+    const add = (label, key) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = label; b.dataset.key = key; b.setAttribute("aria-pressed", key === "all");
+      bar.append(b);
+    };
+    add("all", "all");
+    order.filter(k => sets.has(k)).forEach(k => add((file[k] || k).toLowerCase(), k));
+    reqBox.querySelector(".reqs-bar").after(bar);
 
-    const pop = document.createElement("div");
-    pop.className = "req-pop"; pop.hidden = true; pop.id = "req-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Package details");
-    document.body.append(pop);
-    const back = document.createElement("button");
-    back.type = "button"; back.className = "req-back"; back.hidden = true; back.textContent = "↩ Back to requirements.txt";
-    document.body.append(back);
-
-    const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { back.hidden = true; seen.disconnect(); } }), { threshold: 1 });
-    let current = null, hideTimer, from = null;
-    const hover = matchMedia("(hover: hover)").matches;
-    const usesOf = li => {
-      const n = li.querySelector("b").textContent, seen = new Map();
-      tokens.forEach(t => { if (matches(t.text, n) && !seen.has(t.place)) seen.set(t.place, t.el); });
-      return [...seen].map(([place, el]) => ({ label: place.dataset.place, place, el }));
-    };
-    const deps = [...reqs.querySelectorAll(".dep")];
-    deps.forEach(li => { li.uses = usesOf(li); if (li.uses.length) li.classList.add("used"); li.setAttribute("aria-haspopup", "dialog"); });
-
-    const place = li => {
-      const r = li.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight, vw = document.documentElement.clientWidth;
-      const left = Math.min(Math.max(r.left + 40, 8), vw - w - 8);
-      const top = r.bottom + 8 + h > innerHeight - 8 ? r.top - h - 8 : r.bottom + 8;
-      pop.style.left = left + "px"; pop.style.top = top + "px";
-    };
-    /* hover only previews; a click pins the card so the mouse can reach its links */
-    let pinned = false;
-    const open = (li, pin) => {
-      clearTimeout(hideTimer);
-      if (current === li && !pop.hidden && pinned === pin) return;
-      if (current) current.classList.remove("pinned");
-      current = li; pinned = pin;
-      li.classList.toggle("pinned", pin);
-      pop.classList.toggle("peek", !pin);
-      const name = li.querySelector("b").textContent, note = li.querySelector("i") ? li.querySelector("i").textContent.replace(/^#\s*/, "") : "";
-      pop.innerHTML = '<div class="rp-name"></div><div class="rp-note"></div>' + (li.uses.length ? '<div class="rp-used">Used in → </div>' : "");
-      pop.querySelector(".rp-name").textContent = name;
-      pop.querySelector(".rp-note").textContent = note;
-      const used = pop.querySelector(".rp-used");
-      li.uses.forEach((u, i) => {
-        if (i) used.append(" · ");
-        if (pin) {
-          const b = document.createElement("button");
-          b.type = "button"; b.textContent = u.label;
-          b.addEventListener("click", () => jump(li, u));
-          used.append(b);
-        } else used.append(u.label);
-      });
-      if (used && !pin) used.insertAdjacentHTML("beforeend", '<span class="rp-hint">' + (hover ? "Click" : "Tap") + " to open the links</span>");
-      pop.hidden = false; place(li); void pop.offsetWidth; pop.classList.add("show");
-    };
-    const close = () => { pop.classList.remove("show"); pop.hidden = true; if (current) current.classList.remove("pinned"); current = null; pinned = false; };
-    const later = () => { if (pinned) return; clearTimeout(hideTimer); hideTimer = setTimeout(close, 120); };
-    const jump = (li, u) => {
-      from = li; close();
-      const n = li.querySelector("b").textContent;
-      const r = u.el.getBoundingClientRect();
-      scrollTo({ top: scrollY + r.top - innerHeight / 2 + r.height / 2, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-      const mark = () => tokens.filter(t => t.place === u.place && matches(t.text, n)).forEach(t => { t.el.classList.remove("hl"); void t.el.offsetWidth; t.el.classList.add("hl"); });
-      let done = false; const once = () => { if (!done) { done = true; mark(); } };
-      addEventListener("scrollend", once, { once: true }); setTimeout(once, 900);
-      back.hidden = false; seen.disconnect(); setTimeout(() => seen.observe(li), 1200);
-    };
-    back.addEventListener("click", () => {
-      back.hidden = true;
-      if (!from) return;
-      const r = from.getBoundingClientRect();
-      scrollTo({ top: scrollY + r.top - innerHeight / 2, behavior: "instant" });
-      from.focus({ preventScroll: true });
+    const cmd = reqBox.querySelector(".reqs-term .cmd"), out = reqBox.querySelector(".reqs-term .out");
+    let base = [cmd.innerHTML, out.innerHTML];
+    const start = base.slice();
+    bar.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      bar.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      const used = sets.get(b.dataset.key) || [];
+      deps.forEach(li => li.classList.toggle("on", used.includes(li)));
+      reqBox.classList.toggle("filtering", b.dataset.key !== "all");
+      if (b.dataset.key === "all") base = start.slice();
+      else {
+        reqBox.querySelectorAll(".more-btn").forEach(m => m.click());
+        base = ["pip install -r " + b.textContent + ".txt", "Successfully installed " + used.length + " packages: " + used.map(n).join(", ") + "."];
+        base = base.map(t => t.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]));
+      }
+      cmd.innerHTML = base[0]; out.innerHTML = base[1];
     });
-
-    deps.forEach(li => {
-      if (hover) { li.addEventListener("mouseenter", () => { if (!pinned) open(li, false); }); li.addEventListener("mouseleave", later); }
-      li.addEventListener("click", () => (current === li && pinned) ? close() : open(li, true));
-      li.addEventListener("focus", () => { if (!pinned) open(li, false); });
-      li.addEventListener("blur", e => { if (!pop.contains(e.relatedTarget)) later(); });
-      li.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(li, true); const b = pop.querySelector("button"); if (b) b.focus(); }
-        else if (e.key === "Escape") close();
-      });
-    });
-    pop.addEventListener("focusout", e => { if (!pop.contains(e.relatedTarget) && e.relatedTarget !== current) later(); });
-    pop.addEventListener("keydown", e => { if (e.key === "Escape" && current) { const li = current; close(); li.focus(); } });
-    document.addEventListener("click", e => { if (!pop.hidden && !pop.contains(e.target) && !e.target.closest(".reqs-body .dep")) close(); });
-    addEventListener("scroll", () => {
-      if (pop.hidden || !current) return;
-      const r = current.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > innerHeight) close(); else place(current);
-    }, { passive: true });
+    reqBox.querySelector(".reqs-body").addEventListener("mouseleave", () => { cmd.innerHTML = base[0]; out.innerHTML = base[1]; });
   }
 
   /* requirements.txt on phones: fold each group after 3 packages */
