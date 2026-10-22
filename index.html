@@ -188,7 +188,6 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
   .reqs .reqs-body { columns: 4 200px; padding-block: 14px; }
   .reqs .reqs-body li { padding: 2px 0; }
   .reqs-body .code i { display: none; }
-  .reqs-body .dep { cursor: default; }
   .reqs-body .dep:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .hover-hint { display: inline; }
   .reqs-term .out { min-height: 1.6em; }
@@ -389,6 +388,27 @@ h1 { font-size: clamp(40px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -.0
 .lightbox.wide .lb-figure img { max-width: min(92vw, 1280px); border-radius: 10px; }
 
 /* ---------- stack as requirements.txt ---------- */
+/* requirements.txt pop-up: the note, plus links to where the tool shows up on this page */
+.reqs-body .dep { cursor: pointer; }
+.reqs-body .dep.used b::after { content: "↗"; margin-left: 3px; font-size: .78em; color: var(--accent); }
+.req-pop { position: fixed; z-index: 60; width: max-content; max-width: min(300px, calc(100vw - 16px)); background: var(--ink); color: var(--bg); border-radius: 8px; padding: 12px 14px; box-shadow: 0 14px 34px -14px rgba(0,0,0,.45); font: 400 14px/1.4 var(--sans); opacity: 0; transform: translateY(4px); transition: opacity .16s ease, transform .16s ease; }
+.req-pop.show { opacity: 1; transform: none; }
+.req-pop[hidden] { display: none; }
+.req-pop .rp-name { font-weight: 600; font-size: 15px; }
+.req-pop .rp-note { font: italic 400 15px/1.35 var(--serif); margin-top: 4px; }
+.req-pop .rp-used { margin-top: 10px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent); font-size: 13px; opacity: .9; }
+.req-pop .rp-used button { font: 600 13px/1.4 var(--sans); color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.req-pop .rp-used button:hover { color: var(--accent); }
+.req-pop .rp-used button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.tk { border-radius: 3px; }
+.tk.hl { animation: tk-hl 2.6s ease forwards; }
+@keyframes tk-hl { 0%, 55% { background: color-mix(in srgb, var(--accent) 30%, transparent); color: var(--ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); } 100% { background: transparent; box-shadow: 0 0 0 3px transparent; } }
+.req-back { position: fixed; left: 50%; bottom: 18px; z-index: 60; translate: -50% 0; font: 600 14px/1 var(--sans); padding: 12px 16px; border-radius: 999px; border: 0; background: var(--ink); color: var(--bg); box-shadow: 0 14px 34px -14px rgba(0,0,0,.5); cursor: pointer; white-space: nowrap; }
+.req-back[hidden] { display: none; }
+.req-back:hover { background: var(--accent); }
+.req-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .tk.hl { animation-duration: 3s; } .req-pop { transition: none; } }
+
 .reqs { background: var(--surface); border-radius: 6px; overflow: hidden; font-family: var(--sans); font-variant-numeric: tabular-nums; }
 .reqs-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 12px 20px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); }
 .reqs-bar .file { color: var(--ink); font-weight: 500; }
@@ -553,7 +573,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <p class="eyebrow">Work</p>
         <h2>Experience</h2>
       </div>
-      <article class="story">
+      <article class="story" data-place="UVic">
         <div class="meta">
           <span class="n">01</span>
           <span class="org org-logos" aria-label="University of Victoria"><svg class="logo l-uvic" aria-hidden="true"><use href="#lg-uvic" /></svg><span class="uvic-name">University of Victoria</span></span>
@@ -574,7 +594,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
   <section class="screen" id="walmart">
     <div class="wrap">
-      <article class="story">
+      <article class="story" data-place="Walmart">
         <div class="meta">
           <span class="n">02</span>
           <span class="org org-logos" aria-label="Infosys, for Walmart"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg><span class="for">for</span><svg class="logo l-walmart" aria-hidden="true"><use href="#lg-walmart" /></svg></span>
@@ -602,7 +622,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
   <section class="screen" id="apple">
     <div class="wrap">
-      <article class="story">
+      <article class="story" data-place="Apple">
         <div class="meta">
           <span class="n">03</span>
           <span class="org org-logos" aria-label="Infosys, for Apple"><svg class="logo l-infosys" aria-hidden="true"><use href="#lg-infosys" /></svg><span class="for">for</span><svg class="logo l-apple" aria-hidden="true"><use href="#lg-apple" /></svg><span class="apple-name">Apple</span></span>
@@ -615,7 +635,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <p class="stack-line">SQL · PostgreSQL · Spring Boot · JUnit · Mockito · SonarQube · YAML · 85%+ test coverage</p>
         </div>
       </article>
-      <article class="story">
+      <article class="story" data-place="Oneistox">
         <div class="meta">
           <span class="n">04</span>
           <span class="org">Oneistox</span>
@@ -638,7 +658,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <p class="eyebrow">Projects</p>
         <h2>Projects</h2>
       </div>
-      <article class="feature-project fp-wide fp-research">
+      <article class="feature-project fp-wide fp-research" data-place="Jet engine research">
         <div class="fp-text">
           <p class="fp-kicker">Master's research · Machine learning</p>
           <h3>Prediction intervals for jet engine remaining life</h3>
@@ -676,7 +696,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
   <section class="screen" id="projects">
     <div class="wrap">
-      <article class="feature-project">
+      <article class="feature-project" data-place="EDIT">
         <div class="fp-text">
           <p class="fp-kicker">Mobile web app</p>
           <h3>EDIT: Daily Style</h3>
@@ -712,7 +732,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
   <section class="screen" id="perennial">
     <div class="wrap">
-      <article class="feature-project">
+      <article class="feature-project" data-place="Perennial">
         <div class="fp-text">
           <p class="fp-kicker">Full-stack · AI · Productivity</p>
           <h3>Perennial</h3>
@@ -746,7 +766,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
   <section class="screen" id="pixagram">
     <div class="wrap">
-      <article class="feature-project fp-wide">
+      <article class="feature-project fp-wide" data-place="Pixagram">
         <div class="fp-text">
           <p class="fp-kicker">Full-stack · Microservices</p>
           <h3>Pixagram</h3>
@@ -1000,6 +1020,103 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       li.addEventListener("focus", () => show(li));
     });
     document.querySelector(".reqs-body").addEventListener("mouseleave", reset);
+  }
+
+  /* requirements.txt: a pop-up with the note and every place on the page the tool is used;
+     picking a place scrolls there, highlights the tool in that stack line, and offers a way back */
+  const reqs = document.querySelector(".reqs-body");
+  if (reqs) {
+    const lines = [...document.querySelectorAll("[data-place] .stack-line, [data-place] .fp-link")];
+    const tokens = [];
+    lines.forEach(line => {
+      if (line.classList.contains("fp-link")) { tokens.push({ el: line, text: "GitHub", place: line.closest("[data-place]") }); return; }
+      line.innerHTML = line.textContent.split(" · ").map(t => '<span class="tk">' + t + "</span>").join(" · ");
+      line.querySelectorAll(".tk").forEach(el => tokens.push({ el, text: el.textContent, place: line.closest("[data-place]") }));
+    });
+    const matches = (t, n) => t === n || t.startsWith(n + " ") || t.includes("(" + n + ")");
+
+    const pop = document.createElement("div");
+    pop.className = "req-pop"; pop.hidden = true; pop.id = "req-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Package details");
+    document.body.append(pop);
+    const back = document.createElement("button");
+    back.type = "button"; back.className = "req-back"; back.hidden = true; back.textContent = "↩ Back to requirements.txt";
+    document.body.append(back);
+
+    const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { back.hidden = true; seen.disconnect(); } }), { threshold: 1 });
+    let current = null, hideTimer, from = null;
+    const usesOf = li => {
+      const n = li.querySelector("b").textContent, seen = new Map();
+      tokens.forEach(t => { if (matches(t.text, n) && !seen.has(t.place)) seen.set(t.place, t.el); });
+      return [...seen].map(([place, el]) => ({ label: place.dataset.place, place, el }));
+    };
+    const deps = [...reqs.querySelectorAll(".dep")];
+    deps.forEach(li => { li.uses = usesOf(li); if (li.uses.length) li.classList.add("used"); li.setAttribute("aria-haspopup", "dialog"); });
+
+    const place = li => {
+      const r = li.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight, vw = document.documentElement.clientWidth;
+      const left = Math.min(Math.max(r.left + 40, 8), vw - w - 8);
+      const top = r.bottom + 8 + h > innerHeight - 8 ? r.top - h - 8 : r.bottom + 8;
+      pop.style.left = left + "px"; pop.style.top = top + "px";
+    };
+    const open = li => {
+      clearTimeout(hideTimer);
+      if (current === li && !pop.hidden) return;
+      current = li;
+      const name = li.querySelector("b").textContent, note = li.querySelector("i") ? li.querySelector("i").textContent.replace(/^#\s*/, "") : "";
+      pop.innerHTML = '<div class="rp-name"></div><div class="rp-note"></div>' + (li.uses.length ? '<div class="rp-used">Used in → </div>' : "");
+      pop.querySelector(".rp-name").textContent = name;
+      pop.querySelector(".rp-note").textContent = note;
+      li.uses.forEach((u, i) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.textContent = u.label;
+        b.addEventListener("click", () => jump(li, u));
+        const used = pop.querySelector(".rp-used");
+        if (i) used.append(" · ");
+        used.append(b);
+      });
+      pop.hidden = false; place(li); void pop.offsetWidth; pop.classList.add("show");
+    };
+    const close = () => { pop.classList.remove("show"); pop.hidden = true; current = null; };
+    const later = () => { clearTimeout(hideTimer); hideTimer = setTimeout(close, 220); };
+    const jump = (li, u) => {
+      from = li; close();
+      const n = li.querySelector("b").textContent;
+      const r = u.el.getBoundingClientRect();
+      scrollTo({ top: scrollY + r.top - innerHeight / 2 + r.height / 2, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+      const mark = () => tokens.filter(t => t.place === u.place && matches(t.text, n)).forEach(t => { t.el.classList.remove("hl"); void t.el.offsetWidth; t.el.classList.add("hl"); });
+      let done = false; const once = () => { if (!done) { done = true; mark(); } };
+      addEventListener("scrollend", once, { once: true }); setTimeout(once, 900);
+      back.hidden = false; seen.disconnect(); setTimeout(() => seen.observe(li), 1200);
+    };
+    back.addEventListener("click", () => {
+      back.hidden = true;
+      if (!from) return;
+      const r = from.getBoundingClientRect();
+      scrollTo({ top: scrollY + r.top - innerHeight / 2, behavior: "instant" });
+      from.focus({ preventScroll: true });
+    });
+
+    const hover = matchMedia("(hover: hover)").matches;
+    deps.forEach(li => {
+      if (hover) { li.addEventListener("mouseenter", () => open(li)); li.addEventListener("mouseleave", later); }
+      li.addEventListener("click", () => (current === li && !pop.hidden && !hover) ? close() : open(li));
+      li.addEventListener("focus", () => open(li));
+      li.addEventListener("blur", e => { if (!pop.contains(e.relatedTarget)) later(); });
+      li.addEventListener("keydown", e => {
+        if ((e.key === "Enter" || e.key === " ") && li.uses.length) { e.preventDefault(); open(li); pop.querySelector("button").focus(); }
+        else if (e.key === "Escape") close();
+      });
+    });
+    pop.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+    pop.addEventListener("mouseleave", later);
+    pop.addEventListener("focusout", e => { if (!pop.contains(e.relatedTarget) && e.relatedTarget !== current) later(); });
+    pop.addEventListener("keydown", e => { if (e.key === "Escape" && current) { const li = current; close(); li.focus(); } });
+    document.addEventListener("click", e => { if (!pop.hidden && !pop.contains(e.target) && !e.target.closest(".reqs-body .dep")) close(); });
+    addEventListener("scroll", () => {
+      if (pop.hidden || !current) return;
+      const r = current.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) close(); else place(current);
+    }, { passive: true });
   }
 
   /* requirements.txt on phones: fold each group after 3 packages */
